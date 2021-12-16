@@ -1,35 +1,30 @@
-import React from "react"
+import React, { useState, useMemo } from "react"
 import PropTypes from 'prop-types'
 import Select from 'react-select'
 import "./search-bar.scss"
+import countryList from 'react-select-country-list'
+
 
 import { useCountryContext } from '../country-context.jsx'
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' }
-]
 
-const SearchBar = ({ countries }) => {
-  const { country, setSelectedCountry } = useCountryContext();
 
-  let countryNamesList = []
+const SearchBar = ({ countryNamesList }) => {
+  const { setSelectedCountry } = useCountryContext();
+  let allCountriesKeyValuePair = []
 
-  if (countries.length >= 0) {
-    countryNamesList = countries.map((c, index) => {
-      return { value: c.attributes.slug, label: c.attributes.name }
-    })
-    countryNamesList
+  for (const country of countryNamesList) {
+    let allCountries = countryList().getData()
+    let countryKeyValuePair = allCountries.find(o => o.label === country);
+    allCountriesKeyValuePair.push(countryKeyValuePair)
   }
-
 
   return (
     <div style={{ width: '97%', margin: '.5%' }}>
       <Select
         className="selectable"
         placeholder="Select a country"
-        options={countryNamesList}
+        options={allCountriesKeyValuePair}
         isClearable={true}
         onChange={setSelectedCountry}
       />

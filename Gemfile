@@ -56,3 +56,11 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'fast_jsonapi'
+
+gem 'httparty', '~> 0.13.7'
+
+gem 'json', '~> 1.8', '>= 1.8.3'
+
+gem 'rest-client', '~> 1.8'
+
+gem 'countries'

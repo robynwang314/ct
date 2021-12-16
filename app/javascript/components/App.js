@@ -10,29 +10,42 @@ import Documents from "./Documents/documents.jsx"
 import "./app.scss"
 
 
+
+
 async function getCountries(setCountries) {
   useEffect(async () => {
     const response = await api.countries.index()
     try {
-      if (response?.data?.data) {
-        setCountries(response.data.data)
+      if (response) {
+        setCountries(response.data)
       }
     } catch {
       console.log(response)
     }
   }, [])
-
 }
+
 
 export const MainDocument = () => {
   const { country, countries, setCountries } = useCountryContext()
+  let countryNamesList = []
 
   getCountries(setCountries)
 
+  if (countries.length > 0) {
+    countryNamesList = countries.map((country) => {
+      return country.data.name
+    })
+    countryNamesList[17] = "United Kingdom"
+    countryNamesList[33] = "Moldova, Republic of"
+    countryNamesList.unshift("United States")
+    countryNamesList
+  }
+
   return (
     <>
-      <SearchBar countries={countries} />
-      <h1 style={{ marginBottom: '0px' }}>{country}</h1>
+      <SearchBar countryNamesList={countryNamesList} />
+      <h1 style={{ marginBottom: '0px' }}>{country ? country : countryNamesList[0]}</h1>
       <h4 style={{ marginTop: '0px' }}> Alert Status</h4>
       <ChartContainer />
       <Documents />
