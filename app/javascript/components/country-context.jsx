@@ -8,7 +8,7 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
   const [countries, setCountries] = useState([])
 
   function setSelectedCountry(e) {
-    setCountry(e?.label)
+    setCountry(e)
   }
 
   const context = useMemo(
