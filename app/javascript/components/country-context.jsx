@@ -23,15 +23,17 @@ async function getCountry(name) {
 export function CountrySelectionProvider({ children, defaultCountry = "United States" }) {
   const [country, setCountry] = useState(defaultCountry);
   const [countries, setCountries] = useState([])
+  const [stats, setStats] = useState({})
+  const [alertStatus, setAlertStatus] = useState({})
 
   async function setSelectedCountry(e) {
     setCountry(e)
     const name = string_parameterize(e.label)
-    // getCountry(name)
     const response = await api.countries.show(name)
 
     if (response) {
-      console.log(response)
+      setStats(response.data.stats.data[response.data.stats.data.length - 1])
+      setAlertStatus(response.data.travel_advisory.data)
     }
   }
 
@@ -46,8 +48,10 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
       setSelectedCountry,
       countries,
       setCountries,
+      stats,
+      alertStatus
     }),
-    [country, countries, setSelectedCountry]
+    [country, countries, setSelectedCountry, stats, alertStatus]
   );
 
   return <CountrySelectionContext.Provider value={context}>

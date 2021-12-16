@@ -17,11 +17,17 @@ module Api
       def show
         name = params[:name]
         c = ISO3166::Country.find_country_by_name(name.titleize)
+        alpha2 = c.alpha2
         alpha3 = c.alpha3
 
         countries = HTTParty.get('https://covid.ourworldindata.org/data/owid-covid-data.json')
-        render json: countries[alpha3]
-     
+      
+        @country_stats = countries[alpha3]
+        @travel_advisory = HTTParty.get('https://www.travel-advisory.info/api?countrycode='+alpha2)
+ 
+        response = {:stats => @country_stats, :travel_advisory => @travel_advisory}
+        render json: response
+
         # country = Country.find_by(slug: params[:slug])
         # render json: CountrySerializer.new(country, options).serialized_json
       end
