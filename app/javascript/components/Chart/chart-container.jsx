@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useCountryContext } from '../country-context.jsx'
 import "./charts.scss"
 import Graphs from './chart.jsx'
-
+import moment from 'moment';
 
 const ChartContainer = ({ }) => {
   const { todayStats, allTimeStats } = useCountryContext()
@@ -16,7 +16,7 @@ const ChartContainer = ({ }) => {
 
         <span style={{ marginTop: '4%', width: "100%" }}>
           Today's Statistics
-          <p style={{ fontWeight: '500', fontStyle: 'italic', margin: 0 }}>{todayStats?.date}</p>
+          <p style={{ fontWeight: '500', fontStyle: 'italic', margin: 0 }}>{moment(todayStats?.date).format("MMMM Do YYYY")}</p>
         </span>
         <div style={{ lineHeight: 4 }}>
           New Cases: {todayStats?.new_cases}

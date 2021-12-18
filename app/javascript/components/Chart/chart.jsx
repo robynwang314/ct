@@ -54,7 +54,7 @@ const Graphs = ({ }) => {
   for (let i = 0; i < allTimeStats.length; i++) {
     const countryStats = allTimeStats[i];
 
-    data['labels'][i] = moment(countryStats.date).format("MMM Do YY");
+    data['labels'][i] = moment(countryStats.date).format("MMM DD YY");
     data['datasets'][0].data[i] = countryStats.new_deaths;
     // data['datasets'][1].data[i] = countryStats.new_deaths;
     data['datasets'][1].data[i] = countryStats.new_cases;
