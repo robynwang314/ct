@@ -5,26 +5,25 @@ import api from '../api/api.js'
 export const CountrySelectionContext = createContext();
 
 
-async function getCountry(name) {
-  useEffect(async () => {
-    const response = await api.countries.show(name)
-    try {
-      if (response) {
-        console.log(response)
-      }
-    } catch {
-      console.log(response)
-    }
-  }, [])
-}
-
-
+// async function getCountry(name) {
+//   useEffect(async () => {
+//     const response = await api.countries.show(name)
+//     try {
+//       if (response) {
+//         console.log(response)
+//       }
+//     } catch {
+//       console.log(response)
+//     }
+//   }, [])
+// }
 
 export function CountrySelectionProvider({ children, defaultCountry = "United States" }) {
   const [country, setCountry] = useState(defaultCountry);
   const [countries, setCountries] = useState([])
-  const [stats, setStats] = useState({})
+  const [todayStats, setTodayStats] = useState({})
   const [alertStatus, setAlertStatus] = useState({})
+  const [allTimeStats, setAllTimeStats] = useState([])
 
   async function setSelectedCountry(e) {
     setCountry(e)
@@ -32,7 +31,8 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
     const response = await api.countries.show(name)
 
     if (response) {
-      setStats(response.data.stats.data[response.data.stats.data.length - 1])
+      setAllTimeStats(response.data.stats.data)
+      setTodayStats(response.data.stats.data[response.data.stats.data.length - 1])
       setAlertStatus(response.data.travel_advisory.data)
     }
   }
@@ -48,10 +48,11 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
       setSelectedCountry,
       countries,
       setCountries,
-      stats,
+      allTimeStats,
+      todayStats,
       alertStatus
     }),
-    [country, countries, setSelectedCountry, stats, alertStatus]
+    [country, countries, setSelectedCountry, allTimeStats, todayStats, alertStatus]
   );
 
   return <CountrySelectionContext.Provider value={context}>

@@ -45,7 +45,7 @@ export const MainDocument = () => {
   return (
     <>
       <SearchBar countryNamesList={countryNamesList} />
-      <h1 style={{ marginBottom: '0px' }}>{country ? country?.label ? country.label : country : "Select a Country"}</h1>
+      {/* <h1 style={{ marginBottom: '0px' }}>{country ? country?.label ? country.label : country : "Select a Country"}</h1> */}
       <h3 style={{ marginBottom: '0' }}> Alert Status:</h3> <p>{alertStatus[countryCode]?.advisory?.message}</p>
       <ChartContainer />
       <Documents />

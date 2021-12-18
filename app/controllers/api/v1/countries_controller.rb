@@ -34,9 +34,9 @@ module Api
 
       private
 
-      def options
-        @options ||= { include: %i[documents] }
-      end
+      # def options
+      #   @options ||= { include: %i[documents] }
+      # end
 
     end
   end
