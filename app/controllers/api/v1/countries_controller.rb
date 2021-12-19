@@ -25,6 +25,27 @@ module Api
         @country_stats = countries[alpha3]
         @travel_advisory = HTTParty.get('https://www.travel-advisory.info/api?countrycode='+alpha2)
  
+        visa = HTTParty.get('https://reopen.europa.eu/api/covid/v1/eutcdata/data/en/all/all')
+        json_visa = JSON.parse(visa) 
+        all_country_info = json_visa.select { |country| country["nutscode"] == "AUT" }
+        get_domain = all_country_info[0]["indicators"].select {|data| data["comment"] != ""}     
+    
+        list = []
+        get_domain.each_with_object({}) do |h| 
+          obj = { }
+          obj["domain_id"] =  h["domain_id"]
+          obj["domain_name"] = h["domain_name"]
+          obj["indicator_id"] = h["indicator_id"]
+          obj["indicator_name"] = h["indicator_name"]
+          obj["comment"] = h["comment"]
+
+          list << obj
+        end
+        
+    
+        puts JSON.pretty_generate(list) 
+        # puts get_domain.select {|info| info["indicator_id"] == 7002}
+
         response = {:stats => @country_stats, :travel_advisory => @travel_advisory}
         render json: response
 
