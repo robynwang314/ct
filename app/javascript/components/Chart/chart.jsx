@@ -48,15 +48,14 @@ const Graphs = ({ }) => {
     type: "bar",
   };
 
-  const cases = allTimeStats.map(cases => cases.new_cases ? cases.new_cases : 0).sort()
-  const maxCases = Math.max(...cases)
+  // const cases = allTimeStats.map(cases => cases.new_cases ? cases.new_cases : 0).sort()
+  // const maxCases = Math.max(...cases)
 
   for (let i = 0; i < allTimeStats.length; i++) {
     const countryStats = allTimeStats[i];
 
     data['labels'][i] = moment(countryStats.date).format("MMM DD YY");
     data['datasets'][0].data[i] = countryStats.new_deaths;
-    // data['datasets'][1].data[i] = countryStats.new_deaths;
     data['datasets'][1].data[i] = countryStats.new_cases;
   }
 

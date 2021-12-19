@@ -5,39 +5,45 @@ import "./charts.scss"
 import Graphs from './chart.jsx'
 import moment from 'moment';
 
-const ChartContainer = ({ }) => {
-  const { todayStats, allTimeStats } = useCountryContext()
+export const StatsContainer = ({ todayStats }) => {
+  return (
+    <div className="stats__container">
+      <span className="stats__today-header">
+        Today's Statistics
+        <p className="stats__daily-numbers todays-date">
+          {moment(todayStats?.date).format("MMMM Do YYYY")}
+        </p>
+      </span>
 
-  return todayStats && (
-    <div className="chart-container">
-      <Graphs />
-
-      <div style={{ minWidth: '30%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', fontWeight: 'bold', paddingLeft: '2.5%', borderLeft: 'solid 4px lightgrey' }}>
-
-        <span style={{ marginTop: '4%', width: "100%" }}>
-          Today's Statistics
-          <p style={{ fontWeight: '500', fontStyle: 'italic', margin: 0 }}>{moment(todayStats?.date).format("MMMM Do YYYY")}</p>
-        </span>
-        <div style={{ lineHeight: 4 }}>
-          New Cases: {todayStats?.new_cases}
-        </div>
-        <div style={{ lineHeight: 4 }}>
-          New Deaths: {todayStats?.new_deaths}
-        </div>
-        <div style={{ lineHeight: 4 }}>
-          Total Cases: {todayStats?.total_cases}
-        </div>
-        <div style={{ lineHeight: 4 }}>
-          Total Deaths: {todayStats?.total_deaths}
-        </div>
-
+      <div className="stats__daily-highlights">
+        New Cases: <span className="stats__daily-numbers"> {todayStats?.new_cases} </span>
+      </div>
+      <div className="stats__daily-highlights">
+        New Deaths: <span className="stats__daily-numbers"> {todayStats?.new_deaths} </span>
+      </div>
+      <div className="stats__daily-highlights">
+        Total Cases: <span className="stats__daily-numbers"> {todayStats?.total_cases} </span>
+      </div>
+      <div className="stats__daily-highlights">
+        Total Deaths: <span className="stats__daily-numbers"> {todayStats?.total_deaths} </span>
       </div>
     </div>
   )
 }
 
-ChartContainer.propTypes = {
+const ChartContainer = ({ }) => {
+  const { todayStats } = useCountryContext()
 
+  return todayStats && (
+    <div className="chart-container">
+      <Graphs />
+      <StatsContainer todayStats={todayStats} />
+    </div>
+  )
+}
+
+ChartContainer.propTypes = {
+  todayStats: PropTypes.any
 }
 
 export default ChartContainer

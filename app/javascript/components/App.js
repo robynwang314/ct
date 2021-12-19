@@ -23,7 +23,6 @@ async function getCountries(setCountries) {
   }, [])
 }
 
-
 export const MainDocument = () => {
   const { country, countries, setCountries, alertStatus } = useCountryContext()
   const countryCode = country?.value
@@ -39,14 +38,14 @@ export const MainDocument = () => {
     countryNamesList[17] = "United Kingdom"
     countryNamesList[33] = "Moldova, Republic of"
     countryNamesList.unshift("United States")
-    countryNamesList
+    countryNamesList.sort()
   }
 
   return (
     <>
       <SearchBar countryNamesList={countryNamesList} />
-      {/* <h1 style={{ marginBottom: '0px' }}>{country ? country?.label ? country.label : country : "Select a Country"}</h1> */}
-      <h3 style={{ marginBottom: '0' }}> Alert Status:</h3> <p>{alertStatus[countryCode]?.advisory?.message}</p>
+      <h2 style={{ marginBottom: '0px' }}>{country?.label ? country.label : "No Country selected"}</h2>
+      <h3 style={{ marginBottom: '0' }}> Alert Status:</h3> <p style={{ marginTop: '.35%' }}>alert{alertStatus[countryCode]?.advisory?.message}</p>
       <ChartContainer />
       <Documents />
     </>
