@@ -3,7 +3,10 @@ import PropTypes from 'prop-types'
 import { Nav, Tab, Row } from 'react-bootstrap'
 import HealthSituation from "../CountryInformation/health-situation.jsx"
 import Documents from "../CountryInformation/documents.jsx"
-
+import GeneralMeasures from "../CountryInformation/general-measures.jsx"
+import Mandates from "../CountryInformation/mandates.jsx"
+import Services from "../CountryInformation/open-establishments.jsx"
+import FurtherInformation from "../CountryInformation/further-info.jsx"
 
 export const TAB_ITEMS = ["Health Situation", "Travel Information", "General Measures", "Mandates", "Open Establishments", "Further Information"]
 
@@ -37,6 +40,22 @@ function NavBarTabs({ ...props }) {
           <Tab.Pane eventKey="1">
             {props.country?.label ? <Documents /> :
               <h2 style={{ fontWeight: 'bold', marginTop: "3%" }}>No travel information to show</h2>}
+          </Tab.Pane>
+          <Tab.Pane eventKey="2">
+            {props.country?.label ? <GeneralMeasures /> :
+              <h2 style={{ fontWeight: 'bold', marginTop: "3%" }}>No general measures to show</h2>}
+          </Tab.Pane>
+          <Tab.Pane eventKey="3">
+            {props.country?.label ? <Mandates /> :
+              <h2 style={{ fontWeight: 'bold', marginTop: "3%" }}>No mandate information to show</h2>}
+          </Tab.Pane>
+          <Tab.Pane eventKey="4">
+            {props.country?.label ? <Services /> :
+              <h2 style={{ fontWeight: 'bold', marginTop: "3%" }}>No service information to show</h2>}
+          </Tab.Pane>
+          <Tab.Pane eventKey="5">
+            {props.country?.label ? <FurtherInformation /> :
+              <h2 style={{ fontWeight: 'bold', marginTop: "3%" }}>No further information to show</h2>}
           </Tab.Pane>
         </Tab.Content>
       </Row>

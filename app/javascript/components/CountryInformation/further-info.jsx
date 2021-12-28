@@ -4,12 +4,12 @@ import { useCountryContext } from '../country-context.jsx'
 import { Accordion } from 'react-bootstrap'
 import "./documents.scss"
 
-const furtherInformation = ({ }) => {
+const FurtherInformation = ({ }) => {
   const { countryInformation } = useCountryContext()
   const [expanded, setExpanded] = React.useState(true)
   const allHealthInfo = countryInformation["Information"]
 
-  const parsefurtherInformation = allHealthInfo?.map((information, id) => {
+  const parseFurtherInformation = allHealthInfo?.map((information, id) => {
     return (
       <>
         <Accordion key={id} defaultActiveKey={id} flush>
@@ -27,14 +27,14 @@ const furtherInformation = ({ }) => {
       <br />
       <button onClick={() => setExpanded(!expanded)}>{expanded ? "collapse all" : "expand all"}</button>
       <div className="documents-container" style={{ textAlign: "left" }}>
-        {parsefurtherInformation}
+        {parseFurtherInformation}
       </div>
     </div>
   )
 }
 
-furtherInformation.propTypes = {
+FurtherInformation.propTypes = {
 
 }
 
-export default furtherInformation;
+export default FurtherInformation;
