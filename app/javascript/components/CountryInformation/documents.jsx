@@ -5,15 +5,15 @@ import { Accordion } from 'react-bootstrap'
 import "./documents.scss"
 
 const Documents = ({ }) => {
-  const [expanded, setExpanded] = React.useState(true)
   const { country, countryInformation } = useCountryContext()
-  const all_travel_info = countryInformation?.Travel
+  const [expanded, setExpanded] = React.useState(true)
+  const allTravelInfo = countryInformation?.Travel
 
   // const skip = [2004, 2005, 2006, 2007]
 
-  // const remove = all_travel_info?.filter(c => !skip.includes(c.indicator_id))
+  // const remove = allTravelInfo?.filter(c => !skip.includes(c.indicator_id))
 
-  const sorted = all_travel_info?.map((travel_indicator, id) => {
+  const parseTravelInfo = allTravelInfo?.map((travel_indicator, id) => {
     return (
       <>
         <Accordion defaultActiveKey={id} flush>
@@ -34,7 +34,7 @@ const Documents = ({ }) => {
       {/* {country?.label ? <h2 style={{ fontWeight: 'bold' }}>Travel Information</h2> : ''} */}
       <div className="documents-container" style={{ textAlign: "left" }}>
         {/* <Accordion defaultActiveKey="0" flush> */}
-        {sorted}
+        {parseTravelInfo}
         {/* </Accordion> */}
       </div>
     </div>

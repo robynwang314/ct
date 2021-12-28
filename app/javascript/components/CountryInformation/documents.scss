@@ -9,3 +9,15 @@
   text-align: center;
   margin: 1.25% 0 2% 45%;
 }
+
+li {
+  p {
+    margin-bottom: 0 !important
+  }
+}
+
+.list-group{
+  max-height: 45vh !important;
+  overflow-y: scroll !important;
+  border: solid 1px lightgray !important;
+}

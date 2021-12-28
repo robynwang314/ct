@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Nav, Tab, Row } from 'react-bootstrap'
-import Documents from "../Documents/documents.jsx"
+import HealthSituation from "../CountryInformation/health-situation.jsx"
+import Documents from "../CountryInformation/documents.jsx"
 
 
 export const TAB_ITEMS = ["Health Situation", "Travel Information", "General Measures", "Mandates", "Open Establishments", "Further Information"]
@@ -30,7 +31,8 @@ function NavBarTabs({ ...props }) {
       <Row>
         <Tab.Content>
           <Tab.Pane eventKey="0">
-            <div>hello</div>
+            {props.country?.label ? <HealthSituation /> :
+              <h2 style={{ fontWeight: 'bold', marginTop: "3%" }}>No health situation to show</h2>}
           </Tab.Pane>
           <Tab.Pane eventKey="1">
             {props.country?.label ? <Documents /> :
