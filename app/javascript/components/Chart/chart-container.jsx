@@ -9,7 +9,7 @@ export const StatsContainer = ({ todayStats }) => {
   return (
     <div className="stats__container">
       <span className="stats__today-header">
-        Today's Statistics
+        <h4 style={{ marginBottom: 0 }}>Today's Statistics</h4>
         <p className="stats__daily-numbers todays-date">
           {moment(todayStats?.date).format("MMMM Do YYYY")}
         </p>

@@ -38,12 +38,13 @@ module Api
           comment["indicator_id"] = c["indicator_id"]
           comment["indicator_name"] = c["indicator_name"]
           comment["comment"] = c["comment"]
+          comment["value"] = c["value"]
 
           all_comments_list << comment
         end
         
-        # puts JSON.pretty_generate(new_list) 
         @sorted_comments_list = all_comments_list.group_by { |d| d["domain_name"] }
+        # puts JSON.pretty_generate(@sorted_comments_list) 
 
         response = {:stats => @country_stats, :travel_advisory => @travel_advisory, :comments => @sorted_comments_list}
         render json: response

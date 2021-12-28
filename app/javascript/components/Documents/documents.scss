@@ -1,4 +1,11 @@
 .documents-container {
-  margin: 1%;
+  margin: 0% 3% 3%;
   padding: 1%
+}
+
+.comments-border:not(:first-child) {
+  border-top: dotted 12px lightgray;
+  width: 7%;
+  text-align: center;
+  margin: 1.25% 0 2% 45%;
 }
