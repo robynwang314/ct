@@ -9,6 +9,7 @@ import ChartContainer from './Chart/chart-container.jsx'
 import NavBarTabs from "./Nav/nav-bar-tabs.jsx"
 import "./app.scss"
 
+import NavigationButtons from "./Nav/navigation-buttons.jsx"
 
 async function getCountries(setCountries) {
   useEffect(async () => {

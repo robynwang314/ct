@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useCountryContext } from '../country-context.jsx'
 import { Accordion } from 'react-bootstrap'
+import NavigationButtons from "../Nav/navigation-buttons.jsx"
 import "./documents.scss"
 
 const Documents = ({ }) => {
@@ -31,6 +32,7 @@ const Documents = ({ }) => {
     <div>
       <br />
       <button onClick={() => setExpanded(!expanded)}>{expanded ? "collapse all" : "expand all"}</button>
+      {/* <NavigationButtons /> */}
       {/* {country?.label ? <h2 style={{ fontWeight: 'bold' }}>Travel Information</h2> : ''} */}
       <div className="documents-container" style={{ textAlign: "left" }}>
         {/* <Accordion defaultActiveKey="0" flush> */}
