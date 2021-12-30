@@ -31,7 +31,7 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
     const name = string_parameterize(e.label)
     const response = await api.countries.show(name)
 
-    if (response) {
+    if (response?.data) {
       setAllTimeStats(response.data.stats.data)
       setTodayStats(response.data.stats.data[response.data.stats.data.length - 1])
       setAlertStatus(response.data.travel_advisory.data)

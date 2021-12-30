@@ -1,7 +1,6 @@
 module Api
   module V1
     class CountriesController < ApplicationController
-
       include HTTParty
       require 'json'
 
