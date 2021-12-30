@@ -8,4 +8,19 @@ class Country < ApplicationRecord
     self.slug = name.parameterize
   end
 
+  def self.get_all_our_world_in_data
+    HTTParty.get('https://covid.ourworldindata.org/data/owid-covid-data.json')
+  end
+
+  def self.get_travel_advisory(alpha2)
+    HTTParty.get('https://www.travel-advisory.info/api?countrycode='+alpha2)
+  end
+
+  def self.get_all_reopenEU_data
+    Rails.cache.fetch("reopenEU/#{Time.zone.now}", expires_in: 24.hour) do
+      HTTParty.get('https://reopen.europa.eu/api/covid/v1/eutcdata/data/en/all/all').as_json
+    end
+  end
+
+
 end

@@ -20,13 +20,12 @@ module Api
         alpha2 = c.alpha2
         alpha3 = c.alpha3
 
-        countries = HTTParty.get('https://covid.ourworldindata.org/data/owid-covid-data.json')
-      
-        @country_stats = countries[alpha3]
-        @travel_advisory = HTTParty.get('https://www.travel-advisory.info/api?countrycode='+alpha2)
- 
-        visa = HTTParty.get('https://reopen.europa.eu/api/covid/v1/eutcdata/data/en/all/all')
-        json_visa = JSON.parse(visa) 
+        all_countries_data = Country.get_all_our_world_in_data
+        @country_stats = all_countries_data[alpha3]
+
+        @travel_advisory = Country.get_travel_advisory(alpha2)
+       
+        json_visa = JSON.parse(Country.get_all_reopenEU_data) 
         all_country_info = json_visa.select { |country| country["nutscode"] == alpha3 }
         get_domain = all_country_info[0]["indicators"].select {|data| data["comment"] != ""}     
     
@@ -52,12 +51,6 @@ module Api
         # country = Country.find_by(slug: params[:slug])
         # render json: CountrySerializer.new(country, options).serialized_json
       end
-
-      private
-
-      # def options
-      #   @options ||= { include: %i[documents] }
-      # end
 
     end
   end
