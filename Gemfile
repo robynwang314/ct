@@ -66,3 +66,5 @@ gem 'rest-client', '~> 1.8'
 gem 'countries'
 
 gem 'dalli'
+
+gem 'nokogiri'

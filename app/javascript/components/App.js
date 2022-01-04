@@ -27,7 +27,7 @@ async function getCountries(setCountries) {
 
 
 export const MainDocument = () => {
-  const { country, countries, setCountries, alertStatus } = useCountryContext()
+  const { country, countries, setCountries, alertStatus, data } = useCountryContext()
   const countryCode = country?.value
   // console.log(alertStatus[countryCode]?.advisory)
   let countryNamesList = []
@@ -53,6 +53,8 @@ export const MainDocument = () => {
       <ChartContainer />
       <br />
       <NavBarTabs country={country} />
+
+      <div style={{ color: "rgb(81, 82, 81)" }} dangerouslySetInnerHTML={{ __html: data?.important_info }} />
     </>
   )
 }

@@ -25,6 +25,7 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
   const [alertStatus, setAlertStatus] = useState({})
   const [allTimeStats, setAllTimeStats] = useState([])
   const [countryInformation, setCountryInformation] = useState({})
+  const [data, setData] = useState({})
 
   async function setSelectedCountry(e) {
     setCountry(e)
@@ -36,6 +37,7 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
       setTodayStats(response.data.stats.data[response.data.stats.data.length - 1])
       setAlertStatus(response.data.travel_advisory.data)
       setCountryInformation(response.data.comments)
+      setData(response.data.build_country_info)
     }
   }
 
@@ -53,9 +55,10 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
       allTimeStats,
       todayStats,
       alertStatus,
-      countryInformation
+      countryInformation,
+      data
     }),
-    [country, countries, setSelectedCountry, allTimeStats, todayStats, alertStatus, countryInformation]
+    [country, countries, setSelectedCountry, allTimeStats, todayStats, alertStatus, countryInformation, data]
   );
 
   return <CountrySelectionContext.Provider value={context}>
