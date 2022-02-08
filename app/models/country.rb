@@ -9,7 +9,7 @@ class Country < ApplicationRecord
   end
 
   def self.get_all_our_world_in_data
-    HTTParty.get('https://covid.ourworldindata.org/data/owid-covid-data.json')
+    HTTParty.get('https://covid.ourworldindata.org/data/owid-covid-data.json', format: :json)
   end
 
   def self.get_travel_advisory(alpha2)
