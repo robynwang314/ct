@@ -20,15 +20,13 @@ module Api
         alpha2 = c.alpha2
         alpha3 = c.alpha3
 
-       doc = HTTParty.get("https://travel.state.gov/content/travel/en/traveladvisories/COVID-19-Country-Specific-Information.html")
+        doc = HTTParty.get("https://travel.state.gov/content/travel/en/traveladvisories/COVID-19-Country-Specific-Information.html")
         @parse_page ||= Nokogiri::HTML(doc)
 
-        specific_country = HTTParty.get(get_country_embassy_link('Czech Republic'))
+        specific_country = HTTParty.get(get_country_embassy_link('Spain'))
         @parse_country ||= Nokogiri::HTML(specific_country)
 
-        build_country_info
-
-        # @build_country_info = build_country_info
+        @country_info_from_embassy = build_country_info
 
         all_countries_data = Country.get_all_our_world_in_data
         @country_stats = all_countries_data[alpha3]
@@ -54,7 +52,7 @@ module Api
         @sorted_comments_list = all_comments_list.group_by { |d| d["domain_name"] }
         # puts JSON.pretty_generate(@sorted_comments_list) 
 
-        response = {:stats => @country_stats, :travel_advisory => @travel_advisory, :comments => @sorted_comments_list }
+        response = {:stats => @country_stats, :travel_advisory => @travel_advisory, :country_info_from_embassy => @country_info_from_embassy, :comments => @sorted_comments_list }
         # , :build_country_info => @build_country_info}
         render json: response
 
@@ -89,6 +87,7 @@ module Api
           all_content
         end
         
+        all_embassy_info = {}
         lines_of_text = []
         important_info = []
         country_specific = []
@@ -129,6 +128,7 @@ module Api
         local_resources_index = lines_of_text.index { |x| x.titleize.include? ("Local Resources").titleize }
         other_links_index = lines_of_text.index { |x| x.titleize.include? ("Other Links").titleize }
 
+        list_of_indices = [country_specific_index, entry_exit_requirements_index, local_resources_index, other_links_index]
         # if s = x.includes... s[i] 
 
         # this one needs the +1 removed because header is included in line
@@ -194,7 +194,9 @@ module Api
             when (other_links_index + 1)..(lines_of_text.size - 3)
               other_links << x
             else
-              misc << x
+              if !(list_of_indices.include? i)
+                misc << x
+              end 
             end
           }
         end
@@ -211,15 +213,34 @@ module Api
         # other_links 
         # puts misc 
 
-        # all_embassy_info["important_info"] = important_info
-        # all_embassy_info["country_specific"] = country_specific
-        # all_embassy_info["testing_vaccine"] = important_info
-        # all_embassy_info["entry_exit"] = important_info
+        # # turn array into string
+        # important_info.join('\n') 
+        # country_specific.join('\n') 
+        # testing_vaccine.join('\n') 
+        # entry_exit.join('\n') 
+        # # movement_restrictions.join('\n') 
+        # # quarantine.join('\n') 
+        # # transportation.join('\n') 
+        # # fines.join('\n') 
+        # # consular_operations.join('\n') 
+        # local_resources.join('\n') 
+        # other_links.join('\n')  
+        # misc.join('\n')  
+
+
+        
+        all_embassy_info["important_info"] = important_info.join('') 
+        all_embassy_info["country_specific"] = country_specific.join('') 
+        all_embassy_info["testing_vaccine"] = testing_vaccine.join('') 
+        all_embassy_info["entry_exit"] = entry_exit.join('')  
+        all_embassy_info["local_resources"] = local_resources.join('') 
+        all_embassy_info["other_links"] = other_links.join('')  
+        all_embassy_info["misc"] = misc.join('')  
+
+         all_embassy_info
         # all_embassy_info["movement_restrictions"] = movement_restrictions
         # all_embassy_info["quarantine"] = important_info
-        puts "something"
       end
-      puts "something"
     end
   end
 end
