@@ -97,15 +97,16 @@ module Api
         lines_of_text
       end
 
-      def build_country_info
+      def array_of_text 
         entry_content = parse_country.at_css(".entry-content") 
         main = parse_country.at_css(".main") 
         main_content_wrapper = parse_country.at_css(".main-content-wrapper")
         
+        lines_of_text = []
         if entry_content
-          all_content = entry_content
+          lines_of_text = transform_entry_content_to_text(entry_content)
         elsif main
-          all_content = main
+          lines_of_text = transform_entry_content_to_text(main)
         elsif main_content_wrapper
           paragraphsection = main_content_wrapper.css(".paragraphsection")
           if paragraphsection
@@ -113,11 +114,69 @@ module Api
           else
             all_content = main_content_wrapper
           end
-          all_content
+          lines_of_text = transform_paragraphsections_to_text(all_content)
         end
+        lines_of_text
+      end
+
+      def section_indexes
+        indices = {}
+        lines_of_text = array_of_text
+        information_sections = [
+          "Country-Specific Information",
+          "COVID-19 Testing",
+          "COVID-19 Vaccine",
+          "Entry and Exit Requirements", 
+          "Movement Restrictions",
+          "Quarantine Information",
+          "Transportation Options",
+          "Fines for Non-Compliance",
+          "Consular Operations",
+          "Local Resources",
+          "Other Links"
+        ]
+
+        information_sections.each_with_index do |section, array_index|
+          if array_index == 0
+            section_index = lines_of_text.index { |x| x.titleize.include? ("Country-Specific Information").titleize }
+          else
+            section_indice = lines_of_text.each_index.select{|i| lines_of_text[i].gsub(/[^\001-\176]+/, "").titleize.include? (section).titleize }
+            section_index = section_indice.find {|x| x > indices[information_sections[array_index-1]]} unless information_sections[array_index-1].nil?
+            if information_sections[array_index-1].nil?
+              section_index = section_indice.find {|x| x > indices[information_sections[array_index-2]]}
+            end
+            section_index
+          end
+          indices[section] = section_index
+        end
+        indices
+      end
+
+
+      def build_country_info
+        entry_content = parse_country.at_css(".entry-content") 
+        main = parse_country.at_css(".main") 
+        main_content_wrapper = parse_country.at_css(".main-content-wrapper")
         
+        # lines_of_text = []
+        # if entry_content
+        #   lines_of_text = transform_entry_content_to_text(entry_content)
+        # elsif main
+        #   lines_of_text = transform_entry_content_to_text(main)
+        # elsif main_content_wrapper
+        #   paragraphsection = main_content_wrapper.css(".paragraphsection")
+        #   if paragraphsection
+        #     all_content = paragraphsection
+        #   else
+        #     all_content = main_content_wrapper
+        #   end
+        #   lines_of_text = transform_paragraphsections_to_text(all_content)
+        # end
+        
+        lines_of_text = array_of_text
+        main_section_index = section_indexes
+
         all_embassy_info = {}
-        lines_of_text = []
         important_info = []
         country_specific = []
         testing_vaccine = []
@@ -131,31 +190,27 @@ module Api
         other_links = []
         misc = []
         
-        if entry_content || main
-          lines_of_text = transform_entry_content_to_text(all_content)
-        end
 
-        if main_content_wrapper && paragraphsection 
-          lines_of_text = transform_paragraphsections_to_text(all_content)
-        end
-
-        country_specific_index = lines_of_text.index { |x| x.titleize.include? ("Country-Specific Information").titleize }
-        testing_index = lines_of_text.index { |x| x.titleize.include? ("COVID-19 Testing").titleize }
-        vaccine_index = lines_of_text.index { |x| x.titleize.include? ("COVID-19 Vaccine").titleize } 
-        movement_index = lines_of_text.index { |x| x.titleize.include? ("Movement Restrictions").titleize }
+        # country_specific_index = lines_of_text.index { |x| x.titleize.include? ("Country-Specific Information").titleize }
+        # testing_index = lines_of_text.index { |x| x.titleize.include? ("COVID-19 Testing").titleize }
+        # vaccine_index = lines_of_text.index { |x| x.titleize.include? ("COVID-19 Vaccine").titleize } 
         
-        entry_exit_requirements_indices = lines_of_text.each_index.select{|i| lines_of_text[i].titleize.include? ("Entry and Exit Requirements").titleize }
-        entry_exit_requirements_index = entry_exit_requirements_indices.find{ |i| i > vaccine_index && i < movement_index}
+        # movement_indices = lines_of_text.each_index.select{|i| lines_of_text[i].gsub(/[^\001-\176]+/, "").titleize.include? ("Movement Restrictions").titleize }
+        # movement_index = movement_indices.find { |x| x > vaccine_index }
         
-        quarantine_index = lines_of_text.index { |x| x.titleize.include? ("Quarantine Information").titleize }
-        transportation_index = lines_of_text.index { |x| x.titleize.include? ("Transportation Options").titleize }
-        fines_index = lines_of_text.index { |x| x.titleize.include? ("Fines for Non-Compliance").titleize }
-        consular_operations_index = lines_of_text.index { |x| x.titleize.include? ("Consular Operations").titleize }
-        local_resources_index = lines_of_text.index { |x| x.titleize.include? ("Local Resources").titleize }
-        other_links_index = lines_of_text.index { |x| x.titleize.include? ("Other Links").titleize }
 
-        list_of_indices = [country_specific_index, entry_exit_requirements_index, local_resources_index, other_links_index]
+        # entry_exit_requirements_indices = lines_of_text.each_index.select{|i| lines_of_text[i].gsub(/[^\001-\176]+/, "").titleize.include? ("Entry and Exit Requirements").titleize }
+        # entry_exit_requirements_index = entry_exit_requirements_indices.find{ |i| i > vaccine_index && i < movement_index}
+        
+        # quarantine_index = lines_of_text.index { |x| x.titleize.include? ("Quarantine Information").titleize }
+        # transportation_index = lines_of_text.index { |x| x.titleize.include? ("Transportation Options").titleize }
+        # fines_index = lines_of_text.index { |x| x.titleize.include? ("Fines for Non-Compliance").titleize }
+        # consular_operations_index = lines_of_text.index { |x| x.titleize.include? ("Consular Operations").titleize }
+        # local_resources_index = lines_of_text.index { |x| x.titleize.include? ("Local Resources").titleize }
+        # other_links_index = lines_of_text.index { |x| x.titleize.include? ("Other Links").titleize }
+
         # if s = x.includes... s[i] 
+
 
         # this one needs the +1 removed because header is included in line
         if main_content_wrapper && paragraphsection 
