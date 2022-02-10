@@ -141,9 +141,12 @@ module Api
 
         country_specific_index = lines_of_text.index { |x| x.titleize.include? ("Country-Specific Information").titleize }
         testing_index = lines_of_text.index { |x| x.titleize.include? ("COVID-19 Testing").titleize }
-        vaccine_index = lines_of_text.index { |x| x.titleize.include? ("COVID-19 Vaccine").titleize }
-        entry_exit_requirements_index = lines_of_text.index { |x| x.titleize.include? ("Entry and Exit Requirements").titleize }
+        vaccine_index = lines_of_text.index { |x| x.titleize.include? ("COVID-19 Vaccine").titleize } 
         movement_index = lines_of_text.index { |x| x.titleize.include? ("Movement Restrictions").titleize }
+        
+        entry_exit_requirements_indices = lines_of_text.each_index.select{|i| lines_of_text[i].titleize.include? ("Entry and Exit Requirements").titleize }
+        entry_exit_requirements_index = entry_exit_requirements_indices.find{ |i| i > vaccine_index && i < movement_index}
+        
         quarantine_index = lines_of_text.index { |x| x.titleize.include? ("Quarantine Information").titleize }
         transportation_index = lines_of_text.index { |x| x.titleize.include? ("Transportation Options").titleize }
         fines_index = lines_of_text.index { |x| x.titleize.include? ("Fines for Non-Compliance").titleize }
