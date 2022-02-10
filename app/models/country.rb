@@ -9,7 +9,11 @@ class Country < ApplicationRecord
   end
 
   def self.get_all_our_world_in_data
-    HTTParty.get('https://covid.ourworldindata.org/data/owid-covid-data.json', format: :json)
+      HTTParty.get('https://covid.ourworldindata.org/data/owid-covid-data.json', format: :json)
+    # Rails.cache.fetch("allOWID", expires_in: 24.hour) do
+    #   # is there a way to search by second key of nested object without knowing the first
+    #   HTTParty.get('https://covid.ourworldindata.org/data/owid-covid-data.json', format: :json).parsed_response
+    # end
   end
 
   def self.get_travel_advisory(alpha2)
