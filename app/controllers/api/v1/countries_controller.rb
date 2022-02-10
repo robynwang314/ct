@@ -15,27 +15,38 @@ module Api
       end
 
       def show
+        # get the selected country name
         name = params[:name]
+
+        # using the name, find the necessary country codes
         c = ISO3166::Country.find_country_by_name(name.titleize)
         alpha2 = c.alpha2
         alpha3 = c.alpha3
 
+        # get list of all countries from embassy's travel advisory site
         doc = HTTParty.get("https://travel.state.gov/content/travel/en/traveladvisories/COVID-19-Country-Specific-Information.html")
         @parse_page ||= Nokogiri::HTML(doc)
 
-        specific_country = HTTParty.get(get_country_embassy_link('Spain'))
+        # get travel advisory for a specific country
+        specific_country = HTTParty.get(get_country_embassy_link(name.titleize))
         @parse_country ||= Nokogiri::HTML(specific_country)
 
+        # scrape and build information 
         @country_info_from_embassy = build_country_info
 
+        # get country statistics from OWID
         all_countries_data = Country.get_all_our_world_in_data
         @country_stats = all_countries_data[alpha3]
+
+        # get travel alert status
         @travel_advisory = Country.get_travel_advisory(alpha2)
        
+        # country information from reOpenEu
         json_visa = JSON.parse(Country.get_all_reopenEU_data) 
         all_country_info = json_visa.select { |country| country["nutscode"] == alpha3 }
         get_domain = all_country_info[0]["indicators"].select {|data| data["comment"] != ""}     
     
+        # build relevant information from reOpenEu into object
         all_comments_list = []
         get_domain.each_with_object({}) do |c| 
           comment = { }
@@ -49,11 +60,14 @@ module Api
           all_comments_list << comment
         end
         
+        # group reOpenEu data by domain_name
         @sorted_comments_list = all_comments_list.group_by { |d| d["domain_name"] }
         # puts JSON.pretty_generate(@sorted_comments_list) 
 
+        # create new object containing all of above info
         response = {:stats => @country_stats, :travel_advisory => @travel_advisory, :country_info_from_embassy => @country_info_from_embassy, :comments => @sorted_comments_list }
-        # , :build_country_info => @build_country_info}
+
+        # return as json
         render json: response
 
         # country = Country.find_by(slug: params[:slug])
@@ -67,6 +81,21 @@ module Api
         parse_page.css("a:contains('#{str_name}')").first['href']
       end
 
+      def transform_entry_content_to_text(all_content)
+        lines_of_text = []
+        all_content.text.strip!.each_line do |content|
+          lines_of_text << content
+        end
+        lines_of_text
+      end
+
+      def transform_paragraphsections_to_text(all_content)
+        lines_of_text = []
+          all_content.each do |content|
+          lines_of_text << content.text.strip!
+        end
+        lines_of_text
+      end
 
       def build_country_info
         entry_content = parse_country.at_css(".entry-content") 
@@ -102,18 +131,12 @@ module Api
         other_links = []
         misc = []
         
-        # all_content.text.strip!
-
         if entry_content || main
-          all_content.text.strip!.each_line do |content|
-            lines_of_text << content
-          end
+          lines_of_text = transform_entry_content_to_text(all_content)
         end
 
         if main_content_wrapper && paragraphsection 
-          all_content.each do |content|
-            lines_of_text << content.text.strip!
-          end
+          lines_of_text = transform_paragraphsections_to_text(all_content)
         end
 
         country_specific_index = lines_of_text.index { |x| x.titleize.include? ("Country-Specific Information").titleize }
@@ -145,16 +168,6 @@ module Api
               testing_vaccine << x
             when (entry_exit_requirements_index)..(movement_index - 1)
               entry_exit << x
-            # when (movement_index)..(quarantine_index - 1)
-            #   movement_restrictions << x
-            # when (quarantine_index)..(transportation_index - 1)
-            #   quarantine << x
-            # when (transportation_index + 1)..(fines_index - 1)
-            #   transportation << x
-            # when (fines_index + 1)..(consular_operations_index - 1)
-            #   fines << x
-            # when (consular_operations_index + 1)..(local_resources_index - 1)
-            #   consular_operations << x
             when (local_resources_index)..(other_links_index - 1)
               local_resources << x
             when (other_links_index)..(lines_of_text.size)
@@ -179,16 +192,6 @@ module Api
               testing_vaccine << x
             when (entry_exit_requirements_index + 1)..(movement_index - 1)
               entry_exit << x
-            # when (movement_index + 1)..(quarantine_index - 1)
-            #   movement_restrictions << x
-            # when (quarantine_index + 1)..(transportation_index - 1)
-            #   quarantine << x
-            # when (transportation_index + 1)..(fines_index - 1)
-            #   transportation << x
-            # when (fines_index + 1)..(consular_operations_index - 1)
-            #   fines << x
-            # when (consular_operations_index + 1)..(local_resources_index - 1)
-            #   consular_operations << x
             when (local_resources_index + 1)..(other_links_index - 1)
               local_resources << x
             when (other_links_index + 1)..(lines_of_text.size - 3)
@@ -200,35 +203,14 @@ module Api
             end
           }
         end
-        # puts important_info 
-        # country_specific 
-        # testing_vaccine 
-        # entry_exit
-        # movement_restrictions 
-        # quarantine 
-        # transportation 
-        # fines 
-        # consular_operations
-        # local_resources
-        # other_links 
-        # puts misc 
 
         # # turn array into string
-        # important_info.join('\n') 
-        # country_specific.join('\n') 
-        # testing_vaccine.join('\n') 
-        # entry_exit.join('\n') 
-        # # movement_restrictions.join('\n') 
-        # # quarantine.join('\n') 
-        # # transportation.join('\n') 
-        # # fines.join('\n') 
-        # # consular_operations.join('\n') 
-        # local_resources.join('\n') 
-        # other_links.join('\n')  
-        # misc.join('\n')  
-
-
-        
+        # movement_restrictions.join('\n') 
+        # quarantine.join('\n') 
+        # transportation.join('\n') 
+        # fines.join('\n') 
+        # consular_operations.join('\n') 
+  
         all_embassy_info["important_info"] = important_info.join('') 
         all_embassy_info["country_specific"] = country_specific.join('') 
         all_embassy_info["testing_vaccine"] = testing_vaccine.join('') 
@@ -237,9 +219,10 @@ module Api
         all_embassy_info["other_links"] = other_links.join('')  
         all_embassy_info["misc"] = misc.join('')  
 
-         all_embassy_info
         # all_embassy_info["movement_restrictions"] = movement_restrictions
         # all_embassy_info["quarantine"] = important_info
+        
+        all_embassy_info
       end
     end
   end
