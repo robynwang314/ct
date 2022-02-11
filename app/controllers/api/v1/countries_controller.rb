@@ -4,7 +4,7 @@ module Api
       include HTTParty
       require 'json'
 
-      attr_accessor :parse_page, :parse_country, :name, :paragraphsection_exists
+      attr_accessor :name, :country, :alpha2, :alpha3, :parse_page, :parse_country, :paragraphsection_exists
 
       def index
         countries = ISO3166::Country.find_all_countries_by_region('Europe')
@@ -14,18 +14,17 @@ module Api
         # render json: CountrySerializer.new(countries, options).serialized_json
       end
 
-      def show
-        # get the selected country name
-        name = params[:name]
-
+      def country_codes(name)
         # using the name, find the necessary country codes
-        c = ISO3166::Country.find_country_by_name(name.titleize)
-        alpha2 = c.alpha2
-        alpha3 = c.alpha3
+        @country = ISO3166::Country.find_country_by_name(name.titleize)
+        @alpha2 = country.alpha2
+        @alpha3 = country.alpha3
+      end
 
-        # get list of all countries from embassy's travel advisory site
-        doc = HTTParty.get("https://travel.state.gov/content/travel/en/traveladvisories/COVID-19-Country-Specific-Information.html")
-        @parse_page ||= Nokogiri::HTML(doc)
+      def embassy_information
+         # get list of all countries from embassy's travel advisory site
+        document = HTTParty.get("https://travel.state.gov/content/travel/en/traveladvisories/COVID-19-Country-Specific-Information.html")
+        @parse_page ||= Nokogiri::HTML(document)
 
         # get travel advisory for a specific country
         specific_country = HTTParty.get(get_country_embassy_link(name.titleize))
@@ -33,15 +32,20 @@ module Api
 
         # scrape and build information 
         @country_info_from_embassy = build_country_info
+      end
 
+      def owid_stats
         # get country statistics from OWID
         all_countries_data = Country.get_all_our_world_in_data
         @country_stats = all_countries_data[alpha3]
+      end
 
-        # get travel alert status
+      def travel_advisory
         @travel_advisory = Country.get_travel_advisory(alpha2)
-       
-        # country information from reOpenEu
+      end
+
+      def reopenEU
+         # country information from reOpenEu
         json_visa = JSON.parse(Country.get_all_reopenEU_data) 
         all_country_info = json_visa.select { |country| country["nutscode"] == alpha3 }
         get_domain = all_country_info[0]["indicators"].select {|data| data["comment"] != ""}     
@@ -62,6 +66,18 @@ module Api
         
         # group reOpenEu data by domain_name
         @sorted_comments_list = all_comments_list.group_by { |d| d["domain_name"] }
+      end
+
+      def show
+        # get the selected country name
+        @name = params[:name]
+
+        country_codes(name)
+        embassy_information
+        owid_stats
+        travel_advisory
+        reopenEU
+     
         # puts JSON.pretty_generate(@sorted_comments_list) 
 
         # create new object containing all of above info
