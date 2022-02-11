@@ -5,8 +5,8 @@ import { ListGroup, Badge } from 'react-bootstrap'
 import "./documents.scss"
 
 const HealthSituation = ({ }) => {
-  const { countryInformation } = useCountryContext()
-  const allHealthInfo = countryInformation["Health Situation"]
+  const { reopenEUComments } = useCountryContext()
+  const allHealthInfo = reopenEUComments["Health Situation"]
 
   const parseHealthSituationNumbers = allHealthInfo?.filter((data) => data.value !== "").map((situation, id) => {
     return (

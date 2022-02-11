@@ -27,7 +27,7 @@ ChartJS.register(
 
 
 const Graphs = ({ }) => {
-  const { allTimeStats } = useCountryContext()
+  const { allTimeOWIDstats } = useCountryContext()
 
   let data = [];
   data['labels'] = [];
@@ -48,11 +48,11 @@ const Graphs = ({ }) => {
     type: "bar",
   };
 
-  // const cases = allTimeStats.map(cases => cases.new_cases ? cases.new_cases : 0).sort()
+  // const cases = allTimeOWIDstats.map(cases => cases.new_cases ? cases.new_cases : 0).sort()
   // const maxCases = Math.max(...cases)
 
-  for (let i = 0; i < allTimeStats.length; i++) {
-    const countryStats = allTimeStats[i];
+  for (let i = 0; i < allTimeOWIDstats.length; i++) {
+    const countryStats = allTimeOWIDstats[i];
 
     data['labels'][i] = moment(countryStats.date).format("MMM DD YY");
     data['datasets'][0].data[i] = countryStats.new_deaths;

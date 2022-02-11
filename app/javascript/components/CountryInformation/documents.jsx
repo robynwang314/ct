@@ -6,9 +6,9 @@ import NavigationButtons from "../Nav/navigation-buttons.jsx"
 import "./documents.scss"
 
 const Documents = ({ }) => {
-  const { country, countryInformation } = useCountryContext()
+  const { country, reopenEUComments } = useCountryContext()
   const [expanded, setExpanded] = React.useState(true)
-  const allTravelInfo = countryInformation?.Travel
+  const allTravelInfo = reopenEUComments?.Travel
 
   // const skip = [2004, 2005, 2006, 2007]
 

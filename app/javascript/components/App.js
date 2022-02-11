@@ -24,21 +24,6 @@ async function getCountries(setCountries) {
   }, [])
 }
 
-// sample function
-async function getAlert() {
-  useEffect(async () => {
-    const response = await api.countries.travel_advisory("spain")
-    try {
-      if (response) {
-        console.log(response.data.data)
-      }
-    } catch {
-      console.log(response)
-    }
-  }, [])
-}
-
-
 export const MainDocument = () => {
   const { country, countries, setCountries, alertStatus, data } = useCountryContext()
   const countryCode = country?.value
@@ -46,8 +31,6 @@ export const MainDocument = () => {
   let countryNamesList = []
 
   getCountries(setCountries)
-
-  getAlert()
 
   if (countries.length > 0) {
     countryNamesList = countries.map((country) => {

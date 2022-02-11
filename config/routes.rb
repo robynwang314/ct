@@ -9,9 +9,9 @@ Rails.application.routes.draw do
       resources :countries, param: :name, only: [:index, :show] do
         collection do 
           get :travel_advisory
-          get :owid_stats, param: :name
-          get :reopenEU, param: :name
-          get :embassy_information, param: :name
+          get :owid_stats
+          get :reopenEU
+          get :embassy_information
         end
 
       end

@@ -16,15 +16,15 @@ module Api
 
       def country_codes(name)
         # using the name, find the necessary country codes
-        @country = ISO3166::Country.find_country_by_name(name.titleize)
-        @alpha2 = country.alpha2
-        @alpha3 = country.alpha3
+        @c = ISO3166::Country.find_country_by_name(name.titleize)
+        @alpha2 = @c.alpha2
+        @alpha3 = @c.alpha3
       end
 
       def embassy_information
         name = name_params
         country_codes(name)
-
+    
          # get list of all countries from embassy's travel advisory site
         document = HTTParty.get("https://travel.state.gov/content/travel/en/traveladvisories/COVID-19-Country-Specific-Information.html")
         @parse_page ||= Nokogiri::HTML(document)
@@ -35,9 +35,7 @@ module Api
 
         # scrape and build information 
         @country_info_from_embassy = build_country_info
-
-        response =  {:country_info_from_embassy => @country_info_from_embassy}
-        render json: response
+        # render json: @country_info_from_embassy
       end
 
       def owid_stats
@@ -45,18 +43,16 @@ module Api
 
         # get country statistics from OWID
         all_countries_data = Country.get_all_our_world_in_data
+        
         @country_stats = all_countries_data[alpha3]
-
-        response =  {:stats => @country_stats}
-        render json: response
+        # render json: @country_stats
       end
 
       def travel_advisory
         country_codes(name_params)
 
         @travel_advisory = Country.get_travel_advisory(alpha2)
-        response =  @travel_advisory
-        render json: response
+        # render json: @travel_advisory
       end
 
       def reopenEU
@@ -83,32 +79,31 @@ module Api
         
         # group reOpenEu data by domain_name
         @sorted_comments_list = all_comments_list.group_by { |d| d["domain_name"] }
-        
-        response =  {:comments => @sorted_comments_list}
-        render json: response
+
+        # render json: @sorted_comments_list
       end
 
-      # def show
-      #   # get the selected country name
-      #   @name = name_params
+      def show
+        # get the selected country name
+        @name = name_params
 
-      #   country_codes(name)
-      #   embassy_information
-      #   owid_stats
-      #   travel_advisory
-      #   reopenEU
+        country_codes(name)
+        embassy_information
+        owid_stats
+        travel_advisory
+        reopenEU
      
-      #   # puts JSON.pretty_generate(@sorted_comments_list) 
+        # puts JSON.pretty_generate(@sorted_comments_list) 
 
-      #   # create new object containing all of above info
-      #   response = {:stats => @country_stats, :travel_advisory => @travel_advisory, :country_info_from_embassy => @country_info_from_embassy, :comments => @sorted_comments_list }
+        # create new object containing all of above info
+        response = {:stats => @country_stats, :travel_advisory => @travel_advisory, :country_info_from_embassy => @country_info_from_embassy, :comments => @sorted_comments_list }
 
-      #   # return as json
-      #   render json: response
+        # return as json
+        render json: response
 
-      #   # country = Country.find_by(slug: params[:slug])
-      #   # render json: CountrySerializer.new(country, options).serialized_json
-      # end
+        # country = Country.find_by(slug: params[:slug])
+        # render json: CountrySerializer.new(country, options).serialized_json
+      end
 
       private
 

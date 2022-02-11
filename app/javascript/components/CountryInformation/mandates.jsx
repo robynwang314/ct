@@ -5,9 +5,9 @@ import { Accordion } from 'react-bootstrap'
 import "./documents.scss"
 
 const Mandates = ({ }) => {
-  const { countryInformation } = useCountryContext()
+  const { reopenEUComments } = useCountryContext()
   const [expanded, setExpanded] = React.useState(true)
-  const allHealthInfo = countryInformation["Health and Safety"]
+  const allHealthInfo = reopenEUComments["Health and Safety"]
 
   const parseMandates = allHealthInfo?.map((mandate, id) => {
     return (
