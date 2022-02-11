@@ -10,6 +10,18 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: data_sources; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.data_sources AS ENUM (
+    'OWID',
+    'Advisory',
+    'ReopenEU',
+    'Embassy'
+);
+
+
+--
 -- Name: document_types; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -98,6 +110,38 @@ ALTER SEQUENCE public.countries_id_seq OWNED BY public.countries.id;
 
 
 --
+-- Name: covid_raw_data; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.covid_raw_data (
+    id bigint NOT NULL,
+    data_source public.data_sources,
+    raw_json jsonb DEFAULT '{}'::jsonb,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: covid_raw_data_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.covid_raw_data_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: covid_raw_data_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.covid_raw_data_id_seq OWNED BY public.covid_raw_data.id;
+
+
+--
 -- Name: documents; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -158,6 +202,13 @@ ALTER TABLE ONLY public.countries ALTER COLUMN id SET DEFAULT nextval('public.co
 
 
 --
+-- Name: covid_raw_data id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.covid_raw_data ALTER COLUMN id SET DEFAULT nextval('public.covid_raw_data_id_seq'::regclass);
+
+
+--
 -- Name: documents id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -186,6 +237,14 @@ ALTER TABLE ONLY public.charts
 
 ALTER TABLE ONLY public.countries
     ADD CONSTRAINT countries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: covid_raw_data covid_raw_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.covid_raw_data
+    ADD CONSTRAINT covid_raw_data_pkey PRIMARY KEY (id);
 
 
 --
@@ -243,6 +302,7 @@ SET search_path TO "$user", public;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20211207223537'),
 ('20211207225611'),
-('20211207232901');
+('20211207232901'),
+('20220211200126');
 
 

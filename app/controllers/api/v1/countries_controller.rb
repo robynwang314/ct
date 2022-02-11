@@ -39,11 +39,13 @@ module Api
       end
 
       def owid_stats
+        # will need to do below command with sidekiq
+        # AddRawDataCommands::AddOwidCommand.new().execute 
+
         country_codes(name_params)
 
         # get country statistics from OWID
         all_countries_data = Country.get_all_our_world_in_data
-        
         @country_stats = all_countries_data[alpha3]
         # render json: @country_stats
       end
@@ -57,30 +59,11 @@ module Api
 
       def reopenEU
         country_codes(name_params)
+        country_code = alpha3
 
-         # country information from reOpenEu
-        json_visa = JSON.parse(Country.get_all_reopenEU_data) 
-        all_country_info = json_visa.select { |country| country["nutscode"] == alpha3 }
-        get_domain = all_country_info[0]["indicators"].select {|data| data["comment"] != ""}     
-    
-        # build relevant information from reOpenEu into object
-        all_comments_list = []
-        get_domain.each_with_object({}) do |c| 
-          comment = { }
-          comment["domain_id"] =  c["domain_id"]
-          comment["domain_name"] = c["domain_name"]
-          comment["indicator_id"] = c["indicator_id"]
-          comment["indicator_name"] = c["indicator_name"]
-          comment["comment"] = c["comment"]
-          comment["value"] = c["value"]
+        reopen_EU_data = AddRawDataCommands::AddReopeneuCommand.new(alpha3: alpha3 ).execute 
 
-          all_comments_list << comment
-        end
-        
-        # group reOpenEu data by domain_name
-        @sorted_comments_list = all_comments_list.group_by { |d| d["domain_name"] }
-
-        # render json: @sorted_comments_list
+        @sorted_comments_list = reopen_EU_data
       end
 
       def show
