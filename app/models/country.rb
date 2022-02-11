@@ -1,4 +1,25 @@
 class Country < ApplicationRecord
+  INFORMATION_SECTIONS = [  "Country-Specific Information",
+                            "COVID-19 Testing",
+                            "COVID-19 Vaccine",
+                            "Entry and Exit Requirements", 
+                            "Movement Restrictions",
+                            "Quarantine Information",
+                            "Transportation Options",
+                            "Fines for Non-Compliance",
+                            "Consular Operations",
+                            "Local Resources",
+                            "Other Links"
+                          ].freeze
+
+  SUB_SECTIONS = [  "Country-Specific Information",
+                    "COVID-19 Testing",
+                    "COVID-19 Vaccine",
+                    "Entry and Exit Requirements", 
+                    "Local Resources",
+                    "Other Links"
+                  ].freeze
+
   has_many :charts
   has_many :documents
 

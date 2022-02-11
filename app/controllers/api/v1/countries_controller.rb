@@ -122,29 +122,8 @@ module Api
       end
 
       def section_indexes(all_content_text)
-        information_sections = [
-          "Country-Specific Information",
-          "COVID-19 Testing",
-          "COVID-19 Vaccine",
-          "Entry and Exit Requirements", 
-          "Movement Restrictions",
-          "Quarantine Information",
-          "Transportation Options",
-          "Fines for Non-Compliance",
-          "Consular Operations",
-          "Local Resources",
-          "Other Links"
-        ]
-
-        sub_section_keys = [  
-          "Country-Specific Information",
-          "COVID-19 Testing",
-          "COVID-19 Vaccine",
-          "Entry and Exit Requirements", 
-          "Local Resources",
-          "Other Links"
-        ]
-
+        information_sections = Country::INFORMATION_SECTIONS
+        sub_section_keys = Country::SUB_SECTIONS
         indices = {}
 
         information_sections.each_with_index do |section, array_index|
