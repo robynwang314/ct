@@ -4,7 +4,7 @@ module Api
       include HTTParty
       require 'json'
 
-      attr_accessor :parse_page, :parse_country, :name
+      attr_accessor :parse_page, :parse_country, :name, :paragraphsection_exists
 
       def index
         countries = ISO3166::Country.find_all_countries_by_region('Europe')
@@ -82,46 +82,46 @@ module Api
       end
 
       def transform_entry_content_to_text(all_content)
-        lines_of_text = []
+        text_content = []
         all_content.text.strip!.each_line do |content|
-          lines_of_text << content
+          text_content << content
         end
-        lines_of_text
+        text_content
       end
 
       def transform_paragraphsections_to_text(all_content)
-        lines_of_text = []
+        text_content = []
           all_content.each do |content|
-          lines_of_text << content.text.strip!
+          text_content << content.text.gsub("By U.S. Mission Germany", "").strip!
         end
-        lines_of_text
+        text_content
       end
 
-      def array_of_text 
+      def all_content
         entry_content = parse_country.at_css(".entry-content") 
         main = parse_country.at_css(".main") 
         main_content_wrapper = parse_country.at_css(".main-content-wrapper")
         
-        lines_of_text = []
+        all_content_text = []
+
         if entry_content
-          lines_of_text = transform_entry_content_to_text(entry_content)
+          all_content_text = transform_entry_content_to_text(entry_content)
         elsif main
-          lines_of_text = transform_entry_content_to_text(main)
+          all_content_text = transform_entry_content_to_text(main)
         elsif main_content_wrapper
-          paragraphsection = main_content_wrapper.css(".paragraphsection")
-          if paragraphsection
-            all_content = paragraphsection
+          @paragraphsection_exists = !main_content_wrapper.css(".paragraphsection").empty?
+          
+          if paragraphsection_exists
+            all_content = main_content_wrapper.css(".paragraphsection")
           else
             all_content = main_content_wrapper
           end
-          lines_of_text = transform_paragraphsections_to_text(all_content)
+          all_content_text = transform_paragraphsections_to_text(all_content)
         end
-        lines_of_text
+        all_content_text
       end
 
-      def section_indexes
-        indices = {}
-        lines_of_text = array_of_text
+      def section_indexes(all_content_text)
         information_sections = [
           "Country-Specific Information",
           "COVID-19 Testing",
@@ -136,139 +136,79 @@ module Api
           "Other Links"
         ]
 
+        sub_section_keys = [  
+          "Country-Specific Information",
+          "COVID-19 Testing",
+          "COVID-19 Vaccine",
+          "Entry and Exit Requirements", 
+          "Local Resources",
+          "Other Links"
+        ]
+
+        indices = {}
+
         information_sections.each_with_index do |section, array_index|
-          if array_index == 0
-            section_index = lines_of_text.index { |x| x.titleize.include? ("Country-Specific Information").titleize }
+          if array_index == 0 && paragraphsection_exists
+            section_index = all_content_text.index { |x| x.titleize.include? ("Country-Specific Information").titleize }
+          elsif array_index == 0
+            section_index = all_content_text.index { |x| x.titleize.include? ("Country-Specific Information").titleize } + 1 
           else
-            section_indice = lines_of_text.each_index.select{|i| lines_of_text[i].gsub(/[^\001-\176]+/, "").titleize.include? (section).titleize }
+            section_indice = all_content_text.each_index.select{|i| all_content_text[i].gsub(/[^\001-\176]+/, "").titleize.include? (section).titleize }
             section_index = section_indice.find {|x| x > indices[information_sections[array_index-1]]} unless information_sections[array_index-1].nil?
             if information_sections[array_index-1].nil?
               section_index = section_indice.find {|x| x > indices[information_sections[array_index-2]]}
             end
+
+            if paragraphsection_exists || !(sub_section_keys.include? section)
+              section_index
+            else 
+              section_index += 1
+            end
             section_index
           end
           indices[section] = section_index
-        end
+        end        
         indices
       end
 
-
       def build_country_info
-        entry_content = parse_country.at_css(".entry-content") 
-        main = parse_country.at_css(".main") 
-        main_content_wrapper = parse_country.at_css(".main-content-wrapper")
-        
-        # lines_of_text = []
-        # if entry_content
-        #   lines_of_text = transform_entry_content_to_text(entry_content)
-        # elsif main
-        #   lines_of_text = transform_entry_content_to_text(main)
-        # elsif main_content_wrapper
-        #   paragraphsection = main_content_wrapper.css(".paragraphsection")
-        #   if paragraphsection
-        #     all_content = paragraphsection
-        #   else
-        #     all_content = main_content_wrapper
-        #   end
-        #   lines_of_text = transform_paragraphsections_to_text(all_content)
-        # end
-        
-        lines_of_text = array_of_text
-        main_section_index = section_indexes
+        all_content_text = all_content
+        main_section_index = section_indexes(all_content_text)
 
-        all_embassy_info = {}
         important_info = []
         country_specific = []
         testing_vaccine = []
         entry_exit = []
-        movement_restrictions = [] 
-        quarantine = []
-        transportation = []
-        fines = []
-        consular_operations = []
         local_resources = []
         other_links = []
         misc = []
-        
-
-        # country_specific_index = lines_of_text.index { |x| x.titleize.include? ("Country-Specific Information").titleize }
-        # testing_index = lines_of_text.index { |x| x.titleize.include? ("COVID-19 Testing").titleize }
-        # vaccine_index = lines_of_text.index { |x| x.titleize.include? ("COVID-19 Vaccine").titleize } 
-        
-        # movement_indices = lines_of_text.each_index.select{|i| lines_of_text[i].gsub(/[^\001-\176]+/, "").titleize.include? ("Movement Restrictions").titleize }
-        # movement_index = movement_indices.find { |x| x > vaccine_index }
-        
-
-        # entry_exit_requirements_indices = lines_of_text.each_index.select{|i| lines_of_text[i].gsub(/[^\001-\176]+/, "").titleize.include? ("Entry and Exit Requirements").titleize }
-        # entry_exit_requirements_index = entry_exit_requirements_indices.find{ |i| i > vaccine_index && i < movement_index}
-        
-        # quarantine_index = lines_of_text.index { |x| x.titleize.include? ("Quarantine Information").titleize }
-        # transportation_index = lines_of_text.index { |x| x.titleize.include? ("Transportation Options").titleize }
-        # fines_index = lines_of_text.index { |x| x.titleize.include? ("Fines for Non-Compliance").titleize }
-        # consular_operations_index = lines_of_text.index { |x| x.titleize.include? ("Consular Operations").titleize }
-        # local_resources_index = lines_of_text.index { |x| x.titleize.include? ("Local Resources").titleize }
-        # other_links_index = lines_of_text.index { |x| x.titleize.include? ("Other Links").titleize }
-
-        # if s = x.includes... s[i] 
-
-
-        # this one needs the +1 removed because header is included in line
-        if main_content_wrapper && paragraphsection 
-          lines_of_text.each_with_index{|x, i| 
-            case i
-            # important inforamtion section
-            when 0..(country_specific_index - 1)
-              important_info << x
-            # country specific section
-            when (country_specific_index)..(testing_index -1) 
-              country_specific << x
-            when (testing_index)..(entry_exit_requirements_index - 1)
-              testing_vaccine << x
-            when (entry_exit_requirements_index)..(movement_index - 1)
-              entry_exit << x
-            when (local_resources_index)..(other_links_index - 1)
-              local_resources << x
-            when (other_links_index)..(lines_of_text.size)
-              other_links << x
-            else
+       
+        all_content_text.each_with_index{|x, i| 
+          case i
+          # important inforamtion section
+          when 0...(main_section_index["Country-Specific Information"])
+            important_info << x
+          # country specific section
+          when (main_section_index["Country-Specific Information"])...(main_section_index["COVID-19 Testing"]) 
+            country_specific << x
+          # not addiing +1 because need header
+          when (main_section_index["COVID-19 Testing"])...(main_section_index["Entry and Exit Requirements"])
+            testing_vaccine << x
+          when (main_section_index["Entry and Exit Requirements"])...(main_section_index["Movement Restrictions"])
+            entry_exit << x
+          when (main_section_index["Local Resources"])...(main_section_index["Other Links"])
+            local_resources << x
+          when (main_section_index["Other Links"])..(all_content_text.size - 3)
+            other_links << x
+          else
+            if !(main_section_index.keys.include? i)
               misc << x
             end
-          }
-        end
-       
-        if entry_content || main
-          lines_of_text.each_with_index{|x, i| 
-            case i
-            # important inforamtion section
-            when 0..(country_specific_index - 1)
-              important_info << x
-            # country specific section
-            when (country_specific_index + 1)..(testing_index -1) 
-              country_specific << x
-            # not addiing +1 because need header
-            when (testing_index)..(entry_exit_requirements_index - 1)
-              testing_vaccine << x
-            when (entry_exit_requirements_index + 1)..(movement_index - 1)
-              entry_exit << x
-            when (local_resources_index + 1)..(other_links_index - 1)
-              local_resources << x
-            when (other_links_index + 1)..(lines_of_text.size - 3)
-              other_links << x
-            else
-              if !(list_of_indices.include? i)
-                misc << x
-              end 
-            end
-          }
-        end
+          end
+        }
 
-        # # turn array into string
-        # movement_restrictions.join('\n') 
-        # quarantine.join('\n') 
-        # transportation.join('\n') 
-        # fines.join('\n') 
-        # consular_operations.join('\n') 
-  
+        all_embassy_info = {}
+
         all_embassy_info["important_info"] = important_info.join('') 
         all_embassy_info["country_specific"] = country_specific.join('') 
         all_embassy_info["testing_vaccine"] = testing_vaccine.join('') 
@@ -276,10 +216,7 @@ module Api
         all_embassy_info["local_resources"] = local_resources.join('') 
         all_embassy_info["other_links"] = other_links.join('')  
         all_embassy_info["misc"] = misc.join('')  
-
-        # all_embassy_info["movement_restrictions"] = movement_restrictions
-        # all_embassy_info["quarantine"] = important_info
-        
+ 
         all_embassy_info
       end
     end
