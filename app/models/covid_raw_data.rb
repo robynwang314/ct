@@ -1,5 +1,0 @@
-class CovidRawData < ApplicationRecord
-
-
-
-end

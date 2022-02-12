@@ -1,0 +1,2 @@
+class EmbassyRawDatum < ApplicationRecord
+end

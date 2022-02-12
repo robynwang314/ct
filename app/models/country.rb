@@ -23,6 +23,7 @@ class Country < ApplicationRecord
   has_many :charts
   has_many :documents
   has_many :covid_raw_data
+  has_many :embassy_raw_data
 
   before_create :slugify
 

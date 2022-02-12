@@ -179,6 +179,40 @@ ALTER SEQUENCE public.documents_id_seq OWNED BY public.documents.id;
 
 
 --
+-- Name: embassy_raw_data; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.embassy_raw_data (
+    id bigint NOT NULL,
+    country character varying,
+    raw_json jsonb DEFAULT '{}'::jsonb,
+    data_source character varying DEFAULT 'Embassy'::character varying,
+    covid_raw_data_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: embassy_raw_data_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.embassy_raw_data_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: embassy_raw_data_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.embassy_raw_data_id_seq OWNED BY public.embassy_raw_data.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -213,6 +247,13 @@ ALTER TABLE ONLY public.covid_raw_data ALTER COLUMN id SET DEFAULT nextval('publ
 --
 
 ALTER TABLE ONLY public.documents ALTER COLUMN id SET DEFAULT nextval('public.documents_id_seq'::regclass);
+
+
+--
+-- Name: embassy_raw_data id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.embassy_raw_data ALTER COLUMN id SET DEFAULT nextval('public.embassy_raw_data_id_seq'::regclass);
 
 
 --
@@ -256,6 +297,14 @@ ALTER TABLE ONLY public.documents
 
 
 --
+-- Name: embassy_raw_data embassy_raw_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.embassy_raw_data
+    ADD CONSTRAINT embassy_raw_data_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -275,6 +324,13 @@ CREATE INDEX index_charts_on_country_id ON public.charts USING btree (country_id
 --
 
 CREATE INDEX index_documents_on_country_id ON public.documents USING btree (country_id);
+
+
+--
+-- Name: index_embassy_raw_data_on_covid_raw_data_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_embassy_raw_data_on_covid_raw_data_id ON public.embassy_raw_data USING btree (covid_raw_data_id);
 
 
 --
@@ -303,6 +359,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211207223537'),
 ('20211207225611'),
 ('20211207232901'),
-('20220211200126');
+('20220211200126'),
+('20220212003010');
 
 

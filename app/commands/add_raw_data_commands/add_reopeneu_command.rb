@@ -40,14 +40,14 @@ module AddRawDataCommands
     private
 
     def get_all_raw_data
-      raw_data = CovidRawData.where(
+      raw_data = CovidRawDatum.where(
         data_source: "ReopenEU"
       )
 
       if raw_data.empty?
-        new_raw_data = CovidRawData.new(data_source: "ReopenEU", raw_json: JSON.parse(get_all_reopenEU_data))
+        new_raw_data = CovidRawDatum.new(data_source: "ReopenEU", raw_json: JSON.parse(get_all_reopenEU_data))
         new_raw_data.save
-        return
+        return new_raw_data
       end
       
       existing_data = raw_data.where("updated_at > ?", 1.day.ago)
