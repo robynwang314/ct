@@ -35,14 +35,14 @@ module Api
 
         country_codes(name_params)
 
-        owid_data = CovidRawDatum.where(
+        owid_data = CovidRawDatum.find_by(
           data_source: "OWID"
-        )[0]
+        )
 
-        if !owid_data.blank?
-          @country_stats = CovidRawDatum.where(
+        if !owid_data.nil? || !owid_data.blank?
+          @country_stats = CovidRawDatum.find_by(
             data_source: "OWID"
-          )[0].raw_json[alpha3]
+          ).raw_json[alpha3]
         else
           # get country statistics from OWID
           all_countries_data = Country.get_all_our_world_in_data
