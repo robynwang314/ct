@@ -4,10 +4,6 @@ module AddRawDataCommands
     require 'json'
 
     def execute
-      puts "==================="
-      puts "in execute"
-      puts "==================="
-
       raw_data = CovidRawDatum.where(
         data_source: "OWID"
       )

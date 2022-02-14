@@ -4,8 +4,5 @@ class OwidJob < SidekiqApplicationJob
 
   def perform
     AddRawDataCommands::AddOwidCommand.new().execute
-    puts "================"
-    pp "done"
-    puts "================"
   end
 end
