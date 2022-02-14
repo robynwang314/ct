@@ -31,7 +31,8 @@ module Api
       def owid_stats
         # will need to do below command with sidekiq
         # AddRawDataCommands::AddOwidCommand.new().execute 
-
+        OwidJob.perform_at(Time.now)
+    
         country_codes(name_params)
 
         # get country statistics from OWID
