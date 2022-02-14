@@ -30,14 +30,24 @@ module Api
 
       def owid_stats
         # will need to do below command with sidekiq
-        # AddRawDataCommands::AddOwidCommand.new().execute 
-        OwidJob.perform_at(Time.now)
-    
+        # and move to a nightly job
+        # OwidJob.perform_at(Time.now)
+
         country_codes(name_params)
 
-        # get country statistics from OWID
-        all_countries_data = Country.get_all_our_world_in_data
-        @country_stats = all_countries_data[alpha3]
+        owid_data = CovidRawDatum.where(
+          data_source: "OWID"
+        )[0]
+
+        if !owid_data.blank?
+          @country_stats = CovidRawDatum.where(
+            data_source: "OWID"
+          )[0].raw_json[alpha3]
+        else
+          # get country statistics from OWID
+          all_countries_data = Country.get_all_our_world_in_data
+          @country_stats = all_countries_data[alpha3]
+        end 
         # render json: @country_stats
       end
 
