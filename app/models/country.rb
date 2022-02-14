@@ -24,6 +24,7 @@ class Country < ApplicationRecord
   has_many :documents
   has_many :covid_raw_data
   has_many :embassy_raw_data
+  has_many :travel_advisory_raw_data
 
   before_create :slugify
 
@@ -35,9 +36,9 @@ class Country < ApplicationRecord
     HTTParty.get('https://covid.ourworldindata.org/data/owid-covid-data.json', format: :json)
   end
 
-  def self.get_travel_advisory(alpha2)
-    HTTParty.get('https://www.travel-advisory.info/api?countrycode='+alpha2)
-  end
+  # def self.get_travel_advisory(alpha2)
+  #   HTTParty.get('https://www.travel-advisory.info/api?countrycode='+alpha2)
+  # end
 
   # def self.get_all_reopenEU_data
   #   Rails.cache.fetch("reopenEU", expires_in: 24.hour) do

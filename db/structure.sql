@@ -222,6 +222,40 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: travel_advisory_raw_data; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.travel_advisory_raw_data (
+    id bigint NOT NULL,
+    country character varying,
+    raw_json jsonb DEFAULT '{}'::jsonb,
+    data_source character varying DEFAULT 'Advisory'::character varying,
+    covid_raw_data_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: travel_advisory_raw_data_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.travel_advisory_raw_data_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: travel_advisory_raw_data_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.travel_advisory_raw_data_id_seq OWNED BY public.travel_advisory_raw_data.id;
+
+
+--
 -- Name: charts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -254,6 +288,13 @@ ALTER TABLE ONLY public.documents ALTER COLUMN id SET DEFAULT nextval('public.do
 --
 
 ALTER TABLE ONLY public.embassy_raw_data ALTER COLUMN id SET DEFAULT nextval('public.embassy_raw_data_id_seq'::regclass);
+
+
+--
+-- Name: travel_advisory_raw_data id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.travel_advisory_raw_data ALTER COLUMN id SET DEFAULT nextval('public.travel_advisory_raw_data_id_seq'::regclass);
 
 
 --
@@ -313,6 +354,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: travel_advisory_raw_data travel_advisory_raw_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.travel_advisory_raw_data
+    ADD CONSTRAINT travel_advisory_raw_data_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: index_charts_on_country_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -331,6 +380,13 @@ CREATE INDEX index_documents_on_country_id ON public.documents USING btree (coun
 --
 
 CREATE INDEX index_embassy_raw_data_on_covid_raw_data_id ON public.embassy_raw_data USING btree (covid_raw_data_id);
+
+
+--
+-- Name: index_travel_advisory_raw_data_on_covid_raw_data_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_travel_advisory_raw_data_on_covid_raw_data_id ON public.travel_advisory_raw_data USING btree (covid_raw_data_id);
 
 
 --
@@ -360,6 +416,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211207225611'),
 ('20211207232901'),
 ('20220211200126'),
-('20220212003010');
+('20220212003010'),
+('20220214175828');
 
 

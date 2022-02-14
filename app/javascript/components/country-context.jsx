@@ -19,7 +19,7 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
     if (response?.data) {
       setAllTimeOWIDstats(response.data.stats.data)
       setTodayStats(response.data.stats.data[response.data.stats.data.length - 1])
-      setAlertStatus(response.data.travel_advisory.data)
+      setAlertStatus(response.data.travel_advisory)
       setReopenEUComments(response.data.comments)
       setEmbassyComments(response.data.country_info_from_embassy)
     }

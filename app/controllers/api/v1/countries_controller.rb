@@ -43,14 +43,12 @@ module Api
       def travel_advisory
         country_codes(name_params)
 
-        @travel_advisory = Country.get_travel_advisory(alpha2)
-        # render json: @travel_advisory
+        travel_advisory_data = AddRawDataCommands::AddTravelAdvisoryCommand.new(country: name_params, alpha2: alpha2 ).execute 
+        @travel_advisory = travel_advisory_data
       end
 
       def reopenEU
         country_codes(name_params)
-        country_code = alpha3
-
         reopen_EU_data = AddRawDataCommands::AddReopeneuCommand.new(alpha3: alpha3 ).execute 
 
         @sorted_comments_list = reopen_EU_data
@@ -83,7 +81,7 @@ module Api
       def name_params
         params.require(:name)
       end
-      
+
     end
   end
 end

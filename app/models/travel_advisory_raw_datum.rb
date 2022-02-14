@@ -1,0 +1,2 @@
+class TravelAdvisoryRawDatum < ApplicationRecord
+end
