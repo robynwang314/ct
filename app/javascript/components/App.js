@@ -9,8 +9,6 @@ import ChartContainer from './Chart/chart-container.jsx'
 import NavBarTabs from "./Nav/nav-bar-tabs.jsx"
 import "./app.scss"
 
-import NavigationButtons from "./Nav/navigation-buttons.jsx"
-
 async function getCountries(setCountries) {
   useEffect(async () => {
     const response = await api.countries.index()
@@ -24,17 +22,13 @@ async function getCountries(setCountries) {
   }, [])
 }
 
-function string_parameterize(str1) {
-  return str1?.trim().toLowerCase().replace(/[^a-zA-Z0-9 -]/, "").replace(/\s/g, "-");
-};
-
-async function getAlertStatus(country) {
+async function getAlertStatus(country, string_parameterize) {
   const countryName = string_parameterize(country.label)
   return await api.countries.travel_advisory(countryName)
 }
 
 export const MainDocument = () => {
-  const { country, countries, setCountries, alertStatus, data, setAlertStatus } = useCountryContext()
+  const { string_parameterize, country, countries, setCountries, alertStatus, data, setAlertStatus } = useCountryContext()
   const [loading, setLoading] = useState(false)
   const countryCode = country?.value
   let countryNamesList = []
@@ -45,7 +39,7 @@ export const MainDocument = () => {
     if (!country) return null;
     try {
       setLoading(true)
-      const alert = await getAlertStatus(country, setAlertStatus)
+      const alert = await getAlertStatus(country, string_parameterize)
       if (alert && alert.data) {
         setAlertStatus(alert.data)
       }

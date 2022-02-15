@@ -12,7 +12,9 @@ module AddRawDataCommands
     def execute
       all_raw_data = get_all_raw_data
 
-      json_visa = all_raw_data[0]["raw_json"]
+      json_visa = CovidRawDatum.where(
+        data_source: "ReopenEU"
+      )[0]["raw_json"]
 
       specific_country_info = json_visa.select { |country| country["nutscode"] == alpha3 }
       get_domain = specific_country_info[0]["indicators"].select {|data| data["comment"] != ""}     
@@ -34,7 +36,6 @@ module AddRawDataCommands
       # group reOpenEu data by domain_name
       sorted_comments_list = all_comments_list.group_by { |d| d["domain_name"] }
 
-      return sorted_comments_list
     end
 
     private

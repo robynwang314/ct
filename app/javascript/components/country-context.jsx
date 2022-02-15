@@ -5,41 +5,31 @@ export const CountrySelectionContext = createContext();
 export function CountrySelectionProvider({ children, defaultCountry = "United States" }) {
   const [country, setCountry] = useState(/*defaultCountry*/ "");
   const [countries, setCountries] = useState([])
-  const [todayStats, setTodayStats] = useState({})
   const [alertStatus, setAlertStatus] = useState({})
+  const [todayStats, setTodayStats] = useState({})
   const [allTimeOWIDstats, setAllTimeOWIDstats] = useState([])
   const [reopenEUComments, setReopenEUComments] = useState({})
   const [embassyComments, setEmbassyComments] = useState({})
 
 
-  async function setSelectedCountry(e) {
-    setCountry(e)
-    const name = string_parameterize(e.label)
-    const response = await api.countries.show(name)
-    if (response?.data) {
-      setAllTimeOWIDstats(response.data.stats.data)
-      setTodayStats(response.data.stats.data[response.data.stats.data.length - 1])
-      setAlertStatus(response.data.travel_advisory)
-      setReopenEUComments(response.data.comments)
-      setEmbassyComments(response.data.country_info_from_embassy)
-    }
-  }
+  // async function setSelectedCountry(e) {
+  //   setCountry(e)
 
-  function string_parameterize(str1) {
+  // const name = string_parameterize(e.label)
+  // const response = await api.countries.show(name)
+  // if (response?.data) {
+  //   setAllTimeOWIDstats(response.data.stats.data)
+  //   setTodayStats(response.data.stats.data[response.data.stats.data.length - 1])
+  //   // setAlertStatus(response.data.travel_advisory)
+  //   setReopenEUComments(response.data.comments)
+  //   setEmbassyComments(response.data.country_info_from_embassy)
+  // }
+  // }
+
+  const string_parameterize = str1 => {
     return str1.trim().toLowerCase().replace(/[^a-zA-Z0-9 -]/, "").replace(/\s/g, "-");
   };
 
-  // async function getTravelAdvisory(country) {
-  //   const response = await api.countries.travel_advisory(country)
-  //   try {
-  //     if (response) {
-  //       console.log(response.data.data)
-  //       setAlertStatus(response.data.data)
-  //     }
-  //   } catch {
-  //     console.log(response)
-  //   }
-  // }
 
   // async function getOWIDstats(country) {
   //   const response = await api.countries.owid_stats(country)
@@ -48,18 +38,6 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
   //       console.log(response.data.data)
   //       setAllTimeOWIDstats(response.data.data)
   //       setTodayStats(response.data.data[response.data.data.length - 1])
-  //     }
-  //   } catch {
-  //     console.log(response)
-  //   }
-  // }
-
-  // async function getReopenEUComments(country) {
-  //   const response = await api.countries.reopenEU(country)
-  //   try {
-  //     if (response) {
-  //       console.log(response.data.data)
-  //       setReopenEUComments(response.data.data)
   //     }
   //   } catch {
   //     console.log(response)
@@ -80,18 +58,20 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
 
   const context = useMemo(
     () => ({
+      string_parameterize,
       country,
       setCountry,
-      setSelectedCountry,
       countries,
       setCountries,
       allTimeOWIDstats,
       todayStats,
       alertStatus,
+      setAlertStatus,
       reopenEUComments,
+      setReopenEUComments,
       embassyComments
     }),
-    [country, countries, setSelectedCountry, allTimeOWIDstats, todayStats, alertStatus, reopenEUComments, embassyComments]
+    [string_parameterize, country, countries, allTimeOWIDstats, todayStats, alertStatus, setAlertStatus, reopenEUComments, setReopenEUComments, embassyComments]
   );
 
   return <CountrySelectionContext.Provider value={context}>
