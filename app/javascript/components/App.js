@@ -24,13 +24,38 @@ async function getCountries(setCountries) {
   }, [])
 }
 
+function string_parameterize(str1) {
+  return str1?.trim().toLowerCase().replace(/[^a-zA-Z0-9 -]/, "").replace(/\s/g, "-");
+};
+
+async function getAlertStatus(country) {
+  const countryName = string_parameterize(country.label)
+  return await api.countries.travel_advisory(countryName)
+}
+
 export const MainDocument = () => {
-  const { country, countries, setCountries, alertStatus, data } = useCountryContext()
+  const { country, countries, setCountries, alertStatus, data, setAlertStatus } = useCountryContext()
+  const [loading, setLoading] = useState(false)
   const countryCode = country?.value
-  // console.log(alertStatus[countryCode]?.advisory)
   let countryNamesList = []
 
   getCountries(setCountries)
+
+  useEffect(async () => {
+    if (!country) return null;
+    try {
+      setLoading(true)
+      const alert = await getAlertStatus(country, setAlertStatus)
+      if (alert && alert.data) {
+        setAlertStatus(alert.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+    finally {
+      setLoading(false)
+    }
+  }, [country])
 
   if (countries.length > 0) {
     countryNamesList = countries.map((country) => {
@@ -42,16 +67,15 @@ export const MainDocument = () => {
     countryNamesList.sort()
   }
 
-  return (
+  return /*!loading && */(
     <>
       <SearchBar countryNamesList={countryNamesList} />
       <br />
       <h2 style={{ marginBottom: '0px', fontWeight: "bold" }}>{country?.label ? country.label : "No Country selected"}</h2>
-      <h5 style={{ marginBottom: '0', color: "red" }}> Alert Status:</h5> <p style={{ marginTop: '.35%' }}>{alertStatus[countryCode]?.advisory?.message}</p>
+      <h5 style={{ marginBottom: '0', color: "red" }}>Alert Status:</h5> <p style={{ marginTop: '.35%' }}>{alertStatus[countryCode]?.advisory?.message}</p>
       <ChartContainer />
       <br />
       <NavBarTabs country={country} />
-
       <div style={{ color: "rgb(81, 82, 81)" }} dangerouslySetInnerHTML={{ __html: data?.important_info }} />
     </>
   )
