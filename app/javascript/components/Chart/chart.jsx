@@ -14,6 +14,7 @@ import { Chart } from 'react-chartjs-2';
 import { useCountryContext } from '../country-context.jsx'
 import moment from 'moment';
 import api from '../../api/api.js'
+import Loading from '../loading.jsx'
 
 ChartJS.register(
   LinearScale,
@@ -34,17 +35,22 @@ async function getAllTimeOWIDStats(country, string_parameterize) {
 const Graphs = ({ }) => {
   const { string_parameterize, country, setAllTimeOWIDstats } = useCountryContext()
   const [allCases, setAllCases] = useState([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(async () => {
     if (!country) return null;
     try {
-      const alert = await getAllTimeOWIDStats(country, string_parameterize)
-      if (alert && alert.data) {
-        setAllTimeOWIDstats(alert.data)
-        setAllCases(alert.data.data)
+      setLoading(true)
+      const allData = await getAllTimeOWIDStats(country, string_parameterize)
+      if (allData && allData.data) {
+        setAllTimeOWIDstats(allData.data)
+        setAllCases(allData.data.data)
       }
     } catch (error) {
       console.log(error)
+    }
+    finally {
+      setLoading(false)
     }
   }, [country])
 
@@ -129,8 +135,9 @@ const Graphs = ({ }) => {
   };
 
   return (
-    <div style={{ padding: '1%', minWidth: '65%' }}>
-      <Chart data={data} options={options} />
+    <div style={{ padding: '1%', minWidth: '65%', position: "relative" }}>
+      {loading && <Loading />}
+      <Chart data={data} options={options} style={{ opacity: loading ? 0.35 : 1 }} />
     </div>
   )
 }
