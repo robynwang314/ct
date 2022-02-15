@@ -1,0 +1,2 @@
+class OwidTodayStatsRawDatum < ApplicationRecord
+end

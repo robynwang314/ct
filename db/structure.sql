@@ -17,7 +17,8 @@ CREATE TYPE public.data_sources AS ENUM (
     'OWID',
     'Advisory',
     'ReopenEU',
-    'Embassy'
+    'Embassy',
+    'latest OWID'
 );
 
 
@@ -213,6 +214,40 @@ ALTER SEQUENCE public.embassy_raw_data_id_seq OWNED BY public.embassy_raw_data.i
 
 
 --
+-- Name: owid_today_stats_raw_data; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.owid_today_stats_raw_data (
+    id bigint NOT NULL,
+    country character varying,
+    raw_json jsonb DEFAULT '{}'::jsonb,
+    data_source character varying DEFAULT 'latest OWID'::character varying,
+    covid_raw_data_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: owid_today_stats_raw_data_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.owid_today_stats_raw_data_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: owid_today_stats_raw_data_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.owid_today_stats_raw_data_id_seq OWNED BY public.owid_today_stats_raw_data.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -291,6 +326,13 @@ ALTER TABLE ONLY public.embassy_raw_data ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: owid_today_stats_raw_data id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.owid_today_stats_raw_data ALTER COLUMN id SET DEFAULT nextval('public.owid_today_stats_raw_data_id_seq'::regclass);
+
+
+--
 -- Name: travel_advisory_raw_data id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -346,6 +388,14 @@ ALTER TABLE ONLY public.embassy_raw_data
 
 
 --
+-- Name: owid_today_stats_raw_data owid_today_stats_raw_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.owid_today_stats_raw_data
+    ADD CONSTRAINT owid_today_stats_raw_data_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -383,6 +433,13 @@ CREATE INDEX index_embassy_raw_data_on_covid_raw_data_id ON public.embassy_raw_d
 
 
 --
+-- Name: index_owid_today_stats_raw_data_on_covid_raw_data_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_owid_today_stats_raw_data_on_covid_raw_data_id ON public.owid_today_stats_raw_data USING btree (covid_raw_data_id);
+
+
+--
 -- Name: index_travel_advisory_raw_data_on_covid_raw_data_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -417,6 +474,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211207232901'),
 ('20220211200126'),
 ('20220212003010'),
-('20220214175828');
+('20220214175828'),
+('20220215202759'),
+('20220215204755'),
+('20220215205504');
 
 

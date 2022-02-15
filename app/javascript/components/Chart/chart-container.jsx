@@ -1,17 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types'
 import { useCountryContext } from '../country-context.jsx'
 import "./charts.scss"
 import Graphs from './chart.jsx'
 import moment from 'moment';
+import api from '../../api/api.js'
 
-export const StatsContainer = ({ todayStats }) => {
+async function getCountrysLatestStats(country, string_parameterize) {
+  const countryName = string_parameterize(country.label)
+  return await api.countries.latest_owid(countryName)
+}
+
+
+export const StatsContainer = () => {
+  const { country, string_parameterize } = useCountryContext();
+  const [todayStats, setTodayStats] = useState({})
+
+  useEffect(async () => {
+    if (!country) return null;
+
+    try {
+      const latestStats = await getCountrysLatestStats(country, string_parameterize)
+      if (latestStats && latestStats.data) {
+        setTodayStats(latestStats.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }, [country])
+
   return (
     <div className="stats__container">
       <span className="stats__today-header">
-        <h4 style={{ marginBottom: 0 }}>Today's Statistics</h4>
+        <h4 style={{ marginBottom: 0 }}>Latest Statistics</h4>
         <p className="stats__daily-numbers todays-date">
-          {moment(todayStats?.date).format("MMMM Do YYYY")}
+          {moment(todayStats?.last_updated_date).format("MMMM Do YYYY")}
         </p>
       </span>
 
@@ -32,18 +55,18 @@ export const StatsContainer = ({ todayStats }) => {
 }
 
 const ChartContainer = ({ }) => {
-  const { todayStats } = useCountryContext()
+  // const { todayStats } = useCountryContext()
 
-  return todayStats && (
+  return (
     <div className="chart-container">
       <Graphs />
-      <StatsContainer todayStats={todayStats} />
+      <StatsContainer /*todayStats={todayStats}*/ />
     </div>
   )
 }
 
-ChartContainer.propTypes = {
-  todayStats: PropTypes.any
-}
+// ChartContainer.propTypes = {
+//   todayStats: PropTypes.any
+// }
 
 export default ChartContainer

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { hot } from 'react-hot-loader/root';
-import { Nav, NavDropdown, Tab, Row } from 'react-bootstrap'
 import { useCountryContext, CountrySelectionProvider } from './country-context.jsx'
 import api from '../api/api.js'
 import SearchBar from './SearchBar/search-bar.jsx'
@@ -28,7 +27,7 @@ async function getAlertStatus(country, string_parameterize) {
 }
 
 export const MainDocument = () => {
-  const { string_parameterize, country, countries, setCountries, alertStatus, data, setAlertStatus } = useCountryContext()
+  const { string_parameterize, country, countries, setCountries, alertStatus, setAlertStatus } = useCountryContext()
   const [loading, setLoading] = useState(false)
   const countryCode = country?.value
   let countryNamesList = []
@@ -70,7 +69,7 @@ export const MainDocument = () => {
       <ChartContainer />
       <br />
       <NavBarTabs country={country} />
-      <div style={{ color: "rgb(81, 82, 81)" }} dangerouslySetInnerHTML={{ __html: data?.important_info }} />
+      {/* <div style={{ color: "rgb(81, 82, 81)" }} dangerouslySetInnerHTML={{ __html: data?.important_info }} /> */}
     </>
   )
 }

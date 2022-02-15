@@ -12,6 +12,7 @@ Rails.application.routes.draw do
           get :owid_stats
           get :reopenEU
           get :embassy_information
+          get :today_stats
         end
 
       end

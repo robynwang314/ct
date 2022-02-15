@@ -35,6 +35,16 @@ const countries = {
       }
     });
   },
+  latest_owid: (name) => {
+    return axios({
+      url: `api/v1/countries/today_stats`,
+      method: "GET",
+      dataType: "json",
+      params: {
+        name: name
+      }
+    });
+  },
   reopenEU: (name) => {
     return axios({
       url: `api/v1/countries/reopenEU`,

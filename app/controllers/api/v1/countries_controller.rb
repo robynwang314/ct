@@ -25,7 +25,7 @@ module Api
         name = name_params
         country_info = AddRawDataCommands::AddEmbassyInformationCommand.new(name: name).execute 
 
-        @country_info_from_embassy = country_info
+        render json: country_info
       end
 
       def owid_stats
@@ -41,7 +41,7 @@ module Api
 
         if !owid_data.nil? || !owid_data.blank? 
           @country_stats = owid_data.raw_json[alpha3]
-          elsif owid_data.nil? || owid_data.blank? || owid_data["updated_at"] < 1.day.ago
+        elsif owid_data.nil? || owid_data.blank? || owid_data["updated_at"] < 1.day.ago
           # get country statistics from OWID
           # all_countries_data = Country.get_all_our_world_in_data
           # @country_stats = all_countries_data[alpha3]
@@ -49,21 +49,28 @@ module Api
           @country_stats = owid_data.raw_json[alpha3]
         end 
 
-        # render json: @country_stats
+        render json: @country_stats
+      end
+
+      def today_stats
+        country_codes(name_params)
+        today_stats = AddRawDataCommands::AddTodayStatsCommand.new(name: name_params, alpha3: alpha3).execute
+
+        render json: today_stats
       end
 
       def travel_advisory
         country_codes(name_params)
-
         travel_advisory_data = AddRawDataCommands::AddTravelAdvisoryCommand.new(country: name_params, alpha2: alpha2 ).execute 
-        @travel_advisory = travel_advisory_data
+
+        render json: travel_advisory_data
       end
 
       def reopenEU
         country_codes(name_params)
         reopen_EU_data = AddRawDataCommands::AddReopeneuCommand.new(alpha3: alpha3 ).execute 
 
-        @sorted_comments_list = reopen_EU_data
+        render json: reopen_EU_data
       end
 
       def show
@@ -79,7 +86,7 @@ module Api
         # puts JSON.pretty_generate(@sorted_comments_list) 
 
         # create new object containing all of above info
-        response = {:stats => @country_stats, :travel_advisory => @travel_advisory, :country_info_from_embassy => @country_info_from_embassy, :comments => @sorted_comments_list }
+        # response = {:stats => @country_stats, :travel_advisory => @travel_advisory, :country_info_from_embassy => @country_info_from_embassy, :comments => @sorted_comments_list }
 
         # return as json
         render json: response

@@ -6,7 +6,6 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
   const [country, setCountry] = useState(/*defaultCountry*/ "");
   const [countries, setCountries] = useState([])
   const [alertStatus, setAlertStatus] = useState({})
-  const [todayStats, setTodayStats] = useState({})
   const [allTimeOWIDstats, setAllTimeOWIDstats] = useState([])
   const [reopenEUComments, setReopenEUComments] = useState({})
   const [embassyComments, setEmbassyComments] = useState({})
@@ -24,7 +23,6 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
       setCountries,
       allTimeOWIDstats,
       setAllTimeOWIDstats,
-      todayStats,
       alertStatus,
       setAlertStatus,
       reopenEUComments,
@@ -32,7 +30,7 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
       embassyComments,
       setEmbassyComments
     }),
-    [string_parameterize, country, countries, allTimeOWIDstats, setAllTimeOWIDstats, todayStats, alertStatus, setAlertStatus, reopenEUComments, setReopenEUComments, embassyComments, setEmbassyComments]
+    [string_parameterize, country, countries, allTimeOWIDstats, setAllTimeOWIDstats, alertStatus, setAlertStatus, reopenEUComments, setReopenEUComments, embassyComments, setEmbassyComments]
   );
 
   return <CountrySelectionContext.Provider value={context}>

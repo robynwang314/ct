@@ -32,7 +32,7 @@ async function getAllTimeOWIDStats(country, string_parameterize) {
 }
 
 const Graphs = ({ }) => {
-  const { allTimeOWIDstats, string_parameterize, country, setAllTimeOWIDstats } = useCountryContext()
+  const { string_parameterize, country, setAllTimeOWIDstats } = useCountryContext()
   const [allCases, setAllCases] = useState([])
 
   useEffect(async () => {

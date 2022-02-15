@@ -25,6 +25,7 @@ class Country < ApplicationRecord
   has_many :covid_raw_data
   has_many :embassy_raw_data
   has_many :travel_advisory_raw_data
+  has_many :owid_today_stats_raw_data
 
   before_create :slugify
 
