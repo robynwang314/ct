@@ -15,20 +15,6 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
     return str1.trim().toLowerCase().replace(/[^a-zA-Z0-9 -]/, "").replace(/\s/g, "-");
   };
 
-
-  // async function getOWIDstats(country) {
-  //   const response = await api.countries.owid_stats(country)
-  //   try {
-  //     if (response) {
-  //       console.log(response.data.data)
-  //       setAllTimeOWIDstats(response.data.data)
-  //       setTodayStats(response.data.data[response.data.data.length - 1])
-  //     }
-  //   } catch {
-  //     console.log(response)
-  //   }
-  // }
-
   const context = useMemo(
     () => ({
       string_parameterize,
@@ -37,6 +23,7 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
       countries,
       setCountries,
       allTimeOWIDstats,
+      setAllTimeOWIDstats,
       todayStats,
       alertStatus,
       setAlertStatus,
@@ -45,7 +32,7 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
       embassyComments,
       setEmbassyComments
     }),
-    [string_parameterize, country, countries, allTimeOWIDstats, todayStats, alertStatus, setAlertStatus, reopenEUComments, setReopenEUComments, embassyComments, setEmbassyComments]
+    [string_parameterize, country, countries, allTimeOWIDstats, setAllTimeOWIDstats, todayStats, alertStatus, setAlertStatus, reopenEUComments, setReopenEUComments, embassyComments, setEmbassyComments]
   );
 
   return <CountrySelectionContext.Provider value={context}>

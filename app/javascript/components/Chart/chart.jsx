@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Chart as ChartJS,
   LinearScale,
@@ -13,6 +13,7 @@ import {
 import { Chart } from 'react-chartjs-2';
 import { useCountryContext } from '../country-context.jsx'
 import moment from 'moment';
+import api from '../../api/api.js'
 
 ChartJS.register(
   LinearScale,
@@ -25,34 +26,47 @@ ChartJS.register(
   Title,
 );
 
+async function getAllTimeOWIDStats(country, string_parameterize) {
+  const countryName = string_parameterize(country.label)
+  return await api.countries.owid_stats(countryName)
+}
 
 const Graphs = ({ }) => {
-  const { allTimeOWIDstats } = useCountryContext()
+  const { allTimeOWIDstats, string_parameterize, country, setAllTimeOWIDstats } = useCountryContext()
+  const [allCases, setAllCases] = useState([])
+
+  useEffect(async () => {
+    if (!country) return null;
+    try {
+      const alert = await getAllTimeOWIDStats(country, string_parameterize)
+      if (alert && alert.data) {
+        setAllTimeOWIDstats(alert.data)
+        setAllCases(alert.data.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }, [country])
 
   let data = [];
   data['labels'] = [];
   data['datasets'] = [];
   data['datasets'][0] = {
     data: [],
-    // data: [1, 2, 3, 3, 2, 1, 4],
     backgroundColor: "rgb(66, 135, 245)",
     label: 'New Deaths',
     type: "bar",
   };
   data['datasets'][1] = {
     data: [],
-    // data: [1, 2, 10, 4, 6, 9, 10],
     backgroundColor: "rgba(242, 218, 223, 0.9)",
     borderColor: "rgba(0,0,0,0)",
     label: 'New Cases',
     type: "bar",
   };
 
-  // const cases = allTimeOWIDstats.map(cases => cases.new_cases ? cases.new_cases : 0).sort()
-  // const maxCases = Math.max(...cases)
-
-  for (let i = 0; i < allTimeOWIDstats.length; i++) {
-    const countryStats = allTimeOWIDstats[i];
+  for (let i = 0; i < allCases.length; i++) {
+    const countryStats = allCases[i];
 
     data['labels'][i] = moment(countryStats.date).format("MMM DD YY");
     data['datasets'][0].data[i] = countryStats.new_deaths;
