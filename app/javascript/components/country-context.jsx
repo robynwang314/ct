@@ -11,21 +11,6 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
   const [reopenEUComments, setReopenEUComments] = useState({})
   const [embassyComments, setEmbassyComments] = useState({})
 
-
-  // async function setSelectedCountry(e) {
-  //   setCountry(e)
-
-  // const name = string_parameterize(e.label)
-  // const response = await api.countries.show(name)
-  // if (response?.data) {
-  //   setAllTimeOWIDstats(response.data.stats.data)
-  //   setTodayStats(response.data.stats.data[response.data.stats.data.length - 1])
-  //   // setAlertStatus(response.data.travel_advisory)
-  //   setReopenEUComments(response.data.comments)
-  //   setEmbassyComments(response.data.country_info_from_embassy)
-  // }
-  // }
-
   const string_parameterize = str1 => {
     return str1.trim().toLowerCase().replace(/[^a-zA-Z0-9 -]/, "").replace(/\s/g, "-");
   };
@@ -38,18 +23,6 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
   //       console.log(response.data.data)
   //       setAllTimeOWIDstats(response.data.data)
   //       setTodayStats(response.data.data[response.data.data.length - 1])
-  //     }
-  //   } catch {
-  //     console.log(response)
-  //   }
-  // }
-
-  // async function getEmbassyComments(country) {
-  //   const response = await api.countries.embassy_information(country)
-  //   try {
-  //     if (response) {
-  //       console.log(response.data.data)
-  //       setEmbassyComments(response.data.data)
   //     }
   //   } catch {
   //     console.log(response)
@@ -69,9 +42,10 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
       setAlertStatus,
       reopenEUComments,
       setReopenEUComments,
-      embassyComments
+      embassyComments,
+      setEmbassyComments
     }),
-    [string_parameterize, country, countries, allTimeOWIDstats, todayStats, alertStatus, setAlertStatus, reopenEUComments, setReopenEUComments, embassyComments]
+    [string_parameterize, country, countries, allTimeOWIDstats, todayStats, alertStatus, setAlertStatus, reopenEUComments, setReopenEUComments, embassyComments, setEmbassyComments]
   );
 
   return <CountrySelectionContext.Provider value={context}>

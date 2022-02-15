@@ -12,9 +12,12 @@ import api from '../../api/api.js'
 
 export const TAB_ITEMS = ["Health Situation", "Travel Information", "General Measures", "Mandates", "Open Establishments", "Further Information"]
 
-async function getReopenEUComments(country, string_parameterize) {
-  const countryName = string_parameterize(country.label)
+async function getReopenEUComments(countryName) {
   return await api.countries.reopenEU(countryName)
+}
+
+async function getEmbassyComments(countryName) {
+  return await api.countries.embassy_information(countryName)
 }
 
 const NavButtons = () => {
@@ -28,23 +31,36 @@ const NavButtons = () => {
 }
 
 function NavBarTabs({ ...props }) {
-  const { country, string_parameterize, setReopenEUComments } = useCountryContext()
+  const { country, string_parameterize, setReopenEUComments, setEmbassyComments } = useCountryContext()
   const handleSelect = (eventKey) => alert(`selected ${eventKey}`);
 
   useEffect(async () => {
     if (!country) return null;
     try {
-      const comments = await getReopenEUComments(country, string_parameterize)
-      if (comments && comments.data) {
-        setReopenEUComments(comments.data)
+      const countryName = string_parameterize(country.label)
+      const reopenComments = await getReopenEUComments(countryName)
+      if (reopenComments && reopenComments.data) {
+        setReopenEUComments(reopenComments.data)
       }
     } catch (error) {
       console.log(error)
     }
-    // finally {
-
-    // }
   }, [country])
+
+  useEffect(async () => {
+    if (!country) return null;
+    try {
+      const countryName = string_parameterize(country.label)
+      const embassyComments = await getEmbassyComments(countryName)
+
+      if (embassyComments && embassyComments.data) {
+        setEmbassyComments(embassyComments.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }, [country])
+
 
   return (
     <Tab.Container id="left-tabs-example" defaultActiveKey="1">

@@ -25,26 +25,26 @@ module AddRawDataCommands
     end
 
     def get_all_raw_data
-      raw_data = EmbassyRawDatum.where(
+      raw_data = EmbassyRawDatum.find_by(
         country: name.titleize.to_s
       )
 
-      if raw_data.empty?
+      if raw_data.nil? || raw_data.blank?
         country_info_from_embassy = info_from_embassy
         new_raw_data = EmbassyRawDatum.new(country: name.titleize.to_s, data_source: "Embassy", raw_json: country_info_from_embassy)
         new_raw_data.save
 
-        return new_raw_data
+        return new_raw_data["raw_json"]
       end
       
-      existing_data = raw_data.where("updated_at > ?", 1.day.ago)
+      existing_data = raw_data["updated_at"] < 1.day.ago
       
-      return raw_data if !existing_data.empty?
+      return raw_data["raw_json"] if !existing_data
 
       country_info_from_embassy = info_from_embassy
       raw_data.update(raw_json: country_info_from_embassy, updated_at: Time.current)
 
-      return raw_data
+      return raw_data["raw_json"]
     end
 
     def transform_entry_content_to_text(all_content)
