@@ -39,13 +39,16 @@ module Api
           data_source: "OWID"
         )
 
-        if !owid_data.nil? || !owid_data.blank?
+        if !owid_data.nil? || !owid_data.blank? 
           @country_stats = owid_data.raw_json[alpha3]
-        else
+          elsif owid_data.nil? || owid_data.blank? || owid_data["updated_at"] < 1.day.ago
           # get country statistics from OWID
-          all_countries_data = Country.get_all_our_world_in_data
-          @country_stats = all_countries_data[alpha3]
+          # all_countries_data = Country.get_all_our_world_in_data
+          # @country_stats = all_countries_data[alpha3]
+          OwidJob.perform_async
+          @country_stats = owid_data.raw_json[alpha3]
         end 
+
         # render json: @country_stats
       end
 
