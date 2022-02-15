@@ -10,7 +10,7 @@ import { useCountryContext } from '../country-context.jsx'
 
 
 const SearchBar = ({ countryNamesList }) => {
-  const { setSelectedCountry } = useCountryContext();
+  const { setCountry } = useCountryContext();
   let allCountriesKeyValuePair = []
 
   for (const country of countryNamesList) {
@@ -19,6 +19,8 @@ const SearchBar = ({ countryNamesList }) => {
     allCountriesKeyValuePair.push(countryKeyValuePair)
   }
 
+  allCountriesKeyValuePair[8] && (allCountriesKeyValuePair[8]["label"] = "Czech Republic")
+
   return (
     <div style={{ width: '97%', margin: '.5%' }}>
       <Select
@@ -26,7 +28,7 @@ const SearchBar = ({ countryNamesList }) => {
         placeholder="Select a country"
         options={allCountriesKeyValuePair}
         isClearable={true}
-        onChange={setSelectedCountry}
+        onChange={setCountry}
       />
     </div>
   )
