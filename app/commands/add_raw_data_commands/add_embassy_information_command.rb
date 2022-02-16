@@ -49,7 +49,7 @@ module AddRawDataCommands
 
     def transform_entry_content_to_text(all_content)
       text_content = []
-      all_content.text.strip!.each_line do |content|
+      all_content.to_html.each_line do |content|
         text_content << content
       end
       text_content
@@ -57,8 +57,8 @@ module AddRawDataCommands
 
     def transform_paragraphsections_to_text(all_content)
       text_content = []
-        all_content.each do |content|
-        text_content << content.text.gsub("By U.S. Mission Germany", "").strip!
+        all_content.to_html.each_line do |content|
+        text_content << content
       end
       text_content
     end
@@ -118,16 +118,10 @@ module AddRawDataCommands
             section_index = section_indice.find {|x| x > indices[information_sections[array_index-2]]}
           end
 
-          # return the regular one if the german kind
-          if paragraphsection_exists || !(sub_section_keys.include? section)
-            section_index
-          else 
-            section_index += 1
-          end
           section_index
         end
         indices[section] = section_index
-      end       
+      end     
       indices
     end
 
@@ -135,11 +129,11 @@ module AddRawDataCommands
       all_content_text = all_content
       main_section_index = section_indexes(all_content_text)
 
-        if main_section_index["Country-Specific Information"] == 1
-          country_specific_info = main_section_index["Country-Specific Information"]
-        elsif main_section_index["Country-Specific Information"] > 1
-           country_specific_info = main_section_index["Country-Specific Information"] - 1
-        end
+      if main_section_index["Country-Specific Information"] == 1
+        country_specific_info = main_section_index["Country-Specific Information"]
+      elsif main_section_index["Country-Specific Information"] > 2
+        country_specific_info = main_section_index["Country-Specific Information"] - 1
+      end
 
       important_info = []
       country_specific = []
@@ -150,7 +144,6 @@ module AddRawDataCommands
       misc = []
       
       all_content_text.each_with_index{|x, i| 
-    
         case i
         # important inforamtion section
         when 0...(country_specific_info)
