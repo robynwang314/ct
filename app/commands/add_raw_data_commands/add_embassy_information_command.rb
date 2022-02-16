@@ -93,14 +93,23 @@ module AddRawDataCommands
       indices = {}
 
       information_sections.each_with_index do |section, array_index|
+        # for germany like pages first section
         if array_index == 0 && paragraphsection_exists
           section_index = all_content_text.index { |x| x.titleize.include? ("Country-Specific Information").titleize }
+        # for regular pages first section
         elsif array_index == 0
           section_index = all_content_text.index { |x| x.titleize.include? ("Country-Specific Information").titleize } + 1 
+        # for rest of sections
         else
+          # find all index of where section is named
           section_indice = all_content_text.each_index.select{|i| all_content_text[i].gsub(/[^\001-\176]+/, "").titleize.include? (section).titleize }
-          section_index = section_indice.find {|x| x > indices[information_sections[array_index-1]]} unless information_sections[array_index-1].nil?
-          if information_sections[array_index-1].nil?
+
+          next if section_indice.blank?;
+          # return the index that is greater than the index value of the previous section, unless if the one before it is nil
+          section_index = section_indice.find {|x| x > indices[information_sections[array_index-1]]} unless indices[information_sections[array_index-1]].nil? #information_sections[array_index-1].nil? 
+     
+          # if the one before it is nil, then use the index value that is greater than the index of the section before the previous section
+          if indices[information_sections[array_index-1]].nil?
             section_index = section_indice.find {|x| x > indices[information_sections[array_index-2]]}
           end
 
@@ -112,13 +121,19 @@ module AddRawDataCommands
           section_index
         end
         indices[section] = section_index
-      end        
+      end       
       indices
     end
 
     def build_country_info
       all_content_text = all_content
       main_section_index = section_indexes(all_content_text)
+
+        if main_section_index["Country-Specific Information"] == 1
+          country_specific_info = main_section_index["Country-Specific Information"]
+        elsif main_section_index["Country-Specific Information"] > 1
+           country_specific_info = main_section_index["Country-Specific Information"] - 1
+        end
 
       important_info = []
       country_specific = []
@@ -129,9 +144,10 @@ module AddRawDataCommands
       misc = []
       
       all_content_text.each_with_index{|x, i| 
+    
         case i
         # important inforamtion section
-        when 0...(main_section_index["Country-Specific Information"])
+        when 0...(country_specific_info)
           important_info << x
         # country specific section
         when (main_section_index["Country-Specific Information"])...(main_section_index["COVID-19 Testing"]) 
