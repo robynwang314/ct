@@ -105,14 +105,20 @@ module AddRawDataCommands
           section_indice = all_content_text.each_index.select{|i| all_content_text[i].gsub(/[^\001-\176]+/, "").titleize.include? (section).titleize }
 
           next if section_indice.blank?;
-          # return the index that is greater than the index value of the previous section, unless if the one before it is nil
-          section_index = section_indice.find {|x| x > indices[information_sections[array_index-1]]} unless indices[information_sections[array_index-1]].nil? #information_sections[array_index-1].nil? 
-     
+
+          if section_indice.length() == 1
+            section_index = section_indice[0]
+          else
+            # return the index that is greater than the index value of the previous section, unless if the one before it is nil
+            section_index = section_indice.find {|x| x > indices[information_sections[array_index-1]]} unless indices[information_sections[array_index-1]].nil? #information_sections[array_index-1].nil? 
+          end
+
           # if the one before it is nil, then use the index value that is greater than the index of the section before the previous section
           if indices[information_sections[array_index-1]].nil?
             section_index = section_indice.find {|x| x > indices[information_sections[array_index-2]]}
           end
 
+          # return the regular one if the german kind
           if paragraphsection_exists || !(sub_section_keys.include? section)
             section_index
           else 
