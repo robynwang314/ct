@@ -9,7 +9,7 @@ const FurtherInformation = ({ }) => {
   const [expanded, setExpanded] = React.useState(true)
   const allHealthInfo = reopenEUComments["Information"]
 
-  const parseFurtherInformation = allHealthInfo?.map((information, id) => {
+  const parseReopenEUComments = allHealthInfo?.map((information, id) => {
     return (
       <>
         <Accordion key={id} defaultActiveKey={id} flush>
@@ -27,7 +27,7 @@ const FurtherInformation = ({ }) => {
       <br />
       <button onClick={() => setExpanded(!expanded)}>{expanded ? "collapse all" : "expand all"}</button>
       <div className="documents-container" style={{ textAlign: "left" }}>
-        {parseFurtherInformation}
+        {parseReopenEUComments}
       </div>
     </div>
   )

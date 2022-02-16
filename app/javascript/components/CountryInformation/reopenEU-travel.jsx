@@ -5,7 +5,7 @@ import { Accordion } from 'react-bootstrap'
 import NavigationButtons from "../Nav/navigation-buttons.jsx"
 import "./documents.scss"
 
-const Documents = ({ }) => {
+const ReopenEUTravel = ({ }) => {
   const { country, reopenEUComments } = useCountryContext()
   const [expanded, setExpanded] = React.useState(true)
   const allTravelInfo = reopenEUComments?.Travel
@@ -43,8 +43,8 @@ const Documents = ({ }) => {
   )
 }
 
-Documents.propTypes = {
+ReopenEUTravel.propTypes = {
 
 }
 
-export default Documents;
+export default ReopenEUTravel;
