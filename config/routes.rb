@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   get 'pages/index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
@@ -19,6 +21,8 @@ Rails.application.routes.draw do
       # resources :documents, param: :country_id
     end
   end
+
+   mount Sidekiq::Web, at: "sidekiq"
 
   get '*path', to: 'pages#index', via: :all
 end
