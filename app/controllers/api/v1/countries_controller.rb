@@ -32,20 +32,21 @@ module Api
         # will need to do below command with sidekiq
         # and move to a nightly job
         # OwidJob.perform_async
-
+        OwidJob.perform_async
         country_codes(name_params)
 
         owid_data = CovidRawDatum.find_by(
           data_source: "OWID"
         )
-
+        
         if !owid_data.nil? || !owid_data.blank? 
           @country_stats = owid_data.raw_json[alpha3]
         elsif owid_data.nil? || owid_data.blank? || owid_data["updated_at"] < 1.day.ago
           # get country statistics from OWID
           # all_countries_data = Country.get_all_our_world_in_data
           # @country_stats = all_countries_data[alpha3]
-          OwidJob.perform_async
+  
+          # OwidJob.perform_async
           @country_stats = owid_data.raw_json[alpha3]
         end 
 
@@ -75,21 +76,14 @@ module Api
 
       def show
         # get the selected country name
-        @name = name_params
-
-        country_codes(name)
-        embassy_information
-        owid_stats
-        travel_advisory
-        reopenEU
-     
+    
         # puts JSON.pretty_generate(@sorted_comments_list) 
 
         # create new object containing all of above info
         # response = {:stats => @country_stats, :travel_advisory => @travel_advisory, :country_info_from_embassy => @country_info_from_embassy, :comments => @sorted_comments_list }
 
         # return as json
-        render json: response
+        # render json: response
 
         # country = Country.find_by(slug: params[:slug])
         # render json: CountrySerializer.new(country, options).serialized_json

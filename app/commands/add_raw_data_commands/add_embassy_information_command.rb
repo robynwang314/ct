@@ -131,7 +131,7 @@ module AddRawDataCommands
 
       if main_section_index["Country-Specific Information"] == 1
         country_specific_info = main_section_index["Country-Specific Information"]
-      elsif main_section_index["Country-Specific Information"] > 2
+      elsif main_section_index["Country-Specific Information"] >= 2
         country_specific_info = main_section_index["Country-Specific Information"] - 1
       end
 

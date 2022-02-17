@@ -1,13 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useCountryContext } from '../country-context.jsx'
-import { Accordion } from 'react-bootstrap'
+import { Card, Accordion, useAccordionButton, AccordionContext } from 'react-bootstrap'
 import NavigationButtons from "../Nav/navigation-buttons.jsx"
 import "./documents.scss"
 
 const ReopenEUTravel = ({ }) => {
-  const { country, reopenEUComments } = useCountryContext()
-  const [expanded, setExpanded] = React.useState(true)
+  const { country, reopenEUComments, expanded, toggleCollapse } = useCountryContext()
   const allTravelInfo = reopenEUComments?.Travel
 
   // const skip = [2004, 2005, 2006, 2007]
@@ -31,13 +30,10 @@ const ReopenEUTravel = ({ }) => {
   return (
     <div>
       <br />
-      <button onClick={() => setExpanded(!expanded)}>{expanded ? "collapse all" : "expand all"}</button>
-      {/* <NavigationButtons /> */}
       {/* {country?.label ? <h2 style={{ fontWeight: 'bold' }}>Travel Information</h2> : ''} */}
       <div className="documents-container" style={{ textAlign: "left" }}>
         {/* <Accordion defaultActiveKey="0" flush> */}
         {parseTravelInfo}
-        {/* </Accordion> */}
       </div>
     </div>
   )

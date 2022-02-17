@@ -6,14 +6,13 @@ import "./documents.scss"
 
 const Services = ({ }) => {
   const { reopenEUComments } = useCountryContext()
-  const [expanded, setExpanded] = React.useState(true)
   const allHealthInfo = reopenEUComments["Services"]
 
   const parseServices = allHealthInfo?.map((service, id) => {
     return (
       <>
         <Accordion key={id} defaultActiveKey={id} flush>
-          <Accordion.Item eventKey={expanded ? id : 2000}>
+          <Accordion.Item eventKey={id}>
             <Accordion.Header><h6>{service?.indicator_name}</h6></Accordion.Header>
             <Accordion.Body><div style={{ color: "rgb(81, 82, 81)" }} dangerouslySetInnerHTML={{ __html: service?.comment }} /></Accordion.Body>
           </Accordion.Item>
@@ -25,7 +24,6 @@ const Services = ({ }) => {
   return (
     <div>
       <br />
-      <button onClick={() => setExpanded(!expanded)}>{expanded ? "collapse all" : "expand all"}</button>
       <div className="documents-container" style={{ textAlign: "left" }}>
         {parseServices}
       </div>

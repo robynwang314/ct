@@ -3,16 +3,28 @@ import PropTypes, { func } from 'prop-types'
 import api from '../api/api.js'
 export const CountrySelectionContext = createContext();
 export function CountrySelectionProvider({ children, defaultCountry = "United States" }) {
-  const [country, setCountry] = useState(/*defaultCountry*/ "");
+  const [country, setCountry] = useState(/* defaultCountry*/ "");
   const [countries, setCountries] = useState([])
   const [alertStatus, setAlertStatus] = useState({})
   const [allTimeOWIDstats, setAllTimeOWIDstats] = useState([])
   const [reopenEUComments, setReopenEUComments] = useState({})
   const [embassyComments, setEmbassyComments] = useState({})
+  const [toggleCollapse, setToggleCollapse] = useState(false)
+  const [expanded, setExpanded] = useState(true)
 
   const string_parameterize = str1 => {
-    return str1.trim().toLowerCase().replace(/[^a-zA-Z0-9 -]/, "").replace(/\s/g, "-");
+    return str1?.trim().toLowerCase().replace(/[^a-zA-Z0-9 -]/, "").replace(/\s/g, "-");
   };
+
+  const handleCollapse = () => {
+    setToggleCollapse(true)
+    setExpanded(!expanded)
+
+    setTimeout(() => {
+      setToggleCollapse(false)
+    }, 2000)
+  }
+
 
   const context = useMemo(
     () => ({
@@ -28,9 +40,13 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
       reopenEUComments,
       setReopenEUComments,
       embassyComments,
-      setEmbassyComments
+      setEmbassyComments,
+      expanded,
+      handleCollapse,
+      toggleCollapse
+
     }),
-    [string_parameterize, country, countries, allTimeOWIDstats, setAllTimeOWIDstats, alertStatus, setAlertStatus, reopenEUComments, setReopenEUComments, embassyComments, setEmbassyComments]
+    [string_parameterize, country, countries, allTimeOWIDstats, setAllTimeOWIDstats, alertStatus, setAlertStatus, reopenEUComments, setReopenEUComments, embassyComments, setEmbassyComments, expanded, handleCollapse, toggleCollapse]
   );
 
   return <CountrySelectionContext.Provider value={context}>

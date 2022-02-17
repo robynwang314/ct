@@ -27,8 +27,9 @@ async function getAlertStatus(country, string_parameterize) {
 }
 
 export const MainDocument = () => {
-  const { string_parameterize, country, countries, setCountries, alertStatus, setAlertStatus } = useCountryContext()
+  const { string_parameterize, country, countries, setCountries, alertStatus, setAlertStatus, expanded, handleCollapse } = useCountryContext()
   const [loading, setLoading] = useState(false)
+
   const countryCode = country?.value
   let countryNamesList = []
 
@@ -69,6 +70,8 @@ export const MainDocument = () => {
       <ChartContainer />
       <br />
       <NavBarTabs country={country} />
+      {country && <button style={{ position: "fixed", zIndex: "1", top: "95%", left: "90%" }} onClick={handleCollapse}>{expanded
+        ? "collapse all" : "expand all"}</button>}
       {/* <div style={{ color: "rgb(81, 82, 81)" }} dangerouslySetInnerHTML={{ __html: data?.important_info }} /> */}
     </>
   )

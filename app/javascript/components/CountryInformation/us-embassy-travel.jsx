@@ -7,7 +7,6 @@ import "./documents.scss"
 
 const USEmbassyTravel = ({ }) => {
   const { country, reopenEUComments, embassyComments } = useCountryContext()
-  const [expanded, setExpanded] = React.useState(true)
   const allTravelInfo = reopenEUComments?.Travel
 
   // const parseTravelInfo = allTravelInfo?.map((travel_indicator, id) => {
@@ -42,7 +41,6 @@ const USEmbassyTravel = ({ }) => {
   return (
     <div>
       <br />
-      <button onClick={() => setExpanded(!expanded)}>{expanded ? "collapse all" : "expand all"}</button>
       {/* <NavigationButtons /> */}
       {/* {country?.label ? <h2 style={{ fontWeight: 'bold' }}>Travel Information</h2> : ''} */}
       <div className="documents-container" style={{ textAlign: "left" }}>
