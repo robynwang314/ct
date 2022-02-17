@@ -1,3 +1,5 @@
+require 'sidekiq-scheduler'
+
 class OwidJob < SidekiqApplicationJob
    include Sidekiq::Worker
   #  sidekiq_options queue: 'critical', retry: 0

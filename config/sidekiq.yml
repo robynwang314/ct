@@ -1,0 +1,4 @@
+:schedule:
+  owid_job:
+    cron: '*/10 * * * *'   # Runs once every 10 mins
+    class: OwidJob

@@ -4,23 +4,17 @@ module AddRawDataCommands
     require 'json'
 
     def execute
-      raw_data = CovidRawDatum.where(
+      raw_data = CovidRawDatum.find_by(
         data_source: "OWID"
       )
 
-      if raw_data.empty?
+      if raw_data.nil? || raw_data.blank?
         new_raw_data = CovidRawDatum.new(data_source: "OWID", raw_json: get_all_our_world_in_data)
         new_raw_data.save
-        return new_raw_data
+        return;
       end
       
-      existing_data = raw_data.where("updated_at > ?", 1.day.ago)
-      
-      return raw_data if !existing_data.empty?
-
       raw_data.update(raw_json: get_all_our_world_in_data, updated_at: Time.current)
-
-      return raw_data
     end
 
     private

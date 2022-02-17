@@ -71,5 +71,6 @@ gem 'dalli'
 gem 'nokogiri'
 
 gem 'sidekiq'
+gem 'sidekiq-scheduler'
 gem "sidekiq-status"
 gem "sidekiq-unique-jobs"

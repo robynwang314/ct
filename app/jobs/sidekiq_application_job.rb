@@ -1,3 +1,5 @@
+require 'sidekiq-scheduler'
+
 class SidekiqApplicationJob
   include Sidekiq::Worker
   class << self
