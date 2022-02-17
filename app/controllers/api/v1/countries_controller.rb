@@ -31,15 +31,17 @@ module Api
       def owid_stats
         country_codes(name_params)
 
-        owid_data = CovidRawDatum.find_by(
-          data_source: "OWID"
+        country_stats = OwidCountryAllTimeDatum.find_by(
+          country_code: alpha3
         )
-       
-        if owid_data.nil? || owid_data.blank?
-          GetRawDataCommands::AddOwidCommand.new().execute
+
+        if country_stats.nil? || country_stats.blank?
+          owid_data = CovidRawDatum.find_by(
+            data_source: "OWID"
+          )
+          country_stats = owid_data.raw_json[alpha3]
         end
-        
-        country_stats = owid_data.raw_json[alpha3]
+
         render json: country_stats
       end
 
