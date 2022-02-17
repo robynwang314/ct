@@ -1,4 +1,4 @@
-module AddRawDataCommands
+module GetRawDataCommands
   class AddEmbassyInformationCommand
     include HTTParty
     require 'json'

@@ -5,6 +5,6 @@ class OwidJob < SidekiqApplicationJob
   #  sidekiq_options queue: 'critical', retry: 0
 
   def perform
-    AddRawDataCommands::AddOwidCommand.new().execute
+    GetRawDataCommands::AddOwidCommand.new().execute
   end
 end

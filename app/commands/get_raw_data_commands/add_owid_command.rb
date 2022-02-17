@@ -1,4 +1,4 @@
-module AddRawDataCommands
+module GetRawDataCommands
   class AddOwidCommand
    include HTTParty
     require 'json'
@@ -8,12 +8,14 @@ module AddRawDataCommands
         data_source: "OWID"
       )
 
+      # if it does not exist create a new entry
       if raw_data.nil? || raw_data.blank?
         new_raw_data = CovidRawDatum.new(data_source: "OWID", raw_json: get_all_our_world_in_data)
         new_raw_data.save
-        return;
+        return 
       end
       
+      # if it does, just update it
       raw_data.update(raw_json: get_all_our_world_in_data, updated_at: Time.current)
     end
 

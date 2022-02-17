@@ -23,7 +23,7 @@ module Api
 
       def embassy_information
         name = name_params
-        country_info = AddRawDataCommands::AddEmbassyInformationCommand.new(name: name).execute 
+        country_info = GetRawDataCommands::AddEmbassyInformationCommand.new(name: name).execute 
 
         render json: country_info
       end
@@ -36,7 +36,7 @@ module Api
         )
        
         if owid_data.nil? || owid_data.blank?
-          AddRawDataCommands::AddOwidCommand.new().execute
+          GetRawDataCommands::AddOwidCommand.new().execute
         end
         
         country_stats = owid_data.raw_json[alpha3]
@@ -45,21 +45,21 @@ module Api
 
       def today_stats
         country_codes(name_params)
-        today_stats = AddRawDataCommands::AddTodayStatsCommand.new(name: name_params, alpha3: alpha3).execute
+        today_stats = GetRawDataCommands::AddTodayStatsCommand.new(name: name_params, alpha3: alpha3).execute
 
         render json: today_stats
       end
 
       def travel_advisory
         country_codes(name_params)
-        travel_advisory_data = AddRawDataCommands::AddTravelAdvisoryCommand.new(country: name_params, alpha2: alpha2 ).execute 
+        travel_advisory_data = GetRawDataCommands::AddTravelAdvisoryCommand.new(country: name_params, alpha2: alpha2 ).execute 
 
         render json: travel_advisory_data
       end
 
       def reopenEU
         country_codes(name_params)
-        reopen_EU_data = AddRawDataCommands::AddReopeneuCommand.new(alpha3: alpha3 ).execute 
+        reopen_EU_data = GetRawDataCommands::AddReopeneuCommand.new(alpha3: alpha3 ).execute 
 
         render json: reopen_EU_data
       end

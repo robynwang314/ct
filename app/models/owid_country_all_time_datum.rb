@@ -1,0 +1,2 @@
+class OwidCountryAllTimeDatum < ApplicationRecord
+end

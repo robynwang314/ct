@@ -214,6 +214,41 @@ ALTER SEQUENCE public.embassy_raw_data_id_seq OWNED BY public.embassy_raw_data.i
 
 
 --
+-- Name: owid_country_all_time_data; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.owid_country_all_time_data (
+    id bigint NOT NULL,
+    country character varying,
+    all_time_data jsonb DEFAULT '{}'::jsonb,
+    data_source character varying DEFAULT 'OWID'::character varying,
+    covid_raw_data_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    country_code character varying
+);
+
+
+--
+-- Name: owid_country_all_time_data_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.owid_country_all_time_data_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: owid_country_all_time_data_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.owid_country_all_time_data_id_seq OWNED BY public.owid_country_all_time_data.id;
+
+
+--
 -- Name: owid_today_stats_raw_data; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -326,6 +361,13 @@ ALTER TABLE ONLY public.embassy_raw_data ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: owid_country_all_time_data id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.owid_country_all_time_data ALTER COLUMN id SET DEFAULT nextval('public.owid_country_all_time_data_id_seq'::regclass);
+
+
+--
 -- Name: owid_today_stats_raw_data id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -388,6 +430,14 @@ ALTER TABLE ONLY public.embassy_raw_data
 
 
 --
+-- Name: owid_country_all_time_data owid_country_all_time_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.owid_country_all_time_data
+    ADD CONSTRAINT owid_country_all_time_data_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: owid_today_stats_raw_data owid_today_stats_raw_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -430,6 +480,13 @@ CREATE INDEX index_documents_on_country_id ON public.documents USING btree (coun
 --
 
 CREATE INDEX index_embassy_raw_data_on_covid_raw_data_id ON public.embassy_raw_data USING btree (covid_raw_data_id);
+
+
+--
+-- Name: index_owid_country_all_time_data_on_covid_raw_data_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_owid_country_all_time_data_on_covid_raw_data_id ON public.owid_country_all_time_data USING btree (covid_raw_data_id);
 
 
 --
@@ -477,6 +534,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220214175828'),
 ('20220215202759'),
 ('20220215204755'),
-('20220215205504');
+('20220215205504'),
+('20220217184845'),
+('20220217193216');
 
 

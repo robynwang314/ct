@@ -1,4 +1,4 @@
-module AddRawDataCommands
+module GetRawDataCommands
   class AddTravelAdvisoryCommand
     include HTTParty
     require 'json'

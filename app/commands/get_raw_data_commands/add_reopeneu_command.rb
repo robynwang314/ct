@@ -1,4 +1,4 @@
-module AddRawDataCommands
+module GetRawDataCommands
   class AddReopeneuCommand
     include HTTParty
     require 'json'
