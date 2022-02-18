@@ -89,7 +89,6 @@ module GetRawDataCommands
 
     def section_indexes(all_content_text)
       information_sections = Country::INFORMATION_SECTIONS
-      sub_section_keys = Country::SUB_SECTIONS
       indices = {}
 
       information_sections.each_with_index do |section, array_index|
@@ -126,6 +125,7 @@ module GetRawDataCommands
     end
 
     def build_country_info
+      main_section_keys = Country::SUB_SECTIONS
       all_content_text = all_content
       main_section_index = section_indexes(all_content_text)
 
@@ -143,15 +143,14 @@ module GetRawDataCommands
       other_links = []
       misc = []
       
-      all_content_text.each_with_index{|x, i| 
-        case i
+      all_content_text.each_with_index{|x, index| 
+        case index
         # important inforamtion section
         when 0...(country_specific_info)
           important_info << x
         # country specific section
         when (main_section_index["Country-Specific Information"])...(main_section_index["COVID-19 Testing"]) 
           country_specific << x
-        # not addiing +1 because need header
         when (main_section_index["COVID-19 Testing"])...(main_section_index["Entry and Exit Requirements"])
           testing_vaccine << x
         when (main_section_index["Entry and Exit Requirements"])...(main_section_index["Movement Restrictions"])
@@ -161,7 +160,7 @@ module GetRawDataCommands
         when (main_section_index["Other Links"])..(all_content_text.size - 3)
           other_links << x
         else
-          if !(main_section_index.keys.include? i)
+          if !main_section_keys.any? {|section_header| x.include? (section_header)}
             misc << x
           end
         end
@@ -169,13 +168,13 @@ module GetRawDataCommands
 
       all_embassy_info = {}
 
-      all_embassy_info["important_info"] = important_info.join('') 
-      all_embassy_info["country_specific"] = country_specific.join('') 
-      all_embassy_info["testing_vaccine"] = testing_vaccine.join('') 
-      all_embassy_info["entry_exit"] = entry_exit.join('')  
-      all_embassy_info["local_resources"] = local_resources.join('') 
-      all_embassy_info["other_links"] = other_links.join('')  
-      all_embassy_info["misc"] = misc.join('')  
+      all_embassy_info["Important Information"] = important_info.join('') 
+      all_embassy_info["Country Specific Information"] = country_specific.join('') 
+      all_embassy_info["Testing and Vaccine Information"] = testing_vaccine.join('') 
+      all_embassy_info["Entry and Exit requirements"] = entry_exit.join('')  
+      all_embassy_info["Local Resources"] = local_resources.join('') 
+      all_embassy_info["Other Links"] = other_links.join('')  
+      all_embassy_info["Misc Information"] = misc.join('')  
 
       all_embassy_info
     end

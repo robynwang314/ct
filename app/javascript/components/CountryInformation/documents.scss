@@ -21,3 +21,36 @@ li {
   overflow-y: scroll !important;
   border: solid 1px lightgray !important;
 }
+
+#testing {
+  display: none;
+  visibility: hidden !important;
+}
+
+.meta-info-top {
+  display: none;
+  visibility: hidden !important;
+}
+
+.toptitle {
+  display: none;
+  visibility: hidden !important;
+}
+
+.embassy-info-container {
+  > div > li {
+    list-style: none !important;
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+
+.embassy-info-container {
+  margin: 0% 3% 3%;
+  padding: 1%
+}
+
+.country-name__specific-info {
+  text-transform: capitalize;
+  text-align: center;
+}

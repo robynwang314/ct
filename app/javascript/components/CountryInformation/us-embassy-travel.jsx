@@ -6,47 +6,34 @@ import NavigationButtons from "../Nav/navigation-buttons.jsx"
 import "./documents.scss"
 
 const USEmbassyTravel = ({ }) => {
-  const { country, reopenEUComments, embassyComments } = useCountryContext()
-  const allTravelInfo = reopenEUComments?.Travel
+  const { country, embassyComments, collapsed, expanded } = useCountryContext()
 
-  // const parseTravelInfo = allTravelInfo?.map((travel_indicator, id) => {
-  //   return (
-  //     <>
-  //       <Accordion defaultActiveKey={id} flush>
-  //         <Accordion.Item eventKey={expanded ? id : 2000}>
-  //           {/* <div className="comments-border" /> */}
-  //           <Accordion.Header><h6>{travel_indicator?.indicator_name}</h6></Accordion.Header>
-  //           <Accordion.Body><div style={{ color: "rgb(81, 82, 81)" }} dangerouslySetInnerHTML={{ __html: travel_indicator?.comment }} /></Accordion.Body>
-  //         </Accordion.Item>
-  //       </Accordion>
-  //     </>
-  //   )
-  // })
-
-  const parseTravelInfo = () => {
-    const formattedHTML = embassyComments?.important_info?.replaceAll('\n', '\n\n')
+  const parseTravelInfo = Object.keys(embassyComments)?.map((travel_indicator, id) => {
+    if (travel_indicator == "Country Specific Information" || travel_indicator == "Important Information") return;
 
     return (
       <>
-        <Accordion defaultActiveKey={""} flush>
-          <Accordion.Item /*eventKey={expanded ? id : 2000}*/>
-            <Accordion.Header><h6>{"Important Information"}</h6></Accordion.Header>
-            <Accordion.Body><div style={{ color: "rgb(81, 82, 81)", whiteSpace: "pre-line" }} dangerouslySetInnerHTML={{ __html: formattedHTML }} /></Accordion.Body>
+        <Accordion defaultActiveKey={id} flush>
+          <Accordion.Item eventKey={id}>
+            <Accordion.Header><h6>{travel_indicator}</h6></Accordion.Header>
+            <Accordion.Body><div style={{ color: "rgb(81, 82, 81)" }} dangerouslySetInnerHTML={{ __html: embassyComments[travel_indicator] }} /></Accordion.Body>
           </Accordion.Item>
         </Accordion>
       </>
     )
-  }
+  })
+
+  const formattedHTML = embassyComments["Country Specific Information"]?.replaceAll('\n', '\n\n')
 
   return (
     <div>
       <br />
-      {/* <NavigationButtons /> */}
-      {/* {country?.label ? <h2 style={{ fontWeight: 'bold' }}>Travel Information</h2> : ''} */}
-      <div className="documents-container" style={{ textAlign: "left" }}>
-        {/* <Accordion defaultActiveKey="0" flush> */}
-        {parseTravelInfo()}
-        {/* </Accordion> */}
+      <div className="embassy-info-container" style={{ textAlign: "left" }}>
+        <h3 className="country-name__specific-info">Traveling to {country.label}</h3>
+        <br />
+        <div style={{ color: "rgb(81, 82, 81)" }} dangerouslySetInnerHTML={{ __html: formattedHTML }} />
+        <br />
+        {parseTravelInfo}
       </div>
     </div>
   )
