@@ -36,15 +36,6 @@ module Api
           country_code: alpha3
         )
 
-        # if not, just search and parse
-        if country_stats.nil? || country_stats.blank?
-          # assuming covid Raw datum never fails
-          owid_data = CovidRawDatum.find_by(
-            data_source: "OWID"
-          )
-
-          country_stats = owid_data.raw_json[alpha3]
-        end
         # country stats have more fields than just all_time_data
         all_cases = country_stats["all_time_data"]
         render json: all_cases
@@ -56,26 +47,16 @@ module Api
           country_code: alpha3
         )
 
-        if today_stats.nil? || today_stats.blank?
-          # assuming covid Raw datum never fails
-          all_latest_stats = CovidRawDatum.find_by(
-            data_source: "latest OWID"
-          )
-
-          today_stats = all_latest_stats.raw_json[alpha3]
-        end
-
-        # today_stats has more fields than just raw_json
         latest_cases = today_stats["raw_json"]
-
         render json: latest_cases
       end
 
       def travel_advisory
         country_codes(name_params)
-        travel_advisory_data = GetRawDataCommands::AddTravelAdvisoryCommand.new(country: name_params, alpha2: alpha2 ).execute 
+        country_advisory = TravelAdvisoryRawDatum.find_by(country_code: alpha2)
 
-        render json: travel_advisory_data
+        message = country_advisory["raw_json"]["advisory"]
+        render json: message
       end
 
       def reopenEU

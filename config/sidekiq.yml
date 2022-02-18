@@ -11,3 +11,9 @@
   country_owid_latest_stats_job:
     cron: '45 1 * * */1'
     class: CountryOwidLatestStatsJob
+  all_travel_advisories_job:
+    cron: '0 2 * * */1'
+    class: AllTravelAdvisoriesJob
+  country_travel_advisory_job:
+    cron: '15 2 * * */1'
+    class: CountryTravelAdvisoryJob

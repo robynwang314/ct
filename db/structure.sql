@@ -303,7 +303,8 @@ CREATE TABLE public.travel_advisory_raw_data (
     data_source character varying DEFAULT 'Advisory'::character varying,
     covid_raw_data_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    country_code character varying
 );
 
 
@@ -538,6 +539,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220215205504'),
 ('20220217184845'),
 ('20220217193216'),
-('20220218001531');
+('20220218001531'),
+('20220218010903');
 
 

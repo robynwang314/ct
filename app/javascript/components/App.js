@@ -66,7 +66,7 @@ export const MainDocument = () => {
       <SearchBar countryNamesList={countryNamesList} />
       <br />
       <h2 style={{ marginBottom: '0px', fontWeight: "bold" }}>{country?.label ? country.label : "No Country selected"}</h2>
-      <h5 style={{ marginBottom: '0', color: "red" }}>Alert Status:</h5> <p style={{ marginTop: '.35%' }}>{alertStatus[countryCode]?.advisory?.message}</p>
+      <h5 style={{ marginBottom: '0', color: "red" }}>Alert Status:</h5> <p style={{ marginTop: '.35%' }}>{alertStatus?.message}</p>
       <ChartContainer />
       <br />
       <NavBarTabs country={country} />
