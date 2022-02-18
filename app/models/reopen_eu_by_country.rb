@@ -1,0 +1,2 @@
+class ReopenEuByCountry < ApplicationRecord
+end

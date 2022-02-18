@@ -27,7 +27,8 @@ class Country < ApplicationRecord
   has_many :travel_advisory_raw_data
   has_many :owid_today_stats_raw_data
   has_many :owid_country_all_time_data
-  
+  has_many :reopen_eu_by_countries
+
   before_create :slugify
 
   def slugify

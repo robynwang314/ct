@@ -61,9 +61,10 @@ module Api
 
       def reopenEU
         country_codes(name_params)
-        reopen_EU_data = ExtractByCountryCommands::CountryGetReopeneuCommand.new(alpha3: alpha3 ).execute 
-
-        render json: reopen_EU_data
+        reopen_EU_data = ReopenEuByCountry.find_by(country_code: alpha3)
+      
+        country_reopen_EU = reopen_EU_data["raw_json"]
+        render json: country_reopen_EU
       end
 
       def show

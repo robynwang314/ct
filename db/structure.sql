@@ -284,6 +284,41 @@ ALTER SEQUENCE public.owid_today_stats_raw_data_id_seq OWNED BY public.owid_toda
 
 
 --
+-- Name: reopen_eu_by_countries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.reopen_eu_by_countries (
+    id bigint NOT NULL,
+    country character varying,
+    country_code character varying,
+    raw_json jsonb DEFAULT '{}'::jsonb,
+    data_source character varying DEFAULT 'ReopenEU'::character varying,
+    covid_raw_data_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: reopen_eu_by_countries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.reopen_eu_by_countries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: reopen_eu_by_countries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.reopen_eu_by_countries_id_seq OWNED BY public.reopen_eu_by_countries.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -377,6 +412,13 @@ ALTER TABLE ONLY public.owid_today_stats_raw_data ALTER COLUMN id SET DEFAULT ne
 
 
 --
+-- Name: reopen_eu_by_countries id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reopen_eu_by_countries ALTER COLUMN id SET DEFAULT nextval('public.reopen_eu_by_countries_id_seq'::regclass);
+
+
+--
 -- Name: travel_advisory_raw_data id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -448,6 +490,14 @@ ALTER TABLE ONLY public.owid_today_stats_raw_data
 
 
 --
+-- Name: reopen_eu_by_countries reopen_eu_by_countries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reopen_eu_by_countries
+    ADD CONSTRAINT reopen_eu_by_countries_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -499,6 +549,13 @@ CREATE INDEX index_owid_today_stats_raw_data_on_covid_raw_data_id ON public.owid
 
 
 --
+-- Name: index_reopen_eu_by_countries_on_covid_raw_data_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_reopen_eu_by_countries_on_covid_raw_data_id ON public.reopen_eu_by_countries USING btree (covid_raw_data_id);
+
+
+--
 -- Name: index_travel_advisory_raw_data_on_covid_raw_data_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -540,6 +597,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220217184845'),
 ('20220217193216'),
 ('20220218001531'),
-('20220218010903');
+('20220218010903'),
+('20220218180949');
 
 
