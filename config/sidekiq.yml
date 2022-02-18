@@ -17,3 +17,6 @@
   country_travel_advisory_job:
     cron: '15 2 * * */1'
     class: CountryTravelAdvisoryJob
+  all_reopen_eu_job:
+    cron: '30 2 * * */1'
+    class: AllReopenEuJob
