@@ -31,25 +31,44 @@ module Api
       def owid_stats
         country_codes(name_params)
 
+        # grab from database if it exists
         country_stats = OwidCountryAllTimeDatum.find_by(
           country_code: alpha3
         )
 
+        # if not, just search and parse
         if country_stats.nil? || country_stats.blank?
+          # assuming covid Raw datum never fails
           owid_data = CovidRawDatum.find_by(
             data_source: "OWID"
           )
+
           country_stats = owid_data.raw_json[alpha3]
         end
-
-        render json: country_stats
+        # country stats have more fields than just all_time_data
+        all_cases = country_stats["all_time_data"]
+        render json: all_cases
       end
 
       def today_stats
         country_codes(name_params)
-        today_stats = GetRawDataCommands::AddTodayStatsCommand.new(name: name_params, alpha3: alpha3).execute
+        today_stats = OwidTodayStatsRawDatum.find_by(
+          country_code: alpha3
+        )
 
-        render json: today_stats
+        if today_stats.nil? || today_stats.blank?
+          # assuming covid Raw datum never fails
+          all_latest_stats = CovidRawDatum.find_by(
+            data_source: "latest OWID"
+          )
+
+          today_stats = all_latest_stats.raw_json[alpha3]
+        end
+
+        # today_stats has more fields than just raw_json
+        latest_cases = today_stats["raw_json"]
+
+        render json: latest_cases
       end
 
       def travel_advisory

@@ -44,7 +44,7 @@ const Graphs = ({ }) => {
       const allData = await getAllTimeOWIDStats(country, string_parameterize)
       if (allData && allData.data) {
         setAllTimeOWIDstats(allData.data)
-        setAllCases(allData.data.all_time_data.data)
+        setAllCases(allData.data.data)
       }
     } catch (error) {
       console.log(error)

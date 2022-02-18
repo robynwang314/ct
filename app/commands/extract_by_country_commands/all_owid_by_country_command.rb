@@ -14,7 +14,7 @@ module ExtractByCountryCommands
       # else check to make sure there is data, if not create it
       if OwidCountryAllTimeDatum.all.length == 0
         all_owid_data.raw_json.each do |country, data| 
-          OwidCountryAllTimeDatum.create(country_code: country, all_time_data: data )
+          OwidCountryAllTimeDatum.create(country: data["location"], country_code: country, all_time_data: data )
         end
       else
         # else update it

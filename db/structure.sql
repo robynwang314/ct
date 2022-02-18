@@ -259,7 +259,8 @@ CREATE TABLE public.owid_today_stats_raw_data (
     data_source character varying DEFAULT 'latest OWID'::character varying,
     covid_raw_data_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    country_code character varying
 );
 
 
@@ -536,6 +537,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220215204755'),
 ('20220215205504'),
 ('20220217184845'),
-('20220217193216');
+('20220217193216'),
+('20220218001531');
 
 

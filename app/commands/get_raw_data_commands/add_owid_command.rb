@@ -10,8 +10,7 @@ module GetRawDataCommands
 
       # if it does not exist create a new entry
       if raw_data.nil? || raw_data.blank?
-        new_raw_data = CovidRawDatum.new(data_source: "OWID", raw_json: get_all_our_world_in_data)
-        new_raw_data.save
+        CovidRawDatum.create(data_source: "OWID", raw_json: get_all_our_world_in_data) 
         return 
       end
       
