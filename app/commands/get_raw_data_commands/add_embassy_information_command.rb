@@ -171,7 +171,7 @@ module GetRawDataCommands
       all_embassy_info["Important Information"] = important_info.join('') 
       all_embassy_info["Country Specific Information"] = country_specific.join('') 
       all_embassy_info["Testing and Vaccine Information"] = testing_vaccine.join('') 
-      all_embassy_info["Entry and Exit requirements"] = entry_exit.join('')  
+      all_embassy_info["Entry and Exit Requirements"] = entry_exit.join('')  
       all_embassy_info["Local Resources"] = local_resources.join('') 
       all_embassy_info["Other Links"] = other_links.join('')  
       all_embassy_info["Misc Information"] = misc.join('')  
