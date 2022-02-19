@@ -30,6 +30,6 @@
     "webpack-dev-server": "^3"
   },
   "scripts": {
-    "start": "webpack-dev-server --hot --mode development --config ./webpack.dev.config"
+    "start": "./bin/webpack-dev-server --hot --mode development --watch --watch-poll"
   }
 }

@@ -30,7 +30,6 @@ const USEmbassyTravel = ({ }) => {
       <br />
       <div className="embassy-info-container" style={{ textAlign: "left" }}>
         <h3 className="country-name__specific-info">Traveling to {country.label}</h3>
-        <br />
         <div style={{ color: "rgb(81, 82, 81)" }} dangerouslySetInnerHTML={{ __html: formattedHTML }} />
         <br />
         {parseTravelInfo}
