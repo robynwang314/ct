@@ -68,15 +68,33 @@ module Api
       end
 
       def show
-        # get the selected country name
+        country_codes("United States")
+      
+        # country advisory
+        country_advisory =  TravelAdvisoryRawDatum.find_by(country_code: alpha2)
+        message = country_advisory["raw_json"]["advisory"]
+
+        # all time stats
+        country_stats = OwidCountryAllTimeDatum.find_by(
+          country_code: alpha3
+          )
+        all_cases = country_stats["all_time_data"]
+          
+        # todays stats
+        today_stats = OwidTodayStatsRawDatum.find_by(
+          country_code: alpha3
+        )
+        latest_cases = today_stats["raw_json"]
+
+        # TODO: embassy info
     
         # puts JSON.pretty_generate(@sorted_comments_list) 
 
         # create new object containing all of above info
-        # response = {:stats => @country_stats, :travel_advisory => @travel_advisory, :country_info_from_embassy => @country_info_from_embassy, :comments => @sorted_comments_list }
+        response = { :travel_advisory => message, :stats => all_cases, :latest_cases => latest_cases}
 
         # return as json
-        # render json: response
+        render json: response
 
         # country = Country.find_by(slug: params[:slug])
         # render json: CountrySerializer.new(country, options).serialized_json

@@ -8,9 +8,9 @@ const countries = {
       dataType: "json",
     });
   },
-  show: (name) => {
+  default: () => {
     return axios({
-      url: `api/v1/countries/${name}`,
+      url: `api/v1/countries/default`,
       method: "GET",
       dataType: "json",
     });
