@@ -14,7 +14,7 @@ module GetRawDataCommands
         return
       end
 
-      all_travel_advisory.update(raw_json: get_travel_advisory, updated_at: Time.current )
+      all_travel_advisory.update(raw_json: get_travel_advisory["data"], updated_at: Time.current )
     end
 
     private

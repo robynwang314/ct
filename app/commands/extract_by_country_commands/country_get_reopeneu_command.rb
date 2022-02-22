@@ -11,13 +11,7 @@ module ExtractByCountryCommands
         json_visa.each do |country| 
           next if country["nutscode"] == "OTC"
 
-          @get_by_domain = country["indicators"].select {|data| data["comment"] != ""}   
-
-          # build relevant information from reOpenEu into object
-          all_comments_list = build_comments
-
-          # sort comment list by grouping by domain 
-          sorted_comments_list = all_comments_list.group_by { |d| d["domain_name"] }
+          sorted_comments_list = build_comments(country)
 
           country_name = ISO3166::Country.find_country_by_alpha3(country["nutscode"]).name 
           ReopenEuByCountry.create(country: country_name, country_code: country["nutscode"], data_source: "ReopenEU", raw_json: sorted_comments_list )
@@ -25,6 +19,8 @@ module ExtractByCountryCommands
       else
         json_visa.each do |country| 
           next if country["nutscode"] == "OTC"
+          sorted_comments_list = build_comments(country)
+
           reopen_eu_country = ReopenEuByCountry.find_by(country_code: country["nutscode"])
           reopen_eu_country.update(raw_json: sorted_comments_list, updated_at: Time.current)
         end
@@ -33,9 +29,11 @@ module ExtractByCountryCommands
 
     private
 
-    def build_comments
+    def build_comments(country)
       all_comments_organized = []
-      @get_by_domain.each_with_object({}) do |c| 
+      get_by_domain = country["indicators"].select {|data| data["comment"] != ""}
+
+      get_by_domain.each_with_object({}) do |c| 
         comment = { }
         comment["domain_id"] =  c["domain_id"]
         comment["domain_name"] = c["domain_name"]
@@ -46,7 +44,8 @@ module ExtractByCountryCommands
 
         all_comments_organized << comment
       end
-      return all_comments_organized
+      # return sorted comments
+      return all_comments_organized.group_by { |d| d["domain_name"] }
     end 
   
   end
