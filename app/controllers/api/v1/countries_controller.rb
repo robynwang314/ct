@@ -9,7 +9,7 @@ module Api
       def index
         countries = ISO3166::Country.find_all_countries_by_region('Europe')
         render json: countries.as_json
-
+        
         # countries = Country.all
         # render json: CountrySerializer.new(countries, options).serialized_json
       end

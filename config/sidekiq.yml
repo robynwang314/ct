@@ -3,7 +3,7 @@
     cron:  '0 0 * * */1' #every day of the week, #'*/10 * * * *'   # Runs once every 10 mins
     class: OwidJob
   country_owid_job:
-    cron:  '0 1 * * */1' #1:30 am every day, #'0 */1 * * *' #every hour
+    cron:  '0 1 * * */1' #1:00 am every day, #'0 */1 * * *' #every hour
     class: CountryOwidJob
   all_owid_latest_stats_job:
     cron:  '30 1 * * */1'
@@ -23,3 +23,6 @@
   country_reopen_eu_job:
     cron: '45 2 * * */1'
     class: CountryReopenEuJob
+  country_from_embassy_list_job:
+    cron: '0 3 * * */1'
+    class: CountryFromEmbassyListJob

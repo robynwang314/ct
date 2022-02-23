@@ -32,7 +32,7 @@ class Country < ApplicationRecord
   before_create :slugify
 
   def slugify
-    self.slug = name.parameterize
+    self.slug = country.parameterize
   end
 
   def self.get_all_our_world_in_data

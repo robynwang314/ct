@@ -17,7 +17,7 @@ module GetRawDataCommands
     private
 
     def info_from_embassy
-      get_list_of_embassy_links
+      # get_list_of_embassy_links
       get_specific_country
       # scrape and build information 
       country_info = build_country_info
@@ -180,8 +180,10 @@ module GetRawDataCommands
     end
 
     def get_country_embassy_link(name)
-      str_name = name.to_s
-      parse_page.css("a:contains('#{str_name}')").first['href']
+      country_object = Country.find_by(country: name)
+      return country_object.href
+      # str_name = name.to_s
+      # parse_page.css("a:contains('#{str_name}')").first['href']
     end
 
     def get_specific_country
@@ -190,6 +192,7 @@ module GetRawDataCommands
       @parse_country ||= Nokogiri::HTML(specific_country)
     end
 
+    # might not need th below anymore if executing GetAllCountriesFromEmbassyCommand
     def get_list_of_embassy_links
       # get list of all countries from embassy's travel advisory site
       document = HTTParty.get("https://travel.state.gov/content/travel/en/traveladvisories/COVID-19-Country-Specific-Information.html")

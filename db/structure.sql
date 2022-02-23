@@ -47,38 +47,6 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
--- Name: charts; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.charts (
-    id bigint NOT NULL,
-    type character varying,
-    country_id bigint NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: charts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.charts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: charts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.charts_id_seq OWNED BY public.charts.id;
-
-
---
 -- Name: countries; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -87,7 +55,8 @@ CREATE TABLE public.countries (
     country character varying,
     slug character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    href character varying
 );
 
 
@@ -358,13 +327,6 @@ ALTER SEQUENCE public.travel_advisory_raw_data_id_seq OWNED BY public.travel_adv
 
 
 --
--- Name: charts id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.charts ALTER COLUMN id SET DEFAULT nextval('public.charts_id_seq'::regclass);
-
-
---
 -- Name: countries id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -426,14 +388,6 @@ ALTER TABLE ONLY public.travel_advisory_raw_data ALTER COLUMN id SET DEFAULT nex
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
-
-
---
--- Name: charts charts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.charts
-    ADD CONSTRAINT charts_pkey PRIMARY KEY (id);
 
 
 --
@@ -509,25 +463,10 @@ ALTER TABLE ONLY public.travel_advisory_raw_data
 
 
 --
--- Name: index_charts_on_country_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_charts_on_country_id ON public.charts USING btree (country_id);
-
-
---
 -- Name: index_documents_on_country_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_documents_on_country_id ON public.documents USING btree (country_id);
-
-
---
--- Name: charts fk_rails_70eb90a5ec; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.charts
-    ADD CONSTRAINT fk_rails_70eb90a5ec FOREIGN KEY (country_id) REFERENCES public.countries(id);
 
 
 --
@@ -564,6 +503,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220223004705'),
 ('20220223004842'),
 ('20220223004915'),
-('20220223004954');
+('20220223004954'),
+('20220223173900'),
+('20220223183905');
 
 
