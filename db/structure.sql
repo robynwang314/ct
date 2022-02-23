@@ -84,7 +84,7 @@ ALTER SEQUENCE public.charts_id_seq OWNED BY public.charts.id;
 
 CREATE TABLE public.countries (
     id bigint NOT NULL,
-    name character varying,
+    country character varying,
     slug character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -188,7 +188,6 @@ CREATE TABLE public.embassy_raw_data (
     country character varying,
     raw_json jsonb DEFAULT '{}'::jsonb,
     data_source character varying DEFAULT 'Embassy'::character varying,
-    covid_raw_data_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -222,7 +221,6 @@ CREATE TABLE public.owid_country_all_time_data (
     country character varying,
     all_time_data jsonb DEFAULT '{}'::jsonb,
     data_source character varying DEFAULT 'OWID'::character varying,
-    covid_raw_data_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     country_code character varying
@@ -257,7 +255,6 @@ CREATE TABLE public.owid_today_stats_raw_data (
     country character varying,
     raw_json jsonb DEFAULT '{}'::jsonb,
     data_source character varying DEFAULT 'latest OWID'::character varying,
-    covid_raw_data_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     country_code character varying
@@ -293,7 +290,6 @@ CREATE TABLE public.reopen_eu_by_countries (
     country_code character varying,
     raw_json jsonb DEFAULT '{}'::jsonb,
     data_source character varying DEFAULT 'ReopenEU'::character varying,
-    covid_raw_data_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -336,7 +332,6 @@ CREATE TABLE public.travel_advisory_raw_data (
     country character varying,
     raw_json jsonb DEFAULT '{}'::jsonb,
     data_source character varying DEFAULT 'Advisory'::character varying,
-    covid_raw_data_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     country_code character varying
@@ -528,41 +523,6 @@ CREATE INDEX index_documents_on_country_id ON public.documents USING btree (coun
 
 
 --
--- Name: index_embassy_raw_data_on_covid_raw_data_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_embassy_raw_data_on_covid_raw_data_id ON public.embassy_raw_data USING btree (covid_raw_data_id);
-
-
---
--- Name: index_owid_country_all_time_data_on_covid_raw_data_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_owid_country_all_time_data_on_covid_raw_data_id ON public.owid_country_all_time_data USING btree (covid_raw_data_id);
-
-
---
--- Name: index_owid_today_stats_raw_data_on_covid_raw_data_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_owid_today_stats_raw_data_on_covid_raw_data_id ON public.owid_today_stats_raw_data USING btree (covid_raw_data_id);
-
-
---
--- Name: index_reopen_eu_by_countries_on_covid_raw_data_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_reopen_eu_by_countries_on_covid_raw_data_id ON public.reopen_eu_by_countries USING btree (covid_raw_data_id);
-
-
---
--- Name: index_travel_advisory_raw_data_on_covid_raw_data_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_travel_advisory_raw_data_on_covid_raw_data_id ON public.travel_advisory_raw_data USING btree (covid_raw_data_id);
-
-
---
 -- Name: charts fk_rails_70eb90a5ec; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -598,6 +558,12 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220217193216'),
 ('20220218001531'),
 ('20220218010903'),
-('20220218180949');
+('20220218180949'),
+('20220222223103'),
+('20220223004500'),
+('20220223004705'),
+('20220223004842'),
+('20220223004915'),
+('20220223004954');
 
 

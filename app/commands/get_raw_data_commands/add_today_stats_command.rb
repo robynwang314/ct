@@ -9,7 +9,7 @@ module GetRawDataCommands
       )
 
       if all_latest_stats.nil? || all_latest_stats.blank?
-        CovidRawDatum.create(data_source: "latest OWID", raw_json: get_all_latest_our_world_in_data)
+        CovidRawDatum.create(data_source: "latest OWID", raw_json: get_all_latest_owid)
         return
       end
   
