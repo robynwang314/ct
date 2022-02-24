@@ -19,7 +19,7 @@ const SearchBar = ({ countryNamesList }) => {
     allCountriesKeyValuePair.push(countryKeyValuePair)
   }
 
-  // allCountriesKeyValuePair[8] && (allCountriesKeyValuePair[8]["label"] = "Czech Republic")
+  allCountriesKeyValuePair[8] && (allCountriesKeyValuePair[8]["label"] = "Czech Republic")
 
   return (
     <div style={{ width: '97%', margin: '.5%' }}>

@@ -53,7 +53,7 @@ export const MainDocument = () => {
 
   if (countries.length > 0) {
     countryNamesList = countries.map((country) => {
-      return country.data.name
+      return country.data.iso_short_name
     })
     countryNamesList[17] = "United Kingdom"
     countryNamesList[33] = "Moldova, Republic of"
