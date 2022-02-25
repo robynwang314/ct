@@ -17,7 +17,7 @@ module ExtractByCountryCommands
       else
         all_latest_stats.raw_json.each do |country, data|
           country_latest_stats = OwidTodayStatsRawDatum.find_by(country_code: country)
-          country_latest_stats.update(raw_json: data, updated_at: Time.now())
+          country_latest_stats.update(raw_json: data, updated_at: Time.current)
         end
       end
 

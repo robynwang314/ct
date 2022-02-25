@@ -17,7 +17,7 @@ module ExtractByCountryCommands
       else
         all_travel_advisory.raw_json.each do |country, data|
           country_alert = TravelAdvisoryRawDatum.find_by(country_code: country)
-          country_alert.update(raw_json: data, updated_at: Time.now)
+          country_alert.update(raw_json: data, updated_at: Time.current)
         end
       end
     end
