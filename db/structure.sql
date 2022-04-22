@@ -56,7 +56,9 @@ CREATE TABLE public.countries (
     slug character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    href character varying
+    href character varying,
+    alpha2 character varying,
+    alpha3 character varying
 );
 
 
@@ -506,6 +508,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220223004954'),
 ('20220223173900'),
 ('20220223183905'),
-('20220420150821');
+('20220420150821'),
+('20220422220122');
 
 
