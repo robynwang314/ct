@@ -1,4 +1,6 @@
 class Country < ApplicationRecord
+  # self.primary_key = "country"
+
   INFORMATION_SECTIONS = [  "Country-Specific Information",
                             "COVID-19 Testing",
                             "COVID-19 Vaccine",
@@ -24,7 +26,7 @@ class Country < ApplicationRecord
   has_many :documents
   has_many :covid_raw_data
   has_many :embassy_raw_data
-  has_many :travel_advisory_raw_data
+  has_one :travel_advisory_raw_datum,  primary_key: :country, foreign_key: :country_name
   has_many :owid_today_stats_raw_data
   has_many :owid_country_all_time_data
   has_many :reopen_eu_by_countries

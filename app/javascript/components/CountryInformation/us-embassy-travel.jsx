@@ -29,7 +29,7 @@ const USEmbassyTravel = ({ }) => {
     <div>
       <br />
       <div className="embassy-info-container" style={{ textAlign: "left" }}>
-        <h3 className="country-name__specific-info">Traveling to {country.label}</h3>
+        {/* <h3 className="country-name__specific-info">Traveling to {country.label}</h3> */}
         <div style={{ color: "rgb(81, 82, 81)" }} dangerouslySetInnerHTML={{ __html: formattedHTML }} />
         <br />
         {parseTravelInfo && parseTravelInfo?.filter(obj => { return obj?.key === "Entry and Exit Requirements" })}

@@ -12,7 +12,7 @@ module ExtractByCountryCommands
 
       if TravelAdvisoryRawDatum.all.length == 0
         all_travel_advisory.raw_json.each do |country, data|
-          TravelAdvisoryRawDatum.create(country: data["name"], country_code: country, raw_json: data )
+          TravelAdvisoryRawDatum.create(country_name: data["name"], country_code: country, raw_json: data )
         end
       else
         all_travel_advisory.raw_json.each do |country, data|

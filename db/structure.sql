@@ -298,7 +298,7 @@ CREATE TABLE public.schema_migrations (
 
 CREATE TABLE public.travel_advisory_raw_data (
     id bigint NOT NULL,
-    country character varying,
+    country_name character varying,
     raw_json jsonb DEFAULT '{}'::jsonb,
     data_source character varying DEFAULT 'Advisory'::character varying,
     created_at timestamp(6) without time zone NOT NULL,
@@ -505,6 +505,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220223004915'),
 ('20220223004954'),
 ('20220223173900'),
-('20220223183905');
+('20220223183905'),
+('20220420150821');
 
 
