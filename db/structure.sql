@@ -156,7 +156,7 @@ ALTER SEQUENCE public.documents_id_seq OWNED BY public.documents.id;
 
 CREATE TABLE public.embassy_raw_data (
     id bigint NOT NULL,
-    country character varying,
+    country_name character varying,
     raw_json jsonb DEFAULT '{}'::jsonb,
     data_source character varying DEFAULT 'Embassy'::character varying,
     created_at timestamp(6) without time zone NOT NULL,
@@ -509,6 +509,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220223173900'),
 ('20220223183905'),
 ('20220420150821'),
-('20220422220122');
+('20220422220122'),
+('20220425210311');
 
 

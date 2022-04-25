@@ -26,12 +26,12 @@ module GetRawDataCommands
 
     def get_all_raw_data
       raw_data = EmbassyRawDatum.find_by(
-        country: name.titleize.to_s
+        country_name: name.titleize.to_s
       )
 
       if raw_data.nil? || raw_data.blank?
         country_info_from_embassy = info_from_embassy
-        new_raw_data = EmbassyRawDatum.new(country: name.titleize.to_s, data_source: "Embassy", raw_json: country_info_from_embassy)
+        new_raw_data = EmbassyRawDatum.new(country_name: name.titleize.to_s, data_source: "Embassy", raw_json: country_info_from_embassy)
         new_raw_data.save
 
         return new_raw_data["raw_json"]
