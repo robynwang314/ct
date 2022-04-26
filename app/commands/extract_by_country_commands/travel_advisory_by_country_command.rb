@@ -10,14 +10,14 @@ module ExtractByCountryCommands
         GetRawDataCommands::AddTravelAdvisoryCommand.new().execute
       end
 
-      if TravelAdvisoryRawDatum.all.length == 0
+      if TravelAdvisory.all.length == 0
         all_travel_advisory.raw_json.each do |country, data|
-          TravelAdvisoryRawDatum.create(country_name: data["name"], country_code: country, raw_json: data )
+          TravelAdvisory.create(country_name: data["name"], country_code: country, advisory: data["advisory"] )
         end
       else
         all_travel_advisory.raw_json.each do |country, data|
-          country_alert = TravelAdvisoryRawDatum.find_by(country_code: country)
-          country_alert.update(raw_json: data, updated_at: Time.current)
+          country_alert = TravelAdvisory.find_by(country_code: country)
+          country_alert.update(advisory: data["advisory"], updated_at: Time.current)
         end
       end
     end

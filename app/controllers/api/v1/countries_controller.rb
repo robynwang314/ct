@@ -53,9 +53,9 @@ module Api
 
       def travel_advisory
         country_codes(name_params)
-        country_advisory = TravelAdvisoryRawDatum.find_by(country_code: alpha2)
+        country_advisory = TravelAdvisory.find_by(country_code: alpha2)
 
-        message = country_advisory["raw_json"]["advisory"]
+        message = country_advisory["advisory"]
         render json: message
       end
 
@@ -71,8 +71,8 @@ module Api
         country_codes("United States")
       
         # country advisory
-        country_advisory =  TravelAdvisoryRawDatum.find_by(country_code: alpha2)
-        message = country_advisory["raw_json"]["advisory"]
+        country_advisory =  TravelAdvisory.find_by(country_code: alpha2)
+        message = country_advisory["advisory"]
 
         # all time stats
         country_stats = OwidCountryAllTimeDatum.find_by(

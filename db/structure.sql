@@ -295,13 +295,12 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: travel_advisory_raw_data; Type: TABLE; Schema: public; Owner: -
+-- Name: travel_advisories; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.travel_advisory_raw_data (
+CREATE TABLE public.travel_advisories (
     id bigint NOT NULL,
-    country_name character varying,
-    raw_json jsonb DEFAULT '{}'::jsonb,
+    advisory jsonb DEFAULT '{}'::jsonb,
     data_source character varying DEFAULT 'Advisory'::character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -310,10 +309,10 @@ CREATE TABLE public.travel_advisory_raw_data (
 
 
 --
--- Name: travel_advisory_raw_data_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: travel_advisories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.travel_advisory_raw_data_id_seq
+CREATE SEQUENCE public.travel_advisories_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -322,10 +321,10 @@ CREATE SEQUENCE public.travel_advisory_raw_data_id_seq
 
 
 --
--- Name: travel_advisory_raw_data_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: travel_advisories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.travel_advisory_raw_data_id_seq OWNED BY public.travel_advisory_raw_data.id;
+ALTER SEQUENCE public.travel_advisories_id_seq OWNED BY public.travel_advisories.id;
 
 
 --
@@ -378,10 +377,10 @@ ALTER TABLE ONLY public.reopen_eu_by_countries ALTER COLUMN id SET DEFAULT nextv
 
 
 --
--- Name: travel_advisory_raw_data id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: travel_advisories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.travel_advisory_raw_data ALTER COLUMN id SET DEFAULT nextval('public.travel_advisory_raw_data_id_seq'::regclass);
+ALTER TABLE ONLY public.travel_advisories ALTER COLUMN id SET DEFAULT nextval('public.travel_advisories_id_seq'::regclass);
 
 
 --
@@ -457,11 +456,11 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
--- Name: travel_advisory_raw_data travel_advisory_raw_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: travel_advisories travel_advisories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.travel_advisory_raw_data
-    ADD CONSTRAINT travel_advisory_raw_data_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.travel_advisories
+    ADD CONSTRAINT travel_advisories_pkey PRIMARY KEY (id);
 
 
 --
@@ -510,6 +509,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220223183905'),
 ('20220420150821'),
 ('20220422220122'),
-('20220425210311');
+('20220425210311'),
+('20220425212116'),
+('20220425213953'),
+('20220426082152');
 
 
