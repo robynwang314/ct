@@ -20,12 +20,13 @@ class Country < ApplicationRecord
                     "Other Links"
                   ].freeze
 
+  self.primary_key = "country"
   has_many :charts
   has_many :documents
   has_many :covid_raw_data
-  has_one :embassy_raw_datum, primary_key: :country, foreign_key: :country_name
+  has_one :embassy_alert, primary_key: :country, foreign_key: :country_name
   has_one :travel_advisory, primary_key: :alpha2, foreign_key: :country_code
-  has_one :owid_today_stats_raw_datum, primary_key: :alpha3, foreign_key: :country_code
+  has_one :owid_today_stat, primary_key: :alpha3, foreign_key: :country_code
   has_one :owid_country_all_time_datum, primary_key: :alpha3, foreign_key: :country_code
   has_one :reopen_eu_by_country, primary_key: :alpha3, foreign_key: :country_code
 

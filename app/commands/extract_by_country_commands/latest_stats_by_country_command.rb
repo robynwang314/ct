@@ -10,14 +10,14 @@ module ExtractByCountryCommands
         GetRawDataCommands::AddTodayStatsCommand.new().execute
       end
 
-      if OwidTodayStatsRawDatum.all.length == 0
+      if OwidTodayStat.all.length == 0
         all_latest_stats.raw_json.each do |country, data|
-          OwidTodayStatsRawDatum.create(country: data["location"], country_code: country, raw_json: data )
+          OwidTodayStat.create(country_code: country, todays_stats: data )
         end
       else
         all_latest_stats.raw_json.each do |country, data|
-          country_latest_stats = OwidTodayStatsRawDatum.find_by(country_code: country)
-          country_latest_stats.update(raw_json: data, updated_at: Time.current)
+          country_latest_stats = OwidTodayStat.find_by(country_code: country)
+          country_latest_stats.update(todays_stats: data, updated_at: Time.current)
         end
       end
 

@@ -42,12 +42,15 @@ module Api
       end
 
       def today_stats
-        country_codes(name_params)
-        today_stats = OwidTodayStatsRawDatum.find_by(
-          country_code: alpha3
+
+        
+        country_code = Country.find(name_params.titleize).alpha3
+        # country_codes(name_params)
+        today_stats = OwidTodayStat.find_by(
+          country_code: country_code
         )
 
-        latest_cases = today_stats["raw_json"]
+        latest_cases = today_stats["todays_stats"]
         render json: latest_cases
       end
 
@@ -81,10 +84,10 @@ module Api
         all_cases = country_stats["all_time_data"]
           
         # todays stats
-        today_stats = OwidTodayStatsRawDatum.find_by(
+        today_stats = OwidTodayStat.find_by(
           country_code: alpha3
         )
-        latest_cases = today_stats["raw_json"]
+        latest_cases = today_stats["todays_stats"]
 
         # TODO: embassy info
     

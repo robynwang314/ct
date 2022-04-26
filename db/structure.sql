@@ -151,10 +151,10 @@ ALTER SEQUENCE public.documents_id_seq OWNED BY public.documents.id;
 
 
 --
--- Name: embassy_raw_data; Type: TABLE; Schema: public; Owner: -
+-- Name: embassy_alerts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.embassy_raw_data (
+CREATE TABLE public.embassy_alerts (
     id bigint NOT NULL,
     country_name character varying,
     raw_json jsonb DEFAULT '{}'::jsonb,
@@ -165,10 +165,10 @@ CREATE TABLE public.embassy_raw_data (
 
 
 --
--- Name: embassy_raw_data_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: embassy_alerts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.embassy_raw_data_id_seq
+CREATE SEQUENCE public.embassy_alerts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -177,10 +177,10 @@ CREATE SEQUENCE public.embassy_raw_data_id_seq
 
 
 --
--- Name: embassy_raw_data_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: embassy_alerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.embassy_raw_data_id_seq OWNED BY public.embassy_raw_data.id;
+ALTER SEQUENCE public.embassy_alerts_id_seq OWNED BY public.embassy_alerts.id;
 
 
 --
@@ -218,13 +218,12 @@ ALTER SEQUENCE public.owid_country_all_time_data_id_seq OWNED BY public.owid_cou
 
 
 --
--- Name: owid_today_stats_raw_data; Type: TABLE; Schema: public; Owner: -
+-- Name: owid_today_stats; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.owid_today_stats_raw_data (
+CREATE TABLE public.owid_today_stats (
     id bigint NOT NULL,
-    country character varying,
-    raw_json jsonb DEFAULT '{}'::jsonb,
+    todays_stats jsonb DEFAULT '{}'::jsonb,
     data_source character varying DEFAULT 'latest OWID'::character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -233,10 +232,10 @@ CREATE TABLE public.owid_today_stats_raw_data (
 
 
 --
--- Name: owid_today_stats_raw_data_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: owid_today_stats_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.owid_today_stats_raw_data_id_seq
+CREATE SEQUENCE public.owid_today_stats_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -245,10 +244,10 @@ CREATE SEQUENCE public.owid_today_stats_raw_data_id_seq
 
 
 --
--- Name: owid_today_stats_raw_data_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: owid_today_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.owid_today_stats_raw_data_id_seq OWNED BY public.owid_today_stats_raw_data.id;
+ALTER SEQUENCE public.owid_today_stats_id_seq OWNED BY public.owid_today_stats.id;
 
 
 --
@@ -349,10 +348,10 @@ ALTER TABLE ONLY public.documents ALTER COLUMN id SET DEFAULT nextval('public.do
 
 
 --
--- Name: embassy_raw_data id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: embassy_alerts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.embassy_raw_data ALTER COLUMN id SET DEFAULT nextval('public.embassy_raw_data_id_seq'::regclass);
+ALTER TABLE ONLY public.embassy_alerts ALTER COLUMN id SET DEFAULT nextval('public.embassy_alerts_id_seq'::regclass);
 
 
 --
@@ -363,10 +362,10 @@ ALTER TABLE ONLY public.owid_country_all_time_data ALTER COLUMN id SET DEFAULT n
 
 
 --
--- Name: owid_today_stats_raw_data id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: owid_today_stats id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.owid_today_stats_raw_data ALTER COLUMN id SET DEFAULT nextval('public.owid_today_stats_raw_data_id_seq'::regclass);
+ALTER TABLE ONLY public.owid_today_stats ALTER COLUMN id SET DEFAULT nextval('public.owid_today_stats_id_seq'::regclass);
 
 
 --
@@ -416,11 +415,11 @@ ALTER TABLE ONLY public.documents
 
 
 --
--- Name: embassy_raw_data embassy_raw_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: embassy_alerts embassy_alerts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.embassy_raw_data
-    ADD CONSTRAINT embassy_raw_data_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.embassy_alerts
+    ADD CONSTRAINT embassy_alerts_pkey PRIMARY KEY (id);
 
 
 --
@@ -432,11 +431,11 @@ ALTER TABLE ONLY public.owid_country_all_time_data
 
 
 --
--- Name: owid_today_stats_raw_data owid_today_stats_raw_data_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: owid_today_stats owid_today_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.owid_today_stats_raw_data
-    ADD CONSTRAINT owid_today_stats_raw_data_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.owid_today_stats
+    ADD CONSTRAINT owid_today_stats_pkey PRIMARY KEY (id);
 
 
 --
@@ -512,6 +511,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220425210311'),
 ('20220425212116'),
 ('20220425213953'),
-('20220426082152');
+('20220426082152'),
+('20220426083332'),
+('20220426084216'),
+('20220426090033'),
+('20220426090848');
 
 
