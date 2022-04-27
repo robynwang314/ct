@@ -21,7 +21,7 @@ export const StatsContainer = () => {
 
     try {
       const latestStats = await getCountrysLatestStats(country, string_parameterize)
-      console.log(latestStats)
+
       if (latestStats && latestStats.data) {
         setTodayStats(latestStats.data)
       }

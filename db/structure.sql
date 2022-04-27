@@ -189,7 +189,6 @@ ALTER SEQUENCE public.embassy_alerts_id_seq OWNED BY public.embassy_alerts.id;
 
 CREATE TABLE public.owid_country_all_time_data (
     id bigint NOT NULL,
-    country character varying,
     all_time_data jsonb DEFAULT '{}'::jsonb,
     data_source character varying DEFAULT 'OWID'::character varying,
     created_at timestamp(6) without time zone NOT NULL,
@@ -515,6 +514,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220426083332'),
 ('20220426084216'),
 ('20220426090033'),
-('20220426090848');
+('20220426090848'),
+('20220426192853');
 
 

@@ -12,6 +12,7 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
   const [toggleCollapse, setToggleCollapse] = useState(false)
   const [expanded, setExpanded] = useState(true)
 
+  // need to fix this for countries with multiple words
   const string_parameterize = str1 => {
     return str1?.trim().toLowerCase().replace(/[^a-zA-Z0-9 -]/, "").replace(/\s/g, "-");
   };
