@@ -37,21 +37,24 @@ const Graphs = ({ }) => {
   const [allCases, setAllCases] = useState([])
   const [loading, setLoading] = useState(false)
 
-  useEffect(async () => {
-    if (!country) return null;
-    try {
-      setLoading(true)
-      const allData = await getAllTimeOWIDStats(country, string_parameterize)
-      if (allData && allData.data) {
-        setAllTimeOWIDstats(allData.data)
-        setAllCases(allData.data.data)
+  useEffect(() => {
+    async function fetchData() {
+      if (!country) return null;
+      try {
+        setLoading(true)
+        const allData = await getAllTimeOWIDStats(country, string_parameterize)
+        if (allData && allData.data) {
+          setAllTimeOWIDstats(allData.data)
+          setAllCases(allData.data.data)
+        }
+      } catch (error) {
+        console.log(error)
       }
-    } catch (error) {
-      console.log(error)
+      finally {
+        setLoading(false)
+      }
     }
-    finally {
-      setLoading(false)
-    }
+    fetchData()
   }, [country])
 
   let data = [];

@@ -23,7 +23,7 @@ async function getEmbassyComments(countryName) {
 
 const NavButtons = () => {
   return TAB_ITEMS.map((item, id) => (
-    <Nav.Item>
+    <Nav.Item key={id}>
       <Nav.Link eventKey={id}>
         {item}
       </Nav.Link>
@@ -35,31 +35,38 @@ function NavBarTabs({ ...props }) {
   const { country, string_parameterize, setReopenEUComments, setEmbassyComments } = useCountryContext()
   const handleSelect = (eventKey) => alert(`selected ${eventKey}`);
 
-  useEffect(async () => {
-    if (!country) return null;
-    try {
-      const countryName = string_parameterize(country.label)
-      const reopenComments = await getReopenEUComments(countryName)
-      if (reopenComments && reopenComments.data) {
-        setReopenEUComments(reopenComments.data)
+  useEffect(() => {
+    async function fetchData() {
+      if (!country) return null;
+      try {
+        const countryName = string_parameterize(country.label)
+        const reopenComments = await getReopenEUComments(countryName)
+        if (reopenComments && reopenComments.data) {
+          setReopenEUComments(reopenComments.data)
+        }
+      } catch (error) {
+        console.log(error)
       }
-    } catch (error) {
-      console.log(error)
     }
+    fetchData()
   }, [country])
 
-  useEffect(async () => {
-    if (!country) return null;
-    try {
-      const countryName = string_parameterize(country.label)
-      const embassyComments = await getEmbassyComments(countryName)
+  useEffect(() => {
+    async function fetchData() {
+      if (!country) return null;
+      try {
+        const countryName = string_parameterize(country.label)
+        const embassyComments = await getEmbassyComments(countryName)
 
-      if (embassyComments && embassyComments.data) {
-        setEmbassyComments(embassyComments.data)
+        if (embassyComments && embassyComments.data) {
+          setEmbassyComments(embassyComments.data)
+        }
+      } catch (error) {
+        console.log(error)
       }
-    } catch (error) {
-      console.log(error)
+
     }
+    fetchData()
   }, [country])
 
 

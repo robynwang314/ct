@@ -1,8 +1,16 @@
 {
   "name": "covid-travel",
+  "jest": {
+    "verbose": true,
+    "testEnvironment": "jsdom",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|scss|less)$": "identity-obj-proxy"
+    }
+  },
   "private": true,
   "dependencies": {
-    "@babel/preset-react": "^7.16.0",
+    "@babel/preset-react": "^7.16.7",
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
@@ -14,10 +22,10 @@
     "font-awesome": "^4.7.0",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
-    "react": "^17.0.2",
+    "react": "^18.1.0",
     "react-bootstrap": "^2.0.4",
     "react-chartjs-2": "^4.0.0",
-    "react-dom": "^17.0.2",
+    "react-dom": "^18.1.0",
     "react-hot-loader": "^4.13.0",
     "react-select": "^5.2.1",
     "react-select-country-list": "^2.2.3",
@@ -27,9 +35,19 @@
   },
   "version": "0.1.0",
   "devDependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "@testing-library/dom": "^8.13.0",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.1.1",
+    "babel-jest": "^28.0.2",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^28.0.2",
+    "jest-environment-jsdom": "^28.0.2",
+    "react-test-renderer": "^18.1.0",
     "webpack-dev-server": "^3"
   },
   "scripts": {
-    "start": "./bin/webpack-dev-server --hot --mode development --watch --watch-poll"
+    "start": "./bin/webpack-dev-server --hot --mode development --watch --watch-poll",
+    "test": "jest"
   }
 }

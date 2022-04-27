@@ -16,18 +16,21 @@ export const StatsContainer = () => {
   const { country, string_parameterize } = useCountryContext();
   const [todayStats, setTodayStats] = useState({})
 
-  useEffect(async () => {
-    if (!country) return null;
+  useEffect(() => {
+    async function fetchData() {
+      if (!country) return null;
 
-    try {
-      const latestStats = await getCountrysLatestStats(country, string_parameterize)
+      try {
+        const latestStats = await getCountrysLatestStats(country, string_parameterize)
 
-      if (latestStats && latestStats.data) {
-        setTodayStats(latestStats.data)
+        if (latestStats && latestStats.data) {
+          setTodayStats(latestStats.data)
+        }
+      } catch (error) {
+        console.log(error)
       }
-    } catch (error) {
-      console.log(error)
     }
+    fetchData()
   }, [country])
 
   return (

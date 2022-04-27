@@ -9,15 +9,18 @@ import NavBarTabs from "./Nav/nav-bar-tabs.jsx"
 import "./app.scss"
 
 async function getCountries(setCountries) {
-  useEffect(async () => {
-    const response = await api.countries.index()
-    try {
-      if (response) {
-        setCountries(response.data)
+  useEffect(() => {
+    async function fetchData() {
+      const response = await api.countries.index()
+      try {
+        if (response) {
+          setCountries(response.data)
+        }
+      } catch {
+        console.log(response)
       }
-    } catch {
-      console.log(response)
     }
+    fetchData()
   }, [])
 }
 
@@ -35,20 +38,23 @@ export const MainDocument = () => {
 
   getCountries(setCountries)
 
-  useEffect(async () => {
-    if (!country) return null;
-    try {
-      setLoading(true)
-      const alert = await getAlertStatus(country, string_parameterize)
-      if (alert && alert.data) {
-        setAlertStatus(alert.data)
+  useEffect(() => {
+    async function fetchData() {
+      if (!country) return null;
+      try {
+        setLoading(true)
+        const alert = await getAlertStatus(country, string_parameterize)
+        if (alert && alert.data) {
+          setAlertStatus(alert.data)
+        }
+      } catch (error) {
+        console.log(error)
       }
-    } catch (error) {
-      console.log(error)
+      finally {
+        setLoading(false)
+      }
     }
-    finally {
-      setLoading(false)
-    }
+    fetchData()
   }, [country])
 
   if (countries.length > 0) {
