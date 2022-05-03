@@ -8,25 +8,32 @@ import ChartContainer from './Chart/chart-container.jsx'
 import NavBarTabs from "./Nav/nav-bar-tabs.jsx"
 import "./app.scss"
 
-async function getCountries(setCountries) {
-  useEffect(() => {
-    async function fetchData() {
-      const response = await api.countries.index()
-      try {
-        if (response) {
-          setCountries(response.data)
-        }
-      } catch {
-        console.log(response)
-      }
+export async function getCountries(setCountries) {
+  try {
+    const response = await api.countries.index()
+    if (response) {
+      setCountries(response.data)
     }
-    fetchData()
-  }, [])
+  } catch (error) {
+    console.log(error)
+  }
 }
 
-async function getAlertStatus(country, string_parameterize) {
-  const countryName = string_parameterize(country.label)
-  return await api.countries.travel_advisory(countryName)
+export async function getAlertStatus(country, setLoading, setAlertStatus) {
+  if (!country) return null;
+
+  try {
+    setLoading(true)
+    const alert = await api.countries.travel_advisory(country.label)
+    if (alert && alert.data) {
+      setAlertStatus(alert.data)
+    }
+  } catch (error) {
+    console.log(error)
+  }
+  finally {
+    setLoading(false)
+  }
 }
 
 export const MainDocument = () => {
@@ -36,33 +43,23 @@ export const MainDocument = () => {
   const countryCode = country?.value
   let countryNamesList = []
 
-  getCountries(setCountries)
-
   useEffect(() => {
-    async function fetchData() {
-      if (!country) return null;
-      try {
-        setLoading(true)
-        const alert = await getAlertStatus(country, string_parameterize)
-        if (alert && alert.data) {
-          setAlertStatus(alert.data)
-        }
-      } catch (error) {
-        console.log(error)
-      }
-      finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
+    getCountries(setCountries)
+    getAlertStatus(country, setLoading, setAlertStatus)
   }, [country])
+
 
   if (countries.length > 0) {
     countryNamesList = countries.map((country) => {
       return country.data.iso_short_name
     })
-    countryNamesList[17] = "United Kingdom"
-    countryNamesList[33] = "Moldova, Republic of"
+
+    // separating this out for testing purposes
+    if (countryNamesList[17] && countryNamesList[33]) {
+      countryNamesList[17] = "United Kingdom"
+      countryNamesList[33] = "Moldova, Republic of"
+    }
+
     countryNamesList.unshift("United States")
     countryNamesList.sort()
   }

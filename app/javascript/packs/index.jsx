@@ -13,22 +13,7 @@ import 'react-hot-loader'
 import { createRoot } from 'react-dom/client';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const Something = () => {
-    return (
-      <div>HELLLOOOO</div>
-    )
-  }
-
-
   const container = document.body.appendChild(document.createElement('div'))
   const root = createRoot(container)
   root.render(<App />)
-  // ReactDOM.render(
-  //   <>
-  //     {/* <Something /> */}
-  //     <App />
-  //   </>
-  //   ,
-  //   document.body.appendChild(document.createElement('div')),
-  // )
 })
