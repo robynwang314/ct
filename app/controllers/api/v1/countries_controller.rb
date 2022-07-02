@@ -8,7 +8,7 @@ module Api
 
       def index
         # this is needed to load the countries into the select dropdown list
-        countries = ISO3166::Country.find_all_countries_by_region('Europe')
+        countries = ISO3166::Country.find_all_countries_by_region('Europe') 
         render json: countries.as_json
       end
 

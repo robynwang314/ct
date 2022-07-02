@@ -10,11 +10,25 @@ class GetAllCountriesFromEmbassyCommand
       if Country.all.length > 10 
         all_countries_object.each do |country| 
           each_country = Country.find_by(country: country.text)
-          each_country.update(href: country.children[0].attributes["href"], updated_at: Time.current)
+
+          country_data = ISO3166::Country.find_country_by_iso_short_name(country.text)
+
+          unless country_data.nil?
+            each_country.update(href: country.children[0].attributes["href"], alpha2: country_data.data["alpha2"], alpha3:country_data.data["alpha3"], updated_at: Time.current)
+          else 
+            each_country.update(href: country.children[0].attributes["href"], updated_at: Time.current)
+          end
+
         end
       else
         all_countries_object.each do |country| 
-          Country.create(country: country.text, href: country.children[0].attributes["href"])
+          country_data = ISO3166::Country.find_country_by_iso_short_name(country.text)
+
+          unless country_data.nil?
+            Country.create(country: country.text, href: country.children[0].attributes["href"], alpha2: country_data.data["alpha2"], alpha3:country_data.data["alpha3"])
+          else 
+           Country.create(country: country.text, href: country.children[0].attributes["href"])
+          end
         end
       end
     end

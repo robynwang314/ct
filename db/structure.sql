@@ -34,6 +34,8 @@ CREATE TYPE public.document_types AS ENUM (
 
 SET default_tablespace = '';
 
+SET default_table_access_method = heap;
+
 --
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
@@ -484,7 +486,6 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20211207223537'),
-('20211207225611'),
 ('20211207232901'),
 ('20220211200126'),
 ('20220212003010'),
@@ -503,7 +504,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220223004842'),
 ('20220223004915'),
 ('20220223004954'),
-('20220223173900'),
 ('20220223183905'),
 ('20220420150821'),
 ('20220422220122'),
