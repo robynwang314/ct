@@ -13,7 +13,7 @@ module ExtractByCountryCommands
 
           sorted_comments_list = build_comments(country)
 
-          country_name = ISO3166::Country.find_country_by_alpha3(country["nutscode"]).name 
+          country_name = ISO3166::Country.find_country_by_alpha3(country["nutscode"]).iso_short_name 
           ReopenEuByCountry.create(country: country_name, country_code: country["nutscode"], data_source: "ReopenEU", raw_json: sorted_comments_list )
         end
       else

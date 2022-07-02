@@ -21,7 +21,6 @@ class Country < ApplicationRecord
                   ].freeze
 
   self.primary_key = "country"
-  has_many :charts
   has_many :documents
   has_many :covid_raw_data
   has_one :embassy_alert, primary_key: :country, foreign_key: :country_name
