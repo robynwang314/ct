@@ -1,10 +1,9 @@
 import React, { createContext, useState, useMemo, useContext, useEffect } from 'react'
-import PropTypes, { func } from 'prop-types'
+import PropTypes from 'prop-types'
 import api from '../api/api.js'
 export const CountrySelectionContext = createContext();
 export function CountrySelectionProvider({ children, defaultCountry = "United States" }) {
   const [country, setCountry] = useState(/* defaultCountry*/ "");
-  const [countries, setCountries] = useState([])
   const [alertStatus, setAlertStatus] = useState({})
   const [allTimeOWIDstats, setAllTimeOWIDstats] = useState([])
   const [reopenEUComments, setReopenEUComments] = useState({})
@@ -32,8 +31,6 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
       string_parameterize,
       country,
       setCountry,
-      countries,
-      setCountries,
       allTimeOWIDstats,
       setAllTimeOWIDstats,
       alertStatus,
@@ -47,7 +44,7 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
       toggleCollapse
 
     }),
-    [string_parameterize, country, countries, allTimeOWIDstats, setAllTimeOWIDstats, alertStatus, setAlertStatus, reopenEUComments, setReopenEUComments, embassyComments, setEmbassyComments, expanded, handleCollapse, toggleCollapse]
+    [string_parameterize, country, allTimeOWIDstats, setAllTimeOWIDstats, alertStatus, setAlertStatus, reopenEUComments, setReopenEUComments, embassyComments, setEmbassyComments, expanded, handleCollapse, toggleCollapse]
   );
 
   return <CountrySelectionContext.Provider value={context}>

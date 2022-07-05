@@ -30,6 +30,7 @@
     "react-chartjs-2": "^4.0.0",
     "react-dom": "^18.1.0",
     "react-hot-loader": "^4.13.0",
+    "react-query": "^3.39.1",
     "react-select": "^5.2.1",
     "react-select-country-list": "^2.2.3",
     "turbolinks": "^5.2.0",
