@@ -60,11 +60,9 @@ module Api
       end
 
       def show
-        # create a default country to show on load?
-    
-        # puts JSON.pretty_generate(@sorted_comments_list) 
-        # country = Country.find_by(slug: params[:slug])
-        # render json: CountrySerializer.new(country, options).serialized_json
+        country = get_country_code
+
+        render json: country
       end
 
       private

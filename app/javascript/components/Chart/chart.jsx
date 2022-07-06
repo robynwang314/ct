@@ -27,35 +27,14 @@ ChartJS.register(
   Title,
 );
 
-async function getAllTimeOWIDStats(country, string_parameterize) {
-  const countryName = string_parameterize(country.label)
-  return await api.countries.owid_stats(countryName)
-}
-
 const Graphs = ({ }) => {
-  const { string_parameterize, country, setAllTimeOWIDstats } = useCountryContext()
-  const [allCases, setAllCases] = useState([])
+  const { countryInfo } = useCountryContext()
+
+  // update for when, isLoading... pass props down. 
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    async function fetchData() {
-      if (!country) return null;
-      try {
-        setLoading(true)
-        const allData = await getAllTimeOWIDStats(country, string_parameterize)
-        if (allData && allData.data) {
-          setAllTimeOWIDstats(allData.data)
-          setAllCases(allData.data.data)
-        }
-      } catch (error) {
-        console.log(error)
-      }
-      finally {
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [country])
+
+  const allData = countryInfo.all_time_data
 
   let data = [];
   data['labels'] = [];
@@ -74,8 +53,8 @@ const Graphs = ({ }) => {
     type: "bar",
   };
 
-  for (let i = 0; i < allCases.length; i++) {
-    const countryStats = allCases[i];
+  for (let i = 0; i < allData?.length; i++) {
+    const countryStats = allData[i];
 
     data['labels'][i] = moment(countryStats.date).format("MMM DD YY");
     data['datasets'][0].data[i] = countryStats.new_deaths;

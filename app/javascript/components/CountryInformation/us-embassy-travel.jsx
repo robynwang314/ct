@@ -6,9 +6,10 @@ import NavigationButtons from "../Nav/navigation-buttons.jsx"
 import "./documents.scss"
 
 const USEmbassyTravel = ({ }) => {
-  const { country, embassyComments, collapsed, expanded } = useCountryContext()
+  const { countryInfo } = useCountryContext()
+  const embassyComments = countryInfo?.embassy_advisory
 
-  const parseTravelInfo = Object.keys(embassyComments)?.map((travel_indicator, id) => {
+  const parseTravelInfo = embassyComments && Object.keys(embassyComments)?.map((travel_indicator, id) => {
     if (travel_indicator == "Country Specific Information" || travel_indicator == "Important Information") return;
 
     return (
@@ -23,7 +24,7 @@ const USEmbassyTravel = ({ }) => {
     )
   })
 
-  const formattedHTML = embassyComments["Country Specific Information"]?.replaceAll('\n', '\n\n')
+  const formattedHTML = embassyComments && embassyComments["Country Specific Information"]?.replaceAll('\n', '\n\n')
 
   return (
     <div>

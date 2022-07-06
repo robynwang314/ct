@@ -17,10 +17,6 @@ async function getReopenEUComments(countryName) {
   return await api.countries.reopenEU(countryName)
 }
 
-async function getEmbassyComments(countryName) {
-  return await api.countries.embassy_information(countryName)
-}
-
 const NavButtons = () => {
   return TAB_ITEMS.map((item, id) => (
     <Nav.Item key={id}>
@@ -32,7 +28,7 @@ const NavButtons = () => {
 }
 
 function NavBarTabs({ ...props }) {
-  const { country, string_parameterize, setReopenEUComments, setEmbassyComments } = useCountryContext()
+  const { country, string_parameterize, setReopenEUComments } = useCountryContext()
   const handleSelect = (eventKey) => alert(`selected ${eventKey}`);
 
   useEffect(() => {
@@ -50,25 +46,6 @@ function NavBarTabs({ ...props }) {
     }
     fetchData()
   }, [country])
-
-  useEffect(() => {
-    async function fetchData() {
-      if (!country) return null;
-      try {
-        const countryName = string_parameterize(country.label)
-        const embassyComments = await getEmbassyComments(countryName)
-
-        if (embassyComments && embassyComments.data) {
-          setEmbassyComments(embassyComments.data)
-        }
-      } catch (error) {
-        console.log(error)
-      }
-
-    }
-    fetchData()
-  }, [country])
-
 
   return (
     <Tab.Container id="left-tabs-example" defaultActiveKey="1">

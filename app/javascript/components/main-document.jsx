@@ -16,12 +16,12 @@ export const getAllCountries = () => {
   )
 }
 
-export const getAlertStatus = (country, setAlertStatus) => {
-  return useQuery(['ALERT_MESSAGE', { country }], async () => {
+const getCountryInfo = (country, setCountryInfo) => {
+  return useQuery(['SHOW_ALL', { country }], async () => {
     if (country.length != 0) {
-      await api.countries.travel_advisory(country.label).then(res => {
+      await api.countries.show(country.label).then(res => {
         const { data } = res;
-        setAlertStatus(data)
+        setCountryInfo(data)
       }).catch((e) => [
         console.log(e)
       ])
@@ -30,12 +30,11 @@ export const getAlertStatus = (country, setAlertStatus) => {
 }
 
 const MainDocument = () => {
-  const { country, alertStatus, setAlertStatus, expanded, handleCollapse } = useCountryContext()
-
+  const { country, expanded, handleCollapse, setCountryInfo, countryInfo } = useCountryContext()
   const { data: allCountries } = getAllCountries()
-  const { isError } = getAlertStatus(country, setAlertStatus)
+  const { isError } = getCountryInfo(country, setCountryInfo)
 
-  const countryCode = country?.value
+  // const countryCode = country?.value
   let countryNamesList = []
 
   if (allCountries?.length > 0) {
@@ -59,7 +58,7 @@ const MainDocument = () => {
       <br />
       {/* error in getting country? */}
       <h2 style={{ marginBottom: '0px', fontWeight: "bold" }}>{country?.label ? country.label : "No country selected"}</h2>
-      <h5 style={{ marginBottom: '0', color: "red" }}>Alert Status:</h5> <p style={{ marginTop: '.35%' }}>{!isError && alertStatus?.message}</p>
+      <h5 style={{ marginBottom: '0', color: "red" }}>Alert Status:</h5> <p style={{ marginTop: '.35%' }}>{!isError && countryInfo?.travel_advisory}</p>
       <ChartContainer />
       <br />
       <NavBarTabs country={country} />
