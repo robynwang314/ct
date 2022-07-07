@@ -11,12 +11,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :countries, param: :name, only: [:index, :show] do
         collection do 
-          # get 'default' => "countries#show"
-          get :travel_advisory
-          get :owid_stats
           get :reopenEU
-          get :embassy_information
-          get :today_stats
         end
 
       end

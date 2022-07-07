@@ -12,45 +12,6 @@ module Api
         render json: countries.as_json
       end
 
-      def embassy_information
-        name = name_params
-        country_info = GetRawDataCommands::AddEmbassyInformationCommand.new(name: name).execute 
-
-        render json: country_info
-      end
-
-      def owid_stats
-        country_code = get_country_code.alpha3
-
-        # grab from database if it exists
-        country_stats = OwidCountryAllTimeDatum.find_by(
-          country_code: country_code
-        )
-
-        # country stats have more fields than just all_time_data
-        all_cases = country_stats["all_time_data"]
-        render json: all_cases
-      end
-
-      def today_stats        
-        country_code = get_country_code.alpha3
-
-        today_stats = OwidTodayStat.find_by(
-          country_code: country_code
-        )
-
-        latest_cases = today_stats["todays_stats"]
-        render json: latest_cases
-      end
-
-      def travel_advisory
-        country_code = get_country_code.alpha2
-        country_advisory = TravelAdvisory.find_by(country_code: country_code)
-
-        message = country_advisory["advisory"]
-        render json: message
-      end
-
       def reopenEU
         country_code = get_country_code.alpha3
         reopen_EU_data = ReopenEuByCountry.find_by(country_code: country_code)
@@ -60,6 +21,8 @@ module Api
       end
 
       def show
+        GetRawDataCommands::AddEmbassyInformationCommand.new(name:  name_params).execute
+       
         country = get_country_code
 
         render json: country

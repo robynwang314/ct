@@ -1,10 +1,5 @@
 class CountrySerializer < ActiveModel::Serializer
-  # attributes :id
-
    attributes :travel_advisory, :todays_stats, :embassy_advisory, :all_time_data
-
-
-  # has_one :owid_country_all_time_datum, primary_key: :alpha3, foreign_key: :country_code
 
   def travel_advisory 
     object.travel_advisory.advisory["message"] 
@@ -15,7 +10,7 @@ class CountrySerializer < ActiveModel::Serializer
   end
 
   def embassy_advisory
-   object.embassy_alert.raw_json
+    object.embassy_alert.raw_json
   end
 
   def all_time_data

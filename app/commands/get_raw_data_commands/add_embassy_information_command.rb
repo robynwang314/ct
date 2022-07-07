@@ -29,6 +29,7 @@ module GetRawDataCommands
         country_name: name.titleize.to_s
       )
 
+      # if no data, create new entry
       if raw_data.nil? || raw_data.blank?
         country_info_from_embassy = info_from_embassy
         new_raw_data = EmbassyAlert.new(country_name: name.titleize.to_s, data_source: "Embassy", raw_json: country_info_from_embassy)
@@ -37,10 +38,12 @@ module GetRawDataCommands
         return new_raw_data["raw_json"]
       end
       
+      # if data is less than one day old, return 
       existing_data = raw_data["updated_at"] < 1.day.ago
-      
+
       return raw_data["raw_json"] if !existing_data
 
+      # else update the data
       country_info_from_embassy = info_from_embassy
       raw_data.update(raw_json: country_info_from_embassy, updated_at: Time.current)
 
