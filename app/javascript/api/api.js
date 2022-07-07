@@ -15,16 +15,6 @@ const countries = {
       dataType: "json",
     });
   },
-  reopenEU: (name) => {
-    return axios({
-      url: `api/v1/countries/reopenEU`,
-      method: "GET",
-      dataType: "json",
-      params: {
-        name: name
-      }
-    });
-  },
 }
 
 const api = {

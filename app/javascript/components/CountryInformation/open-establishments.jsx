@@ -5,8 +5,8 @@ import { Accordion } from 'react-bootstrap'
 import "./documents.scss"
 
 const Services = ({ }) => {
-  const { reopenEUComments } = useCountryContext()
-  const allHealthInfo = reopenEUComments["Services"]
+  const { countryInfo } = useCountryContext()
+  const allHealthInfo = countryInfo?.reopen_eu?.Services
 
   const parseServices = allHealthInfo?.map((service, id) => {
     return (

@@ -1,13 +1,12 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { useCountryContext } from '../country-context.jsx'
 import { Card, Accordion, useAccordionButton, AccordionContext } from 'react-bootstrap'
 import NavigationButtons from "../Nav/navigation-buttons.jsx"
 import "./documents.scss"
 
 const ReopenEUTravel = ({ }) => {
-  const { country, reopenEUComments, expanded, toggleCollapse } = useCountryContext()
-  const allTravelInfo = reopenEUComments?.Travel
+  const { expanded, countryInfo } = useCountryContext()
+  const allTravelInfo = countryInfo?.reopen_eu?.Travel
 
   // const skip = [2004, 2005, 2006, 2007]
 

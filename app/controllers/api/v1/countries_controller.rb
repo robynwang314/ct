@@ -12,14 +12,6 @@ module Api
         render json: countries.as_json
       end
 
-      def reopenEU
-        country_code = get_country_code.alpha3
-        reopen_EU_data = ReopenEuByCountry.find_by(country_code: country_code)
-      
-        country_reopen_EU = reopen_EU_data["raw_json"]
-        render json: country_reopen_EU
-      end
-
       def show
         GetRawDataCommands::AddEmbassyInformationCommand.new(name:  name_params).execute
        

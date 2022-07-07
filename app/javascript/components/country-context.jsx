@@ -5,7 +5,6 @@ export const CountrySelectionContext = createContext();
 export function CountrySelectionProvider({ children, defaultCountry = "United States" }) {
   const [country, setCountry] = useState(/* defaultCountry*/ "");
   const [countryInfo, setCountryInfo] = useState({})
-  const [reopenEUComments, setReopenEUComments] = useState({})
   const [toggleCollapse, setToggleCollapse] = useState(false)
   const [expanded, setExpanded] = useState(true)
 
@@ -29,8 +28,6 @@ export function CountrySelectionProvider({ children, defaultCountry = "United St
     setCountry,
     countryInfo,
     setCountryInfo,
-    reopenEUComments,
-    setReopenEUComments,
     expanded,
     handleCollapse,
     toggleCollapse

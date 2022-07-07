@@ -257,7 +257,6 @@ ALTER SEQUENCE public.owid_today_stats_id_seq OWNED BY public.owid_today_stats.i
 
 CREATE TABLE public.reopen_eu_by_countries (
     id bigint NOT NULL,
-    country character varying,
     country_code character varying,
     raw_json jsonb DEFAULT '{}'::jsonb,
     data_source character varying DEFAULT 'ReopenEU'::character varying,
@@ -515,6 +514,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220426084216'),
 ('20220426090033'),
 ('20220426090848'),
-('20220426192853');
+('20220426192853'),
+('20220707002309');
 
 

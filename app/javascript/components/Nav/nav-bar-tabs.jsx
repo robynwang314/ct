@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { Nav, Tab, Row } from 'react-bootstrap'
 import HealthSituation from "../CountryInformation/health-situation.jsx"
@@ -8,14 +8,8 @@ import GeneralMeasures from "../CountryInformation/general-measures.jsx"
 import Mandates from "../CountryInformation/mandates.jsx"
 import Services from "../CountryInformation/open-establishments.jsx"
 import FurtherInformation from "../CountryInformation/further-info.jsx"
-import { useCountryContext } from '../country-context.jsx'
-import api from '../../api/api.js'
 
 export const TAB_ITEMS = ["Health Situation", "Travel Information (US Embassy)", "Travel Information (ReOpen EU)", "General Measures", "Mandates", "Open Establishments", "Further Information"]
-
-async function getReopenEUComments(countryName) {
-  return await api.countries.reopenEU(countryName)
-}
 
 const NavButtons = () => {
   return TAB_ITEMS.map((item, id) => (
@@ -28,25 +22,7 @@ const NavButtons = () => {
 }
 
 function NavBarTabs({ ...props }) {
-  const { country, string_parameterize, setReopenEUComments } = useCountryContext()
   const handleSelect = (eventKey) => alert(`selected ${eventKey}`);
-
-  useEffect(() => {
-    async function fetchData() {
-      if (!country) return null;
-      try {
-        const countryName = string_parameterize(country.label)
-        const reopenComments = await getReopenEUComments(countryName)
-        if (reopenComments && reopenComments.data) {
-          setReopenEUComments(reopenComments.data)
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchData()
-  }, [country])
-
   return (
     <Tab.Container id="left-tabs-example" defaultActiveKey="1">
       <Row>

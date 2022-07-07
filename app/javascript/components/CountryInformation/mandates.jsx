@@ -1,12 +1,12 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { useCountryContext } from '../country-context.jsx'
 import { Accordion } from 'react-bootstrap'
 import "./documents.scss"
 
 const Mandates = ({ }) => {
-  const { reopenEUComments } = useCountryContext()
-  const allHealthInfo = reopenEUComments["Health and Safety"]
+  const { countryInfo } = useCountryContext()
+  const reopenEUComments = countryInfo?.reopen_eu
+  const allHealthInfo = reopenEUComments && reopenEUComments["Health and Safety"]
 
   const parseMandates = allHealthInfo?.map((mandate, id) => {
     return (
