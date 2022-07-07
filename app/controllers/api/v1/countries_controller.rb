@@ -17,7 +17,17 @@ module Api
        
         country = get_country_code
 
+        # respond_to do |format|
+        #   format.json {
+        #     render json: country
+        #   }
+        #   format.html {
+        #     render json: country 
+           
+        #   }
+        # end
         render json: country
+       
       end
 
       private
