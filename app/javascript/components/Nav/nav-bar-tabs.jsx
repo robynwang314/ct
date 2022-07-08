@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Nav, Tab, Row, } from 'react-bootstrap'
+import ChartContainer from '../Chart/chart-container.jsx'
 import HealthSituation from "../CountryInformation/health-situation.jsx"
 import USEmbassyTravel from "../CountryInformation/us-embassy-travel.jsx"
 import ReopenEUTravel from "../CountryInformation/reopenEU-travel.jsx"
@@ -25,7 +26,7 @@ function renderTabPane(content, tab, props) {
 
   return (
     <Tab.Pane eventKey={tab}>
-      {props.country?.label ? <>{content}</> :
+      {props.country?.label ? <>{content}</> : tab == TAB_ITEMS[0] ? <ChartContainer /> :
         <h2 style={{ fontWeight: 'bold', marginTop: "3%" }}>No {tab} situation to show</h2>}
     </Tab.Pane>
   )
@@ -35,9 +36,6 @@ const TabPanes = ({ tab, ...props }) => {
   let content;
 
   switch (tab) {
-    case TAB_ITEMS[0]:
-      content = ""
-      break
     case TAB_ITEMS[1]:
       content = <HealthSituation />
       break
@@ -60,17 +58,15 @@ const TabPanes = ({ tab, ...props }) => {
       content = <FurtherInformation />
       break
     default:
-      content = <USEmbassyTravel />
+      content = <ChartContainer />
   }
 
   return renderTabPane(content, tab, props)
 }
 
-
 function NavBarTabs({ ...props }) {
   return (
-
-    <Tab.Container id="left-tabs-example" defaultActiveKey={TAB_ITEMS[2]}>
+    <Tab.Container id="left-tabs-example" defaultActiveKey={TAB_ITEMS[0]}>
       <Row style={{ maxHeight: "100%" }}>
         <Nav variant="pills" sticky="top">
           <NavButtons />

@@ -13,7 +13,6 @@ import {
 import { Chart } from 'react-chartjs-2';
 import { useCountryContext } from '../country-context.jsx'
 import moment from 'moment';
-import api from '../../api/api.js'
 import Loading from '../loading.jsx'
 
 ChartJS.register(
@@ -29,11 +28,6 @@ ChartJS.register(
 
 const Graphs = ({ }) => {
   const { countryInfo } = useCountryContext()
-
-  // update for when, isLoading... pass props down. 
-  const [loading, setLoading] = useState(false)
-
-
   const allData = countryInfo.all_time_data
 
   let data = [];
@@ -118,8 +112,7 @@ const Graphs = ({ }) => {
 
   return (
     <div style={{ padding: '1%', minWidth: '65%', position: "relative" }}>
-      {loading && <Loading />}
-      <Chart data={data} options={options} style={{ opacity: loading ? 0.35 : 1 }} />
+      <Chart data={data} options={options} />
     </div>
   )
 }

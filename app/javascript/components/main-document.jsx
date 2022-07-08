@@ -2,7 +2,6 @@ import React from 'react'
 import { useQuery } from "react-query";
 import api from '../api/api.js'
 import SearchBar from './SearchBar/search-bar.jsx'
-import ChartContainer from './Chart/chart-container.jsx'
 import NavBarTabs from "./Nav/nav-bar-tabs.jsx"
 import { useCountryContext } from './country-context.jsx'
 import "./app.scss"
@@ -30,9 +29,9 @@ const getCountryInfo = (country, setCountryInfo) => {
 }
 
 const MainDocument = () => {
-  const { country, expanded, handleCollapse, setCountryInfo, countryInfo } = useCountryContext()
+  const { country, expanded, handleCollapse, setCountryInfo } = useCountryContext()
   const { data: allCountries } = getAllCountries()
-  const { isError } = getCountryInfo(country, setCountryInfo)
+  getCountryInfo(country, setCountryInfo)
 
   // const countryCode = country?.value
   let countryNamesList = []
@@ -52,19 +51,14 @@ const MainDocument = () => {
     countryNamesList.sort()
   }
 
-  return /*!loading && */(
+  return (
     <>
-      <SearchBar countryNamesList={countryNamesList} />
-      <br />
       {/* error in getting country? */}
-      <h2 style={{ marginBottom: '0px', fontWeight: "bold" }}>{country?.label ? country.label : "No country selected"}</h2>
-      <h5 style={{ marginBottom: '0', color: "red" }}>Alert Status:</h5> <p style={{ marginTop: '.35%' }}>{!isError && countryInfo?.travel_advisory}</p>
-      <ChartContainer />
+      <SearchBar countryNamesList={countryNamesList} />
       <br />
       <NavBarTabs country={country} />
       {country && <button style={{ position: "fixed", zIndex: "1", top: "95%", left: "90%" }} onClick={handleCollapse}>{expanded
         ? "collapse all" : "expand all"}</button>}
-      {/* <div style={{ color: "rgb(81, 82, 81)" }} dangerouslySetInnerHTML={{ __html: data?.important_info }} /> */}
     </>
   )
 }

@@ -1,13 +1,9 @@
-import React, { useState, useMemo } from "react"
+import React from "react"
 import PropTypes from 'prop-types'
 import Select from 'react-select'
-import "./search-bar.scss"
 import countryList from 'react-select-country-list'
-
-
 import { useCountryContext } from '../country-context.jsx'
-
-
+import "./search-bar.scss"
 
 const SearchBar = ({ countryNamesList }) => {
   const { setCountry } = useCountryContext();
