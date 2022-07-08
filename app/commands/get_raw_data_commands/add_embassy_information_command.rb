@@ -100,8 +100,13 @@ module GetRawDataCommands
           section_index = all_content_text.index { |x| x.titleize.include? ("Country-Specific Information").titleize }
         # for regular pages first section
         elsif array_index == 0
-          # check screen shots here, for Iceland... "country specific" section does not exist on page
-          section_index = all_content_text.index { |x| x.titleize.include? ("Country-Specific Information").titleize } + 1 
+          section_index = all_content_text.index { |x| x.titleize.include? ("Country-Specific Information").titleize } 
+           
+          # set index to zero for cases like iceland where "country specific" section does not exist on page
+          section_index = 0 unless section_index.present?
+
+          section_index = section_index + 1 
+
         # for rest of sections
         else
           # find all index of where section is named

@@ -10,7 +10,7 @@ class CountrySerializer < ActiveModel::Serializer
   end
 
   def reopen_eu
-    object.reopen_eu_by_country.raw_json
+    object.reopen_eu_by_country.raw_json unless object.reopen_eu_by_country.nil?
   end
 
   def embassy_advisory

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Nav, Tab, Row } from 'react-bootstrap'
+import { Nav, Tab, Row, } from 'react-bootstrap'
 import HealthSituation from "../CountryInformation/health-situation.jsx"
 import USEmbassyTravel from "../CountryInformation/us-embassy-travel.jsx"
 import ReopenEUTravel from "../CountryInformation/reopenEU-travel.jsx"
@@ -9,57 +9,81 @@ import Mandates from "../CountryInformation/mandates.jsx"
 import Services from "../CountryInformation/open-establishments.jsx"
 import FurtherInformation from "../CountryInformation/further-info.jsx"
 
-export const TAB_ITEMS = ["Health Situation", "Travel Information (US Embassy)", "Travel Information (ReOpen EU)", "General Measures", "Mandates", "Open Establishments", "Further Information"]
+export const TAB_ITEMS = ["Overview", "Health Situation", "US Embassy Information", "ReOpen EU Information", "General Measures", "Mandates", "Open Establishments", "Further Information"]
 
 const NavButtons = () => {
-  return TAB_ITEMS.map((item, id) => (
-    <Nav.Item key={id}>
-      <Nav.Link eventKey={id}>
+  return TAB_ITEMS.map((item) => (
+    <Nav.Item key={item}>
+      <Nav.Link eventKey={item}>
         {item}
       </Nav.Link>
     </Nav.Item>
   ))
 }
 
-function NavBarTabs({ ...props }) {
-  const handleSelect = (eventKey) => alert(`selected ${eventKey}`);
+function renderTabPane(content, tab, props) {
+
   return (
-    <Tab.Container id="left-tabs-example" defaultActiveKey="1">
-      <Row>
-        <Nav variant="pills" /* onSelect={handleSelect}*/ sticky="top">
+    <Tab.Pane eventKey={tab}>
+      {props.country?.label ? <>{content}</> :
+        <h2 style={{ fontWeight: 'bold', marginTop: "3%" }}>No {tab} situation to show</h2>}
+    </Tab.Pane>
+  )
+}
+
+const TabPanes = ({ tab, ...props }) => {
+  let content;
+
+  switch (tab) {
+    case TAB_ITEMS[0]:
+      content = ""
+      break
+    case TAB_ITEMS[1]:
+      content = <HealthSituation />
+      break
+    case TAB_ITEMS[2]:
+      content = <USEmbassyTravel />
+      break
+    case TAB_ITEMS[3]:
+      content = <ReopenEUTravel />
+      break
+    case TAB_ITEMS[4]:
+      content = <GeneralMeasures />
+      break
+    case TAB_ITEMS[5]:
+      content = <Mandates />
+      break
+    case TAB_ITEMS[6]:
+      content = <Services />
+      break
+    case TAB_ITEMS[7]:
+      content = <FurtherInformation />
+      break
+    default:
+      content = <USEmbassyTravel />
+  }
+
+  return renderTabPane(content, tab, props)
+}
+
+
+function NavBarTabs({ ...props }) {
+  return (
+
+    <Tab.Container id="left-tabs-example" defaultActiveKey={TAB_ITEMS[2]}>
+      <Row style={{ maxHeight: "100%" }}>
+        <Nav variant="pills" sticky="top">
           <NavButtons />
         </Nav>
       </Row>
       <Row>
         <Tab.Content>
-          <Tab.Pane eventKey="0">
-            {props.country?.label ? <HealthSituation /> :
-              <h2 style={{ fontWeight: 'bold', marginTop: "3%" }}>No health situation to show</h2>}
-          </Tab.Pane>
-          <Tab.Pane eventKey="1">
-            {props.country?.label ? <USEmbassyTravel /> :
-              <h2 style={{ fontWeight: 'bold', marginTop: "3%" }}>No travel information to show</h2>}
-          </Tab.Pane>
-          <Tab.Pane eventKey="2">
-            {props.country?.label ? <ReopenEUTravel /> :
-              <h2 style={{ fontWeight: 'bold', marginTop: "3%" }}>No travel information to show</h2>}
-          </Tab.Pane>
-          <Tab.Pane eventKey="3">
-            {props.country?.label ? <GeneralMeasures /> :
-              <h2 style={{ fontWeight: 'bold', marginTop: "3%" }}>No general measures to show</h2>}
-          </Tab.Pane>
-          <Tab.Pane eventKey="4">
-            {props.country?.label ? <Mandates /> :
-              <h2 style={{ fontWeight: 'bold', marginTop: "3%" }}>No mandate information to show</h2>}
-          </Tab.Pane>
-          <Tab.Pane eventKey="5">
-            {props.country?.label ? <Services /> :
-              <h2 style={{ fontWeight: 'bold', marginTop: "3%" }}>No service information to show</h2>}
-          </Tab.Pane>
-          <Tab.Pane eventKey="6">
-            {props.country?.label ? <FurtherInformation /> :
-              <h2 style={{ fontWeight: 'bold', marginTop: "3%" }}>No further information to show</h2>}
-          </Tab.Pane>
+          {TAB_ITEMS.map((tab) => {
+            return (
+              <TabPanes key={tab} tab={tab} {...props} />
+            )
+          }
+          )}
         </Tab.Content>
       </Row>
     </Tab.Container>
