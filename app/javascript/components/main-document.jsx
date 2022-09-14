@@ -29,7 +29,7 @@ const getCountryInfo = (country, setCountryInfo) => {
 }
 
 const MainDocument = () => {
-  const { country, expanded, handleCollapse, setCountryInfo } = useCountryContext()
+  const { country, expanded, handleCollapse, setCountryInfo, countryInfo } = useCountryContext()
   const { data: allCountries } = getAllCountries()
   getCountryInfo(country, setCountryInfo)
 
@@ -51,12 +51,21 @@ const MainDocument = () => {
     countryNamesList.sort()
   }
 
+
+
   return (
     <>
       {/* error in getting country? */}
       <SearchBar countryNamesList={countryNamesList} />
       <br />
       <NavBarTabs country={country} />
+
+
+      {countryInfo && <div
+        dangerouslySetInnerHTML={{ __html: countryInfo }}
+      />}
+
+
       {country && <button style={{ position: "fixed", zIndex: "1", top: "95%", left: "90%" }} onClick={handleCollapse}>{expanded
         ? "collapse all" : "expand all"}</button>}
     </>

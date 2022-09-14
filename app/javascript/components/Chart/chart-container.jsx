@@ -82,6 +82,13 @@ const ChartContainer = ({ }) => {
   return (
     <>
       <TravelAdvisory />
+      <div>
+        Alerts
+      </div>
+      <div>
+        quick facts
+      </div>
+
       <div className="chart-container">
         <Graphs />
         <StatsContainer />

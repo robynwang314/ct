@@ -15,7 +15,10 @@ module Api
       def show
         GetRawDataCommands::AddEmbassyInformationCommand.new(name:  name_params).execute
        
+        all_content = GetRawDataCommands::AddEmbassyTravelInfoCommand.new(name:  name_params).execute
+
         country = get_country_code
+
 
         # respond_to do |format|
         #   format.json {
@@ -26,8 +29,11 @@ module Api
            
         #   }
         # end
-        render json: country
+
+
+        # render json: country
        
+        render json: all_content
       end
 
       private
