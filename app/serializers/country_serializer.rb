@@ -1,5 +1,5 @@
 class CountrySerializer < ActiveModel::Serializer
-   attributes :travel_advisory, :todays_stats, :reopen_eu, :embassy_advisory, :all_time_data
+   attributes :travel_advisory, :todays_stats, :reopen_eu, :embassy_covid_advisory, :all_time_data
 
   def travel_advisory 
     object.travel_advisory.advisory["message"] 
@@ -13,8 +13,8 @@ class CountrySerializer < ActiveModel::Serializer
     object.reopen_eu_by_country.raw_json unless object.reopen_eu_by_country.nil?
   end
 
-  def embassy_advisory
-    object.embassy_alert.raw_json
+  def embassy_covid_advisory
+    object.embassy_covid_alert.raw_json
   end
 
   def all_time_data

@@ -153,10 +153,10 @@ ALTER SEQUENCE public.documents_id_seq OWNED BY public.documents.id;
 
 
 --
--- Name: embassy_alerts; Type: TABLE; Schema: public; Owner: -
+-- Name: embassy_covid_alerts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.embassy_alerts (
+CREATE TABLE public.embassy_covid_alerts (
     id bigint NOT NULL,
     country_name character varying,
     raw_json jsonb DEFAULT '{}'::jsonb,
@@ -167,10 +167,10 @@ CREATE TABLE public.embassy_alerts (
 
 
 --
--- Name: embassy_alerts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: embassy_covid_alerts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.embassy_alerts_id_seq
+CREATE SEQUENCE public.embassy_covid_alerts_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -179,10 +179,10 @@ CREATE SEQUENCE public.embassy_alerts_id_seq
 
 
 --
--- Name: embassy_alerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: embassy_covid_alerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.embassy_alerts_id_seq OWNED BY public.embassy_alerts.id;
+ALTER SEQUENCE public.embassy_covid_alerts_id_seq OWNED BY public.embassy_covid_alerts.id;
 
 
 --
@@ -348,10 +348,10 @@ ALTER TABLE ONLY public.documents ALTER COLUMN id SET DEFAULT nextval('public.do
 
 
 --
--- Name: embassy_alerts id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: embassy_covid_alerts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.embassy_alerts ALTER COLUMN id SET DEFAULT nextval('public.embassy_alerts_id_seq'::regclass);
+ALTER TABLE ONLY public.embassy_covid_alerts ALTER COLUMN id SET DEFAULT nextval('public.embassy_covid_alerts_id_seq'::regclass);
 
 
 --
@@ -415,11 +415,11 @@ ALTER TABLE ONLY public.documents
 
 
 --
--- Name: embassy_alerts embassy_alerts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: embassy_covid_alerts embassy_covid_alerts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.embassy_alerts
-    ADD CONSTRAINT embassy_alerts_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.embassy_covid_alerts
+    ADD CONSTRAINT embassy_covid_alerts_pkey PRIMARY KEY (id);
 
 
 --
@@ -515,6 +515,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220426090033'),
 ('20220426090848'),
 ('20220426192853'),
-('20220707002309');
+('20220707002309'),
+('20220915185216');
 
 

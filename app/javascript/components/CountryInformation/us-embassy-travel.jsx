@@ -7,7 +7,7 @@ import "./documents.scss"
 
 const USEmbassyTravel = ({ }) => {
   const { countryInfo } = useCountryContext()
-  const embassyComments = countryInfo?.embassy_advisory
+  const embassyComments = countryInfo?.embassy_covid_advisory
 
   const parseTravelInfo = embassyComments && Object.keys(embassyComments)?.map((travel_indicator, id) => {
     if (travel_indicator == "Country Specific Information" || travel_indicator == "Important Information") return;

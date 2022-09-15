@@ -25,14 +25,14 @@ module GetRawDataCommands
     end
 
     def get_all_raw_data
-      raw_data = EmbassyAlert.find_by(
+      raw_data = EmbassyCovidAlert.find_by(
         country_name: name.titleize.to_s
       )
 
       # if no data, create new entry
       if raw_data.nil? || raw_data.blank?
         country_info_from_embassy = info_from_embassy
-        new_raw_data = EmbassyAlert.new(country_name: name.titleize.to_s, data_source: "Embassy", raw_json: country_info_from_embassy)
+        new_raw_data = EmbassyCovidAlert.new(country_name: name.titleize.to_s, data_source: "Embassy", raw_json: country_info_from_embassy)
         new_raw_data.save
 
         return new_raw_data["raw_json"]
