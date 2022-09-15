@@ -22,21 +22,27 @@ module GetRawDataCommands
     def all_content 
       get_list_of_embassy_links
 
-      main_content = parse_country.at_css(".tsg-rwd-main-CSI-page-items-tsg_rwd_main_content")
+      # full main content 
+      # main_content = parse_country.at_css(".tsg-rwd-main-CSI-page-items-tsg_rwd_main_content")
+
+      # advisory only
+      main_content = parse_country.at_css(".tsg-rwd-csi-travel-advisories")
+
+      # embassy messages
+      # .tsg-rwd-csi-travel-rss
+
+      # quick facts
+      # .tsg-rwd-sidebar-qf-csi-show
+
+    
 
       css = CssParser::Parser.new
-      css.load_uri!('https://travel.state.gov/etc/designs/tsg-rwd/clientlib.css')
+      # css.load_uri!('https://travel.state.gov/etc/designs/tsg-rwd/clientlib.css')
 
-      # css.each_selector do |selector, declarations, specificity|
-      #   main_content.css(selector).each do |element|
-      #     style = element.attributes["style"]&.value || ""
-      #     element.set_attribute('style', [style, declarations].compact.join(" "))
-      #   end
+          css.load_uri!('https://travel.state.gov/apps/tsg-rwd/components/content/advisorybanner/clientlib.css')
 
-      # end
+          css.load_uri!('https://travel.state.gov/apps/tsg-rwd/components/content/EmergencyAlert/clientlib.css')
 
-      # main_content.to_s
-    
 
       css.each_selector do |selector, declarations, specificity|
         next unless selector =~ /^[\d\w\s\#\.\-]*$/ # Some of the selectors given by css_parser aren't actually selectors.

@@ -61,7 +61,7 @@ const MainDocument = () => {
       <NavBarTabs country={country} />
 
 
-      {countryInfo && <div
+      {countryInfo && <div style={{ padding: "5%" }}
         dangerouslySetInnerHTML={{ __html: countryInfo }}
       />}
 

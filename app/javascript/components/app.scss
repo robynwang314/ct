@@ -14,3 +14,44 @@
 .nav {
   justify-content: space-evenly;
 }
+
+div#tsg-rwd-advisories {
+  padding-right: 10px !important;
+
+  .tsg-rwd-eab-centerframe {
+
+    // travel advisory header last updated
+    .tsg-rwd-eab-type-main-frame {
+      height: auto !important;
+    }
+
+    // threat icons container
+    div#container {
+      display: inline !important;
+
+      // threat icon
+      a.showThreat {
+        margin-top: 1.5% !important;
+      }
+    }
+
+  }
+}
+
+// advisory level header
+.tsg-rwd-eab-title-frame {
+  padding-top: 1.5% !important
+}
+
+// read more/ teaser
+.tsg-rwd-alert-more-box-btn,
+.tsg-rwd-alert-teaser {
+  display: none;
+}
+
+// details
+.tsg-rwd-alert-more-box-content {
+  display: unset !important;
+  text-align: start;
+  padding-top: 1%
+}
