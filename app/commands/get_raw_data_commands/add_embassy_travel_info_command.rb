@@ -13,36 +13,67 @@ module GetRawDataCommands
     def execute
  
       # https://travel.state.gov/etc/designs/tsg-rwd/clientlib.css
-      return all_content
+      return match_content_with_css
 
     end
 
     private
 
-    def all_content 
-      get_list_of_embassy_links
+    #  def match_content_with_css
+    #   get_list_of_embassy_links
 
-      # full main content 
-      # main_content = parse_country.at_css(".tsg-rwd-main-CSI-page-items-tsg_rwd_main_content")
+    #   all_general_content = all_content
 
-      # advisory only
-      main_content = parse_country.at_css(".tsg-rwd-csi-travel-advisories")
+    #   # advisory only
+    #   main_content = parse_country.at_css(".tsg-rwd-csi-travel-advisories")
 
-      # embassy messages
-      # .tsg-rwd-csi-travel-rss
+    #   # embassy messages
+    #   # .tsg-rwd-csi-travel-rss
 
-      # quick facts
-      # .tsg-rwd-sidebar-qf-csi-show
+    #   # quick facts
+    #   # .tsg-rwd-sidebar-qf-csi-show
 
     
 
+    #   css = CssParser::Parser.new
+
+    #   css.load_uri!('https://travel.state.gov/apps/tsg-rwd/components/content/advisorybanner/clientlib.css')
+
+    #   css.load_uri!('https://travel.state.gov/apps/tsg-rwd/components/content/EmergencyAlert/clientlib.css')
+
+
+    #   css.each_selector do |selector, declarations, specificity|
+    #     next unless selector =~ /^[\d\w\s\#\.\-]*$/ # Some of the selectors given by css_parser aren't actually selectors.
+    #     begin
+    #       elements = main_content.css(selector)
+    #       elements.each do |match|
+    #         match["style"] = [match["style"], declarations].compact.join(" ")
+    #       end
+    #     rescue
+    #       logger.info("Couldn't parse selector '#{selector}'")
+    #     end
+    #   end
+
+    #   html_with_inline_styles = main_content.to_s 
+
+    #   # return main_content.to_html
+
+    #   return html_with_inline_styles
+    # end
+    
+    def match_content_with_css
+      get_list_of_embassy_links
+      main_content = all_content
+      all_stylesheets
+
+      base_url = "https://travel.state.gov"
+
       css = CssParser::Parser.new
-      # css.load_uri!('https://travel.state.gov/etc/designs/tsg-rwd/clientlib.css')
+      all_stylesheets_href = all_stylesheets.map { |stylesheet| next if  stylesheet["href"].include?(".ico"); base_url + stylesheet["href"]  }.compact
 
-          css.load_uri!('https://travel.state.gov/apps/tsg-rwd/components/content/advisorybanner/clientlib.css')
-
-          css.load_uri!('https://travel.state.gov/apps/tsg-rwd/components/content/EmergencyAlert/clientlib.css')
-
+      all_stylesheets_href.each do |stylesheet| 
+        css.load_uri!(stylesheet)
+      end
 
       css.each_selector do |selector, declarations, specificity|
         next unless selector =~ /^[\d\w\s\#\.\-]*$/ # Some of the selectors given by css_parser aren't actually selectors.
@@ -58,9 +89,24 @@ module GetRawDataCommands
 
       html_with_inline_styles = main_content.to_s 
 
-      # return main_content.to_html
 
       return html_with_inline_styles
+
+    end
+
+
+
+    def all_stylesheets
+      stylesheets = parse_country.css('link').attribute(rel: "stylesheet")
+
+      return stylesheets
+    end
+
+    def all_content
+      # full main content 
+      main_content = parse_country.at_css(".tsg-rwd-main-CSI-page-items-tsg_rwd_main_content")
+
+      return main_content
     end
 
 
