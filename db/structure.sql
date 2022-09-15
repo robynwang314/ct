@@ -186,6 +186,42 @@ ALTER SEQUENCE public.embassy_covid_alerts_id_seq OWNED BY public.embassy_covid_
 
 
 --
+-- Name: embassy_general_alerts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.embassy_general_alerts (
+    id bigint NOT NULL,
+    country character varying,
+    advisory jsonb DEFAULT '{}'::jsonb,
+    messages jsonb DEFAULT '{}'::jsonb,
+    quick_facts jsonb DEFAULT '{}'::jsonb,
+    entry_exit_requirements jsonb DEFAULT '{}'::jsonb,
+    safety_and_security jsonb DEFAULT '{}'::jsonb,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: embassy_general_alerts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.embassy_general_alerts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: embassy_general_alerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.embassy_general_alerts_id_seq OWNED BY public.embassy_general_alerts.id;
+
+
+--
 -- Name: owid_country_all_time_data; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -355,6 +391,13 @@ ALTER TABLE ONLY public.embassy_covid_alerts ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: embassy_general_alerts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.embassy_general_alerts ALTER COLUMN id SET DEFAULT nextval('public.embassy_general_alerts_id_seq'::regclass);
+
+
+--
 -- Name: owid_country_all_time_data id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -420,6 +463,14 @@ ALTER TABLE ONLY public.documents
 
 ALTER TABLE ONLY public.embassy_covid_alerts
     ADD CONSTRAINT embassy_covid_alerts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: embassy_general_alerts embassy_general_alerts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.embassy_general_alerts
+    ADD CONSTRAINT embassy_general_alerts_pkey PRIMARY KEY (id);
 
 
 --
@@ -516,6 +567,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220426090848'),
 ('20220426192853'),
 ('20220707002309'),
-('20220915185216');
+('20220915185216'),
+('20220915185912');
 
 
