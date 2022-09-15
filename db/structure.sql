@@ -191,7 +191,7 @@ ALTER SEQUENCE public.embassy_covid_alerts_id_seq OWNED BY public.embassy_covid_
 
 CREATE TABLE public.embassy_general_alerts (
     id bigint NOT NULL,
-    country character varying,
+    country_name character varying,
     advisory jsonb DEFAULT '{}'::jsonb,
     messages jsonb DEFAULT '{}'::jsonb,
     quick_facts jsonb DEFAULT '{}'::jsonb,
