@@ -75,3 +75,5 @@ gem "sidekiq-status"
 gem "sidekiq-unique-jobs"
 
 gem 'active_model_serializers', '~> 0.10.2'
+
+gem 'css_parser'

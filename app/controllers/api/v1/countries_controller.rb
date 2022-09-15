@@ -2,6 +2,7 @@ module Api
   module V1
     class CountriesController < ApplicationController
       include HTTParty
+      include CssParser
       require 'json'
 
       attr_accessor :name, :country, :alpha3, :parse_page, :parse_country, :paragraphsection_exists
