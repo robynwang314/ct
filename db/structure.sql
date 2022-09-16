@@ -192,11 +192,13 @@ ALTER SEQUENCE public.embassy_covid_alerts_id_seq OWNED BY public.embassy_covid_
 CREATE TABLE public.embassy_general_alerts (
     id bigint NOT NULL,
     country_name character varying,
+    raw_html jsonb DEFAULT '{}'::jsonb,
     advisory jsonb DEFAULT '{}'::jsonb,
     messages jsonb DEFAULT '{}'::jsonb,
     quick_facts jsonb DEFAULT '{}'::jsonb,
     entry_exit_requirements jsonb DEFAULT '{}'::jsonb,
     safety_and_security jsonb DEFAULT '{}'::jsonb,
+    href_list_as_string text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );

@@ -19,10 +19,12 @@ div#tsg-rwd-advisories {
   padding-right: 10px !important;
 
   .tsg-rwd-eab-centerframe {
+    display: unset !important;
 
     // travel advisory header last updated
     .tsg-rwd-eab-type-main-frame {
       height: auto !important;
+      display: unset !important;
     }
 
     // threat icons container
@@ -40,7 +42,8 @@ div#tsg-rwd-advisories {
 
 // advisory level header
 .tsg-rwd-eab-title-frame {
-  padding-top: 1.5% !important
+  padding-top: 1.5% !important;
+  display: unset !important;
 }
 
 // read more/ teaser
@@ -49,9 +52,20 @@ div#tsg-rwd-advisories {
   display: none;
 }
 
+.tsg-rwd-alert-more-box {
+  display: unset !important
+}
+
 // details
 .tsg-rwd-alert-more-box-content {
   display: unset !important;
   text-align: start;
   padding-top: 1%
+}
+
+
+.embassy-messages.parsys {
+  * {
+    box-sizing: unset;
+  }
 }

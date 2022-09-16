@@ -28,7 +28,7 @@ ChartJS.register(
 
 const Graphs = ({ }) => {
   const { countryInfo } = useCountryContext()
-  const allData = countryInfo.all_time_data
+  const allData = countryInfo?.all_time_data
 
   let data = [];
   data['labels'] = [];

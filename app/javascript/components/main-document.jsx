@@ -60,12 +60,6 @@ const MainDocument = () => {
       <br />
       <NavBarTabs country={country} />
 
-
-      {countryInfo && <div style={{ padding: "5%" }}
-        dangerouslySetInnerHTML={{ __html: countryInfo }}
-      />}
-
-
       {country && <button style={{ position: "fixed", zIndex: "1", top: "95%", left: "90%" }} onClick={handleCollapse}>{expanded
         ? "collapse all" : "expand all"}</button>}
     </>

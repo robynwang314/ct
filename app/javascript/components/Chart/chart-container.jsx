@@ -78,16 +78,22 @@ export const StatsContainer = () => {
 }
 
 const ChartContainer = ({ }) => {
+  const { countryInfo } = useCountryContext();
 
   return (
     <>
-      <TravelAdvisory />
-      <div>
-        Alerts
-      </div>
-      <div>
-        quick facts
-      </div>
+      {/* <TravelAdvisory /> */}
+      {countryInfo && Object.keys(countryInfo).length != 0 ? <div style={{ padding: "5%" }}
+        dangerouslySetInnerHTML={{ __html: countryInfo.advisory }}
+      /> : ""}
+
+      {/* {countryInfo && Object.keys(countryInfo).length != 0 ? <div style={{ padding: "5%", width: "-webkit-fill-available" }}
+        dangerouslySetInnerHTML={{ __html: countryInfo.messages }}
+      /> : ""} */}
+
+      {countryInfo && Object.keys(countryInfo).length != 0 ? <div style={{ padding: "5%" }}
+        dangerouslySetInnerHTML={{ __html: countryInfo.quick_facts }}
+      /> : ""}
 
       <div className="chart-container">
         <Graphs />
